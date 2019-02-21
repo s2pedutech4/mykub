@@ -1,0 +1,42 @@
+<div class="main-content">
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="card">
+                  <div class="card-header card-header-info">
+                      <h4 class="card-title">Document Type</h4>
+                      <!-- <p class="card-category">Complete your profile</p> -->
+                  </div>
+                  <div class="card-body">
+                     
+                      <form [formGroup]="document_type_Form" (ngSubmit)="onSubmit()">
+                          <div class="form-group">
+                              <label>Document Type Name</label>
+                              <input (keyup)="checkDocType()" type="text" formControlName="name" class="form-control"/>
+                            <mat-error *ngIf="document_type_Form.controls.name.invalid && document_type_Form.controls.name.touched">
+                                    <span *ngIf="document_type_Form.controls.name.hasError('required')">                                      Ducument Type Name is required
+                                        </span>
+                          </mat-error>
+                            <mat-error *ngIf="docTypeExists">
+                                Document Type is already present
+                              </mat-error>
+                          </div>
+                          
+                          <div class = "form group">
+                          <button type="submit" [disabled]="!document_type_Form.valid || docTypeExists" class ="btn btn-info">Save</button>
+                          <button class ="btn" (click)="Cancel()">Cancel</button>
+
+                              
+                          </div>
+                          
+                      </form>
+                  
+                  </div>
+              </div>
+          
+             
+          </div>
+         
+      </div>
+  </div>
+</div>

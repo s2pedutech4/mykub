@@ -1,0 +1,496 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row" style="position:relative;top:10px;">
+      <div class="col-4"></div>
+        <div class="col-3" style="vertical-align:middle; text-align:center">
+            <img style="width:80px;height:80px;" *ngIf="showmyimg" [src]="myimage | safeimg: 'resourceUrl'">
+            <p *ngIf="showmyimg">Welcome!!</p>
+            <button (click)="change()" *ngIf="!showmyimg && !changeImage" class="btn btn-info">Upload Profile Pic</button>
+            
+        </div>
+        
+        <div class="col-1">
+          <input #fileInput *ngIf="changeImage" type="file">
+          <button class="btn btn-info" *ngIf="changeImage" (click)="AddImage()">Add</button>
+            
+        </div>
+        <div class="col-4"></div>
+    </div>
+      <div class="row">
+        <div class="col-md-12">
+<mat-horizontal-stepper [linear]="isLinear"  #stepper *ngIf="!ViewMap">
+  <mat-step [stepControl]="personalForm">
+    <form [formGroup]="personalForm" (ngSubmit)="updateUser()" #formone="ngForm">
+      <ng-template matStepLabel>Personal</ng-template>
+      <mat-form-field>
+        <input matInput placeholder="Firstname" formControlName="firstName" required>
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="personalForm.controls.firstName.invalid && personalForm.controls.firstName.touched" >
+        Firstname is required
+    </mat-error>
+      <mat-form-field>
+        <input matInput placeholder="Lastname" formControlName="lastName" required>
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="personalForm.controls.lastName.invalid && personalForm.controls.lastName.touched" >
+        Lastname is required
+    </mat-error>
+      <mat-form-field>
+        <input matInput placeholder="Mobile" formControlName="mobileNum" required>
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="personalForm.controls.mobileNum.invalid && personalForm.controls.mobileNum.touched" >
+        <span *ngIf="personalForm.controls.mobileNum.hasError('required')">Mobile Number is required</span>
+        <span  *ngIf="personalForm.controls.mobileNum.hasError('pattern')">Enter a valid Mobile Number</span>                                              
+       </mat-error>
+      <mat-form-field>
+        <input matInput placeholder="Email" formControlName="emailId" required>
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="personalForm.controls.emailId.invalid && personalForm.controls.emailId.touched" >
+        <span *ngIf="personalForm.controls.emailId.hasError('required')">Email is required</span>
+        <span  *ngIf="personalForm.controls.emailId.hasError('pattern')">Enter a valid Email</span>                                               
+       </mat-error>   
+      <mat-form-field>
+        <input matInput placeholder="Username" formControlName="username" required>
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="personalForm.controls.username.invalid && personalForm.controls.username.touched" >
+        Username is required
+    </mat-error>
+      <mat-form-field>
+        <input matInput type="password" placeholder="Password" formControlName="password" required>
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="personalForm.controls.password.invalid && personalForm.controls.password.touched" >
+        <span *ngIf="personalForm.controls.password.hasError('required')">Password is required</span>
+        <span  *ngIf="personalForm.controls.password.hasError('minlength')">Enter a 6 digit password</span>   
+       </mat-error>
+     
+      <div>
+        <button class="btn btn-info" [disabled]="!personalForm.valid" type="submit" mat-button matStepperNext>Save</button>
+        <!-- <button type="submit" mat-button>submit</button> -->
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step [stepControl]="addressForm">
+    <form [formGroup]="addressForm" (ngSubmit)="updateAddress()" #formtwo="ngForm">
+      <ng-template matStepLabel>Address Details</ng-template>
+      <mat-form-field>
+        <input matInput placeholder="Latitude" formControlName="lat" required [disabled]="true">
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="addressForm.controls.lat.invalid && addressForm.controls.lat.touched" >
+        Latitude is required
+    </mat-error>
+      <mat-form-field>
+        <input matInput placeholder="Longitude" formControlName="lon" required [disabled]="true">
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="addressForm.controls.lon.invalid && addressForm.controls.lon.touched" >
+        Longitude is required
+    </mat-error>
+      <button mat-button class="btn btn-info" (click)="showOnMap()">Show On Map</button>
+
+      <mat-form-field>
+        <input matInput placeholder="Address" formControlName="address" required>
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="addressForm.controls.address.invalid && addressForm.controls.address.touched" >
+        Address is required
+    </mat-error>
+      <mat-form-field>
+        <input matInput placeholder="ZipCode" formControlName="zipcode" required>
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="addressForm.controls.zipcode.invalid && addressForm.controls.zipcode.touched" >
+        ZipCode is required
+    </mat-error>
+      <mat-form-field>
+        <input matInput placeholder="Alternat Address" formControlName="alternativeAddress" required>
+      </mat-form-field>
+       
+        <button class="btn btn-info" [disabled]="!addressForm.valid" type="submit" mat-button matStepperNext>Save</button>
+        <!-- <button type="submit" mat-button>submit</button> -->
+    </form>
+        
+    <!-- <div class="col col-md-6"> -->
+    <!-- </div> -->
+  </mat-step>
+
+  <mat-step [stepControl]="educationalinfoForm">
+      <ng-template matStepLabel>Educational Qualifications</ng-template>
+      <form [formGroup]="educationalinfoForm" (ngSubmit)="updateEducationalInfo()" #formfour="ngForm" *ngIf="showeduForm">
+        <div class="row">
+        <mat-form-field class="col-md-3">
+          <input matInput placeholder="University" formControlName="university" required>
+        </mat-form-field>
+        <mat-error style="font-size: 13px" *ngIf="educationalinfoForm.controls.university.invalid && educationalinfoForm.controls.university.touched" >
+          University is required
+      </mat-error>
+        <mat-form-field class="col-md-3">
+          <input matInput placeholder="College" formControlName="college" required>
+        </mat-form-field>
+        <mat-error style="font-size: 13px" *ngIf="educationalinfoForm.controls.college.invalid && educationalinfoForm.controls.college.touched" >
+          College is required
+      </mat-error>
+        <mat-form-field class="col-md-3">
+          <input matInput placeholder="Passing Year" formControlName="yearOfCompletion" required>
+        </mat-form-field>
+        <mat-error style="font-size: 13px" *ngIf="educationalinfoForm.controls.yearOfCompletion.invalid && educationalinfoForm.controls.yearOfCompletion.touched" >
+          Passing Year is required
+      </mat-error>
+        <mat-form-field class="col-md-3">
+          <input matInput placeholder="Percentage" formControlName="percent" required>
+        </mat-form-field>
+        <mat-error style="font-size: 13px" *ngIf="educationalinfoForm.controls.percent.invalid && educationalinfoForm.controls.percent.touched" >
+          Percentage is required
+      </mat-error>
+      </div>
+      <div class="row">
+        <mat-form-field class="col-md-4">
+          <!-- <input matInput placeholder="Division" formControlName="division" required> -->
+          <mat-select placeholder="Division" formControlName="division"  >
+            <mat-option *ngFor="let s of divisionList" [value]="s">{{s}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-error style="font-size: 13px" *ngIf="educationalinfoForm.controls.division.invalid && educationalinfoForm.controls.division.touched" >
+          Division is required
+      </mat-error>
+        <mat-form-field class="col-md-4">
+          <input matInput placeholder="Speciality" formControlName="speciality" required>
+        </mat-form-field>
+        <mat-error style="font-size: 13px" *ngIf="educationalinfoForm.controls.speciality.invalid && educationalinfoForm.controls.speciality.touched" >
+          Speciality is required
+      </mat-error>
+        <mat-form-field class="col-md-4">
+          <!-- <input matInput placeholder="Status" formControlName="qualificationStatus" required> -->
+          <mat-select placeholder="Status" formControlName="qualificationStatus"  >
+            <mat-option *ngFor="let s of statusList" [value]="s">{{s}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-error style="font-size: 13px" *ngIf="educationalinfoForm.controls.qualificationStatus.invalid && educationalinfoForm.controls.qualificationStatus.touched" >
+          Status is required
+      </mat-error>
+        <!-- <mat-form-field class="col-md-3">
+          <input matInput placeholder="COP Number" formControlName="copnumber" required>
+        </mat-form-field> -->
+      </div>
+        <div>
+          <button class="btn btn-info" type="submit" [disabled]="!educationalinfoForm.valid" mat-button >Save</button>
+          <!-- <button type="submit" mat-button>submit</button> -->
+        </div>
+      </form>
+      <div class="card card-plain">
+        <div class="card-header card-header-info row">
+            <div class="col">
+                  <h4 class="card-title  mt-0">Educational Qualifications Table</h4>
+                  <!-- <p class="card-category"> List of lawyers you have connected.</p> -->
+                </div>
+                <div class="col">
+                  <h2 style="float:right;cursor: pointer;
+                  " (click)="showeducationalForm()">+</h2>
+                </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="">
+                        <th>
+                            University
+                        </th>
+                        <th>
+                            College
+                        </th>
+                        <th>
+                            Passing Year
+                        </th>
+                        <th>
+                            Percentage
+                        </th>
+                        <th>
+                            Division
+                        </th>
+                        <th>
+                            Speciality
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                          Edit
+                        </th>
+                        <!-- <th>
+                          Delete
+                        </th> -->
+                    </thead>
+                    <tbody>
+                        <tr *ngFor = "let item of educationalDetails  | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+                            <td>
+                              {{item.university}}
+                            </td>
+                            <td>
+                                {{item.college}}
+                            </td>
+                            <td>
+                                {{item.yearOfCompletion}}
+                            </td>
+                            <td>
+                              {{item.percent}}
+                          </td>
+                          <td>
+                            {{item.division}}
+                        </td>
+                        <td>
+                          {{item.speciality}}
+                      </td>
+                      <td>
+                        {{item.qualificationStatus}}
+                    </td>
+                          <td>
+                                  <i class="fa fa-user-circle-o" style="color:#13B9CE;" aria-hidden="true" (click)="editeducationalDetails(item)"></i>
+                            </td>
+                            </tr>
+                            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-info" mat-button matStepperNext>Next</button>
+
+    </div>
+
+    </mat-step>
+
+    <mat-step [stepControl]="barDetailsForm">
+        <ng-template matStepLabel>Bar Details</ng-template>
+        <form [formGroup]="barDetailsForm" (ngSubmit)="updateBarDetails()">
+            <mat-form-field class="col-md-4">
+                <input matInput placeholder="Bar Council" formControlName="bar_council" required>
+              </mat-form-field>
+              <mat-error style="font-size: 13px" *ngIf="barDetailsForm.controls.bar_council.invalid && barDetailsForm.controls.bar_council.touched" >
+               Bar Council is required
+            </mat-error>
+            <mat-form-field class="col-md-4">
+                <input matInput placeholder="Bar Registration Number" formControlName="bar_registration_no" required>
+              </mat-form-field>
+              <mat-error style="font-size: 13px" *ngIf="barDetailsForm.controls.bar_registration_no.invalid && barDetailsForm.controls.bar_registration_no.touched" >
+                Bar Registration Number is required
+            </mat-error>
+
+            <button class="btn btn-info" type="submit" [disabled]="!barDetailsForm.valid" mat-button >Save</button>
+          <button class="btn btn-info" mat-button matStepperNext>Next</button>
+        </form>
+    </mat-step>
+
+  <mat-step [stepControl]="experienceDetailsForm">
+          <ng-template matStepLabel>Experience</ng-template>
+    <form [formGroup]="experienceDetailsForm" (ngSubmit)="updateExperience()" #formfour="ngForm" *ngIf="showexpForm">
+      <div class="row">
+      <mat-form-field class="col-md-3">
+        <input matInput placeholder="Court Name" formControlName="courtName" required>
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="experienceDetailsForm.controls.courtName.invalid && experienceDetailsForm.controls.courtName.touched" >
+        Court Name is required
+    </mat-error>
+      <!-- <mat-form-field class="col-md-3">
+        <input matInput placeholder="Practice" formControlName="practice" required>
+      </mat-form-field> -->
+      <mat-form-field class="col-md-3">
+        <input matInput placeholder="Year" formControlName="year" required>
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="experienceDetailsForm.controls.year.invalid && experienceDetailsForm.controls.year.touched" >
+        Year is required
+    </mat-error>
+      <mat-form-field class="col-md-3">
+        <input matInput placeholder="Judgement" formControlName="judgement" required>
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="experienceDetailsForm.controls.judgement.invalid && experienceDetailsForm.controls.judgement.touched" >
+        Judgement is required
+    </mat-error>
+    </div>
+    <div class="row">
+      <mat-form-field class="col-md-12">
+        <input matInput placeholder="Case Description" formControlName="detailedDescription" required>
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="experienceDetailsForm.controls.detailedDescription.invalid && experienceDetailsForm.controls.detailedDescription.touched" >
+        Case Description is required
+    </mat-error>
+    </div>
+    <div class="row">
+      <!-- <mat-form-field class="col-md-3">
+        <input matInput placeholder="Bar Council" formControlName="barCouncil" required>
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="experienceDetailsForm.controls.barCouncil.invalid && experienceDetailsForm.controls.barCouncil.touched" >
+        Bar Council is required
+    </mat-error>
+      <mat-form-field class="col-md-3">
+        <input matInput placeholder="Bar Registration No." formControlName="barRegistrationNo" required>
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="experienceDetailsForm.controls.barRegistrationNo.invalid && experienceDetailsForm.controls.barRegistrationNo.touched" >
+        Bar Registration No. is required
+    </mat-error> -->
+      <!-- <mat-form-field class="col-md-3">
+        <input matInput placeholder="COP Number" formControlName="category" required>
+      </mat-form-field> -->
+      <mat-form-field class="col-md-3">
+      <mat-select placeholder="Category" formControlName="category" multiple >
+        <mat-option *ngFor="let s of categoryList" [value]="s.id">{{s.name}}</mat-option>
+      </mat-select>
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="experienceDetailsForm.controls.category.invalid && experienceDetailsForm.controls.category.touched" >
+        Category is required
+    </mat-error>
+    </div>
+      <div>
+        <button class="btn btn-info" type="submit"  [disabled]="!experienceDetailsForm.valid" mat-button >Save</button>
+
+      </div>
+    </form>
+    <div class="card card-plain">
+      <div class="card-header card-header-info row">
+          <div class="col">
+                <h4 class="card-title  mt-0">Experience Details Table</h4>
+              </div>
+              <div class="col">
+                <h2 style="float:right;cursor: pointer;
+                " (click)="showexperienceForm()">+</h2>
+              </div>
+      </div>
+      <div class="card-body">
+          <div class="table-responsive">
+              <table class="table table-hover">
+                  <thead class="">
+                      <th>
+                        Court
+                      </th>
+                      <th>
+                        Year
+                      </th>
+                      <th>
+                        Judgement
+                      </th>
+                      <th>
+                        Case Description
+                      </th>
+                      <!-- <th>
+                        Bar Council
+                      </th>
+                      <th>
+                        Bar Registration No.
+                      </th> -->
+                      <!-- <th>
+                        COP Number
+                      </th> -->
+                      <th>
+                        Edit
+                      </th>
+                      <!-- <th>
+                        Delete
+                      </th> -->
+                  </thead>
+                  <tbody>
+                      <tr *ngFor = "let item of experianceDetails  | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+                        <td>
+                          {{item.courtName}}
+                      </td>
+                          <td>
+                              {{item.year}}
+                          </td>
+                          <td>
+                            {{item.judgement}}
+                        </td>
+                        <td>
+                          {{item.detailedDescription}}
+                      </td>
+                      <!-- <td>
+                        {{item.barCouncil}}
+                    </td>
+                    <td>
+                      {{item.barRegistrationNo}}
+                  </td> -->
+                          <td>
+                                <i class="fa fa-user-circle-o" style="color:#13B9CE;" aria-hidden="true" (click)="editexperianceDetails(item)"></i>
+                          </td>
+                          </tr>
+                          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+  <div>
+      <button class="btn btn-info" mat-button matStepperNext>Next</button>
+  </div>
+  </mat-step>
+  <!-- <mat-step [stepControl]="bankDetailsForm">
+    <form [formGroup]="bankDetailsForm" (ngSubmit)="updateBankDetails()" #formtwo="ngForm">
+      <ng-template matStepLabel>Bank Details</ng-template>
+      <mat-form-field>
+        <input matInput placeholder="Account Holder Name" formControlName="accntholderName" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Bank Name" formControlName="bank" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="A\C Number" formControlName="accno" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Branch" formControlName="branch" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Branch Code" formControlName="branchcode" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="IFSC Code" formControlName="ifsc" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Pan No." formControlName="pan" required>
+      </mat-form-field>
+        <button class="btn btn-info" type="submit" mat-button matStepperNext>Save</button>
+    </form>
+  </mat-step> -->
+  <mat-step [stepControl]="servicesForm">
+    <form [formGroup]="servicesForm" (ngSubmit)="updateServices()" #formthree="ngForm">
+      <ng-template matStepLabel>Services</ng-template>
+      <mat-form-field>
+        <mat-select placeholder="Services" formControlName="services" multiple >
+          <mat-option *ngFor="let s of serviceList" [value]="s.serviceId">{{s.servicesBasicInfo.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="servicesForm.controls.services.invalid && servicesForm.controls.services.touched" >
+        Services is required
+    </mat-error>
+        <p style="color:gray;">Prefered Time to Query or Meeting</p>
+        <!-- <div class="row">
+      <mat-form-field class="col-md-6">
+          <input matInput type="time" placeholder="From" formControlName="preferedTimeFrom" required>
+        </mat-form-field>
+        <mat-form-field class="col-md-6">
+            <input matInput type="time" placeholder="To" formControlName="preferedTimeTo" required>
+          </mat-form-field>
+        </div> -->
+      <div>
+         <button class="btn btn-info" type="submit" [disabled]="!servicesForm.valid" mat-button matStepperNext>Save</button>
+      </div>
+    </form>
+  </mat-step>
+ 
+</mat-horizontal-stepper>
+<div [style.display]="ViewMap ? 'block' : 'none'">
+    <div  class="searchbar" style="position: absolute; z-index: 10;width: 50%;  left: 40%;" >
+        <!-- <div class="col col-lg-6 col-md-6 col-sm-4 col-xs-12"></div> -->
+        <form [formGroup]="addSearchForm" (ngSubmit)="searchAdd()">
+        <div class="form-group">
+        <div  class=" input-group row" >
+            <input type="text" class="form-control col col-lg-8 col-md-8"  placeholder="Search for Address..."   style=" height: 60px; " class="col col-lg-6 col-md-6" formControlName="addSearch">
+          </div>
+      </div>
+    </form>
+          </div>
+<div id="map" >
+</div>
+<button class="btn btn-info" (click)="mapAddSave()">Save</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Copyright 2018 Google Inc. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license -->

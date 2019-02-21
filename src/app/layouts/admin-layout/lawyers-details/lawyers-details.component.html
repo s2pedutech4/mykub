@@ -1,0 +1,207 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            
+            <div class="col-md-12">
+                <div class="card card-profile">
+                    <div class="card-avatar">
+                        <a>
+                            <!-- <img class="img" src="./assets/img/faces/marc.jpg" /> -->
+                            <img [src]="myimage | safe: 'url'">
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <!-- <h6 class="card-category text-gray">CEO / Co-Founder</h6> -->
+                        <h4 class="card-title">{{LawyerDetils.firstName }}  {{ LawyerDetils.lastName}}</h4>
+                       
+                        <div class="card-description">
+                          <div class="row">
+                             <div class="col col-lg-3 col-md-3">
+                               <div style="text-align:start;margin-bottom: 15px;">
+                                  <i class="	fa fa-envelope-o" aria-hidden="true"></i>                               <b class=""> Email : </b>
+                                  <span class="">{{LawyerDetils.emailId}}</span>
+                            </div>
+                            <div style="text-align:start">
+                              <i class="fa fa-mobile" aria-hidden="true"></i>
+                              <b class="">   Mobile : </b>
+                              <span class="">{{LawyerDetils.mobileNum}}</span>
+                            </div>
+                            </div>
+                            <div class="col col-lg-3 col-md-3">
+                                <div style="text-align:start;margin-bottom: 15px;">
+                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                    <b class="">   Adress : </b>
+                                <span class="">{{LawyerDetils.address}}, {{LawyerDetils.zipcode}}</span>
+                                </div>
+                                <div style="text-align:start">
+                                 <i class="fa fa-star" aria-hidden="true"></i>
+                                 <b class=""> Ratings : </b>
+                             <span class="">{{LawyerDetils.ratings | number: '1.2-2'}}</span>
+                              </div>
+                              </div>
+                              <div class="col col-lg-3 col-md-3">
+                                  <div style="text-align:start;margin-bottom: 15px;">
+                                      <i class="fa fa-check-square" aria-hidden="true"></i>         
+                                      <b class=""> Win Ratio : </b>
+                                      <span class="">{{LawyerDetils.winRatio | number: '2.2-2'}}</span>
+                                  </div>
+                                  <div style="text-align:start;margin-bottom: 15px;">
+                                      <i class="fa fa-balance-scale" aria-hidden="true"></i>        
+                                      <b class="">Service : </b>
+                                      <span class="">{{LawyerDetils.serviceName}}</span>
+                                  </div>
+                              </div>
+                              <div class="col col-lg-3 col-md-3">
+                                    <div style="text-align:start;margin-bottom: 15px;">
+                                            <i class="fa fa-balance-scale" aria-hidden="true"></i>       
+                                            <b class=""> Bar Council No : </b>
+                                        <span class="">{{LawyerDetils.barcouncil}}</span>
+                                    </div>
+                                    <div style="text-align:start;margin-bottom: 15px;">
+                                        <i class="fa fa-balance-scale" aria-hidden="true"></i>        
+                                        <b class=""> Bar Registration No : </b>
+                                        <span class="">{{LawyerDetils.reg}}</span>
+                                    </div>
+                                </div>
+                          </div>
+                          <hr>
+                          <div class="card card-plain" *ngIf="showEducatinalDetails">
+                            <div class="card-header card-header-info row">
+                                <div class="col">
+                                      <h4 class="card-title  mt-0">Educational Qualifications Table</h4>
+                                      <!-- <p class="card-category"> List of lawyers you have connected.</p> -->
+                                    </div>
+                                    <!-- <div class="col">
+                                      <h2 style="float:right;font-size: 24px;" (click)="goToFilter()"><i class="fa fa-filter"></i></h2>
+                                    </div>  -->
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="">
+                                            <th>
+                                                University
+                                            </th>
+                                            <th>
+                                                College
+                                            </th>
+                                            <th>
+                                                Passing Year
+                                            </th>
+                                            <th>
+                                                Percentage
+                                            </th>
+                                            <th>
+                                                Division
+                                            </th>
+                                            <th>
+                                                Speciality
+                                            </th>
+                                            <th>
+                                                Status
+                                            </th>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor = "let item of educationalDetails  | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+                                                <td>
+                                                  {{item.university}}
+                                                </td>
+                                                <td>
+                                                    {{item.college}}
+                                                </td>
+                                                <td>
+                                                    {{item.yearOfCompletion}}
+                                                </td>
+                                                <td>
+                                                  {{item.percent}}
+                                              </td>
+                                              <td>
+                                                {{item.division}}
+                                            </td>
+                                            <td>
+                                              {{item.speciality}}
+                                          </td>
+                                          <td>
+                                            {{item.qualificationStatus}}
+                                        </td>
+                                                </tr>
+                                                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card card-plain" *ngIf="showExpDatailsTable">
+                          <div class="card-header card-header-info row">
+                              <div class="col">
+                                    <h4 class="card-title  mt-0">Experience Details Table</h4>
+                                  </div>
+                          </div>
+                          <div class="card-body" >
+                              <div class="table-responsive">
+                                  <table class="table table-hover">
+                                      <thead class="">
+                                          <th>
+                                            Court
+                                          </th>
+                                          <th>
+                                            Year
+                                          </th>
+                                          <th>
+                                            Judgement
+                                          </th>
+                                          <th>
+                                            Case Description
+                                          </th>
+                                          <!-- <th>
+                                            Bar Council
+                                          </th>
+                                          <th>
+                                            Bar Registration No.
+                                          </th> -->
+                                          <!-- <th>
+                                            COP Number
+                                          </th> -->
+                                      </thead>
+                                      <tbody>
+                                          <tr *ngFor = "let item of experianceDetails  | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+                                            <td>
+                                              {{item.courtName}}
+                                          </td>
+                                              <td>
+                                                  {{item.year}}
+                                              </td>
+                                              <td>
+                                                {{item.judgement}}
+                                            </td>
+                                            <td>
+                                              {{item.detailedDescription}}
+                                          </td>
+                                          <!-- <td>
+                                            {{item.barCouncil}}
+                                        </td>
+                                        <td>
+                                          {{item.barRegistrationNo}}
+                                      </td> -->
+                                              </tr>
+                                              <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div> 
+                      <button *ngIf="showMarkVerify" class="btn btn-info btn-round" (click)="markVerified()">Mark Verified</button><hr>        
+                            
+  
+                            
+                        
+                    </div>
+                </div>
+         
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <ng4-loading-spinner> </ng4-loading-spinner>
+  

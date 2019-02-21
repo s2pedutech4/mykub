@@ -1,0 +1,63 @@
+<div class="main-content">
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="card">
+                  <div class="card-header card-header-info">
+                      <h4 class="card-title">Bank</h4>
+                      <!-- <p class="card-category">Complete your profile</p> -->
+                  </div>
+                  <div class="card-body">
+                      
+                      <form [formGroup]="bankForm" (ngSubmit)="onSubmit()">
+                            <div class="form-group">
+                                    <label>Bank Name</label>
+                                    <input (keyup)="checkBank()" type="text" formControlName="bankName" class="form-control"  />
+                                    <mat-error *ngIf="bankForm.controls.bankName.invalid && bankForm.controls.bankName.touched">
+                                            <span *ngIf="bankForm.controls.bankName.hasError('required')">                                          Bank Name is required
+                                                </span>
+                                  </mat-error>
+                                  <mat-error *ngIf="bankExists">
+                                        Bank Name is already present
+                                      </mat-error>
+                                </div>
+                            <div class="form-group">
+                                    <label>Account Holder Name</label>
+                                    <input  type="text" formControlName="accountHolderName" class="form-control"  />
+                                    <mat-error *ngIf="bankForm.controls.accountHolderName.invalid && bankForm.controls.accountHolderName.touched">
+                                            Account Holder Name is required
+                                  </mat-error>
+                                
+                                </div>
+                               
+                                    <div class="form-group">
+                                            <label>Account Number</label>
+                                            <input type="number" formControlName="accountNumber" class="form-control" />
+                                            <mat-error *ngIf="bankForm.controls.accountNumber.invalid && bankForm.controls.accountNumber.touched" >
+                                                    Account Number is required
+                                          </mat-error>
+                                         
+                                        </div>
+                          <div class="form-group">
+                              <label>IFSC Code</label>
+                              <input  type="text" formControlName="ifscCode" class="form-control" />
+                              <mat-error *ngIf="bankForm.controls.ifscCode.invalid && bankForm.controls.ifscCode.touched">
+                                    IFSC Code is required
+                            </mat-error>
+                          
+                          </div>
+                          <div class="form-group">
+                              <button  type="submit" [disabled]="!bankForm.valid || bankExists" class="btn btn-info">Save</button>
+                              <button  class="btn" (click)="Cancel()">Cancel</button>
+                          </div>
+                      </form>
+                  
+                  </div>
+              </div>
+          
+             
+          </div>
+         
+      </div>
+  </div>
+</div>

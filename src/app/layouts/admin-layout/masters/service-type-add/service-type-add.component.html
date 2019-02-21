@@ -1,0 +1,42 @@
+<div class="main-content">
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="card">
+                  <div class="card-header card-header-info">
+                      <h4 class="card-title">Service Type</h4>
+                      <!-- <p class="card-category">Complete your profile</p> -->
+                  </div>
+                  <div class="card-body">
+                     
+                      <form [formGroup]="service_type_Form" (ngSubmit)="onSubmit()">
+                          <div class="form-group">
+                              <label>Service Type Name</label>
+                              <input (keyup)="checkSType()" type="text" formControlName="type" class="form-control" />
+                             <mat-error *ngIf="service_type_Form.controls.type.invalid && service_type_Form.controls.type.touched">
+                                    <span *ngIf="service_type_Form.controls.type.hasError('required')">                                      Service Type Name is required
+                                        </span>
+                          </mat-error>
+                             <mat-error *ngIf="sTypeExists">
+                                 Service Type is already present
+                               </mat-error>
+                          </div>
+                          
+                          <div class = "form group">
+                          <button type="submit" [disabled]="!service_type_Form.valid || sTypeExists" class ="btn btn-info">Save</button>
+                          <button class ="btn" (click)="Cancel()">Cancel</button>
+
+                              
+                          </div>
+                          
+                      </form>
+                  
+                  </div>
+              </div>
+          
+             
+          </div>
+         
+      </div>
+  </div>
+</div>

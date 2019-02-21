@@ -1,0 +1,65 @@
+<div class="main-content">
+  <div class="container-fluid">
+      <div class="row">
+          
+          <div class="col-md-12">
+              <div class="card card-plain">
+                  <div class="card-header card-header-info row">
+                      <div class="col">
+                            <h4 class="card-title  mt-0">Services</h4>
+                            <p class="card-category"> List of services.</p>
+                          </div>
+                          <div class="col">
+                            <h2 style="float:right;cursor: pointer;" (click)="AddService()">+</h2>
+                          </div> 
+                  </div>
+                  <div class="card-body">
+                      <div class="table-responsive">
+                          <table class="table table-hover">
+                              <thead class="">
+                                  <th>
+                                      Name
+                                  </th>
+                                  <th>
+                                      Display Name
+                                  </th>
+                                  <th>
+                                      Online
+                                  </th>
+                                  <th>
+                                      Edit
+                                  </th>
+                                  <!-- <th>
+                                    Delete
+                                </th> -->
+
+                              </thead>
+                              <tbody>
+                                  <tr *ngFor = "let item of connections | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+                                      <td>
+                                        {{item.servicesBasicInfo.name}}
+                                      </td>
+                                      <td>
+                                          {{item.servicesBasicInfo.displayName}}
+                                      </td>
+                                      <td>
+                                          {{item.servicesBasicInfo.online}}
+                                      </td>
+                                      <td>
+                                            <i class="fa fa-user-circle-o" style="color:#13B9CE;font-size: 24px;" aria-hidden="true" (click)="GoToServiceDetails(item.servicesBasicInfo)"></i>
+                                      </td>
+                                      <!-- <td>
+                                        <i class="fa fa-trash" aria-hidden="true" style="font-size:24px" (click)="delete(item)"></i>
+                                       </td> -->
+                                      </tr>
+                              </tbody>
+                              <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- <ng4-loading-spinner> </ng4-loading-spinner> -->

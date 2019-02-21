@@ -1,0 +1,130 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">   
+            <div class="col-md-12">
+              <div *ngIf="CategorySearch && ViewMap" class="searchbar" style="position: absolute; z-index: 10;width: 50%;  left: 40%;" >
+                <!-- <div class="col col-lg-6 col-md-6 col-sm-4 col-xs-12"></div> -->
+                <form *ngIf="searchshow">
+                <div class="form-group">
+                <div  class=" input-group row" >
+                    <input type="text" class="form-control col col-lg-8 col-md-8"  placeholder="Search for Category..."   style=" height: 60px; " class="col col-lg-6 col-md-6" [formControl]="myControl" [matAutocomplete]="auto" (keyup)="updated()" [(ngModel)]="data">
+                
+                <!-- <div class="col col-lg-2 col-md-2" style="padding: 0;">
+                    <button  class="btn btn-info" style="height:60px;margin:0;" >Search</button>
+                  </div> -->
+                  </div>
+              </div>
+              <!-- <a (click)="frame.show()" style="cursor: pointer">Advanced Search</a> -->
+    
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)='SelectCategory($event.option.value)'>
+                <mat-option *ngFor="let option of options" [value]="option.name">
+                  {{option.name}}
+                </mat-option>
+              </mat-autocomplete>
+             
+              <!-- <mat-form-field class="example-full-width"> -->
+                <!-- <input type="text" placeholder="search" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto" (keyup)="updated()" [(ngModel)]="data"> -->
+                
+              <!-- </mat-form-field> -->
+            </form>
+                 
+                  </div>
+                  <div *ngIf="!CategorySearch && ViewMap" class="searchbar" style="position: absolute; z-index: 10;width: 50%;  left: 40%;" >
+                      <!-- <div class="col col-lg-6 col-md-6 col-sm-4 col-xs-12"></div> -->
+                      <form *ngIf="searchshow">
+                      <div class="form-group">
+                      <div  class=" input-group row" >
+                          <input type="text" class="form-control col col-lg-8 col-md-8"  placeholder="Search for Service..."   style=" height: 60px; " class="col col-lg-6 col-md-6" [formControl]="myControl" [matAutocomplete]="auto" (keyup)="updatedService()" [(ngModel)]="data">
+                      
+                     
+                        </div>
+                    </div>
+                    <!-- <a (click)="frame.show()" style="cursor: pointer">Advanced Search</a> -->
+          
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)='SelectService($event.option.value)'>
+                      <mat-option *ngFor="let option of options" [value]="option.servicesBasicInfo.displayName">
+                        {{option.servicesBasicInfo.displayName}}
+                      </mat-option>
+                    </mat-autocomplete>
+                   
+                  </form>
+                       
+                        </div>
+                  
+                        <div *ngIf="ViewMap" style="position: absolute; z-index: 10;width: 10%;  left: 2%;top: -7%;">
+                          <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+                            <mat-button-toggle value="bold" (click)="SearchCategory()">Category</mat-button-toggle>
+                            <mat-button-toggle value="italic" (click)="SearchService()">Services</mat-button-toggle>
+                          </mat-button-toggle-group>
+                        </div>
+                        <div style="position: absolute; z-index: 10;width: 10%;right: 10%; top: -7%;" class="maptoggle" *ngIf="showTableToggle">
+                          <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+                            <mat-button-toggle value="bold" (click)="showMap()">Map View</mat-button-toggle>
+                            <mat-button-toggle value="italic" (click)="showTable()">Table View</mat-button-toggle>
+                          </mat-button-toggle-group>
+                        </div>
+                        <div>
+                  <div id="map" [style.display]="ViewMap ? 'block' : 'none'"></div>
+                </div>
+                
+                
+                  <div class="container-fluid" *ngIf="!ViewMap"  style="margin-top: 20px;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-plain">
+                                <div class="card-header card-header-info row">
+                                    <div class="col">
+                                          <h4 class="card-title  mt-0">Lawyers</h4>
+                                          <p class="card-category"> Here is a list of Lawyers</p>
+                                        </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead class="">
+                                                <th>
+                                                    Name
+                                                 </th>
+                                                 <th>
+                                                    Court Name
+                                                 </th>
+                                                <th>
+                                                  Address
+                                                </th>
+                                                <th>
+                                                   Ratings
+                                                </th>
+                                                <th>
+                                                    Action
+                                                </th>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor = "let item of tableData">
+                                                    <td>
+                                                        {{item.lawyerName}}
+                                                    </td>
+                                                    <td>
+                                                        {{item.courtName}}
+                                                    </td>
+                                                    <td>
+                                                        {{item.address}}
+                                                    </td>
+                                                    <td>
+                                                        {{item.ratings}}
+                                                    </td>
+                                                    <td  >
+                                                      <button class="btn btn-info" (click)="myFunction(item.userId)" >Connect</button>                       
+                                                          </td>
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>              

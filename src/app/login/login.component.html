@@ -1,0 +1,60 @@
+        <div class="limiter">
+            <div class="container-login100" style="background-image: url('/assets/img/bg-01.jpg');">
+                <div class="wrap-login100">
+                    <form class="login100-form validate-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                        <span class="login100-form-logo">
+                            <i class="zmdi zmdi-landscape"></i>
+                        </span>
+    
+                        <span class="login100-form-title p-b-34 p-t-27">
+                            Log in
+                        </span>
+                        <div style="margin-bottom: 13px;">
+                        <div class="form-group" data-validate = "Enter username">
+                            <input (keyup)="checkUsername()" class="input100 form-control" type="text"  placeholder="Username" formControlName="username"   [ngClass]="{ 'is-invalid': submitted && loginForm.controls.username.errors }">
+                            <span class="focus-input100" data-placeholder="&#xf207;"></span>
+                            
+                        </div>
+                        <mat-error *ngIf="loginForm.controls.username.invalid && loginForm.controls.username.touched" style="font-size: 13px;">
+                            Username is required
+                        </mat-error>
+                    </div>
+                        <div class="form-group" data-validate="Enter password">
+                            <input class="input100 form-control" type="password" name="pass" placeholder="Password" formControlName="password"  [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+                            
+                            <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                        </div>
+                        <mat-error *ngIf="loginForm.controls.password.invalid && loginForm.controls.password.touched" style="font-size: 13px;">
+                            Password is required
+                        </mat-error>
+    
+                        <!-- <div class="contact100-form-checkbox">
+                            <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+                            <label class="label-checkbox100" for="ckb1">
+                                Remember me
+                            </label>
+                        </div> -->
+    
+                        <div class="container-login100-form-btn form-group" style="margin-top:10px;">
+                            <button [disabled]="!loginForm.valid" type="submit" class="login100-form-btn">
+                                Login
+                            </button>
+                        </div>
+                        
+    
+                        <div class="text-center p-t-90 row">
+                            <a class="txt1 col">
+                                Forgot Password?
+                            </a>
+                            <a class="txt1 col"  (click)="GotoSignup()" >
+                                New User? Sign Up
+                            </a>    
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <ng4-loading-spinner> </ng4-loading-spinner>
+     
+    <!-- </div> -->
+<!-- </div> -->

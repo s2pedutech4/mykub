@@ -1,0 +1,46 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">Account</h4>
+                        <!-- <p class="card-category">Complete your profile</p> -->
+                    </div>
+                    <div class="card-body">
+                       
+                        <form [formGroup]="accountForm" (ngSubmit)="onSubmit()">
+                            <div class="form-group">
+                                <label>Account Name</label>
+                                <input (keyup)="checkAccount()" type="text" formControlName="name" class="form-control"/>
+                               
+                                <mat-error *ngIf="accountForm.controls.name.invalid && accountForm.controls.name.touched">
+                                        <span *ngIf="accountForm.controls.name.hasError('required')">                                      Account Name is required
+
+                                            </span>
+                              </mat-error>
+                                <mat-error *ngIf="accountExists">
+                                    Account Name is already present
+                                  </mat-error>
+
+                                
+                            </div>
+                            
+                            <div class = "form group">
+                            <button type="submit" [disabled]="!accountForm.valid || accountExists" class ="btn btn-info">Save</button>
+                            <button class ="btn" (click)="Cancel()">Cancel</button>
+  
+                                
+                            </div>
+                            
+                        </form>
+                    
+                    </div>
+                </div>
+            
+               
+            </div>
+           
+        </div>
+    </div>
+  </div>

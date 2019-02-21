@@ -1,0 +1,66 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-plain">
+                    <div class="card-header card-header-info row">
+                        <div class="col">
+                              <h4 class="card-title  mt-0">Lawyers</h4>
+                              <p class="card-category">List of Lawyers</p>
+                            </div>
+                            <!-- <div class="col">
+                              <h2 style="float:right" (click)="AddAdmin()">+</h2>
+                            </div>  -->
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="">
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                         Email
+                                    </th>
+                                    <th>
+                                        Mobile
+                                    </th>
+                                  
+                                    <th>
+                                          Status
+                                      </th>
+                                      <th>
+                                              Details
+                                      </th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor = "let item of lawyers | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+                                       
+                                        <td>
+                                            {{item.firstName + " " + item.lastName}}
+                                        </td>
+                                        <td>
+                                            {{item.emailId}}
+                                        </td>
+                                        <td>
+                                            {{item.mobileNum}}
+                                        </td>
+                                        <td>
+                                            {{item.status}}
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-user-circle-o" style="color:#13B9CE;" aria-hidden="true" (click)="GoToLawyerDetails(item)"></i>
+
+                                        </td>
+                                        </tr>
+                                </tbody>
+                                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  

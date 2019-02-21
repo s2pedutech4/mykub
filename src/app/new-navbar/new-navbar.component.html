@@ -1,0 +1,222 @@
+<div>
+    <mat-toolbar>
+      <mat-toolbar-row>
+        <button mat-icon-button (click)="sidenav.toggle()" fxShow="true" fxHide.gt-sm>
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span>KUBER</span>
+        <span class="menu-spacer"></span>
+        <div style="position:relative; right:60%;width:200px;top:10px;">
+          {{userAddress}}
+    </div>
+        <div fxShow="true" fxHide.lt-md style="float: right;">
+         
+          <!-- The following menu items will be hidden on both SM and XS screen sizes -->
+          <a  mat-button (click)="GoToSignUp()">Sign Up</a>
+          <a mat-button (click)="GoToLogin()">Log In</a>
+          
+        </div>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  
+    <mat-sidenav-container>
+      <mat-sidenav #sidenav style="background-image: url(./assets/img/sidebar-10.jpg);" >
+        <mat-nav-list>
+          <a (click)="sidenav.toggle()"  mat-list-item>Close</a>
+          <a mat-list-item (click)="GoToSignUp()">Sign Up</a>
+          <a mat-list-item (click)="GoToLogin()">Log In</a>
+
+        </mat-nav-list>
+      </mat-sidenav>
+      <mat-sidenav-content style="position:relative; "  >
+          <div *ngIf="CategorySearch && ViewMap" class="searchbar" style="position: absolute; z-index: 10;width: 50%;  left: 40%;" >
+            <!-- <div class="col col-lg-6 col-md-6 col-sm-4 col-xs-12"></div> -->
+            <form *ngIf="searchshow">
+            <div class="form-group">
+            <div  class=" input-group row" >
+                <input type="text" class="form-control col col-lg-8 col-md-8"  placeholder="Search for Category..."   style=" height: 60px; " class="col col-lg-6 col-md-6" [formControl]="myControl" [matAutocomplete]="auto" (keyup)="updated()" [(ngModel)]="data">
+            
+            <!-- <div class="col col-lg-2 col-md-2" style="padding: 0;">
+                <button  class="btn btn-info" style="height:60px;margin:0;" >Search</button>
+              </div> -->
+              </div>
+          </div>
+          <!-- <a (click)="frame.show()" style="cursor: pointer">Advanced Search</a> -->
+
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)='SelectCategory($event.option.value)'>
+            <mat-option *ngFor="let option of options" [value]="option.name">
+              {{option.name}}
+            </mat-option>
+          </mat-autocomplete>
+        </form>
+              </div>
+              <div *ngIf="!CategorySearch && ViewMap" class="searchbar" style="position: absolute; z-index: 10;width: 50%;  left: 40%;" >
+                  <!-- <div class="col col-lg-6 col-md-6 col-sm-4 col-xs-12"></div> -->
+                  <form *ngIf="searchshow">
+                  <div class="form-group">
+                  <div  class=" input-group row" >
+                      <input type="text" class="form-control col col-lg-8 col-md-8"  placeholder="Search for Service..."   style=" height: 60px; " class="col col-lg-6 col-md-6" [formControl]="myControl" [matAutocomplete]="auto" (keyup)="updatedService()" [(ngModel)]="data">
+                  
+                  <!-- <div class="col col-lg-2 col-md-2" style="padding: 0;">
+                      <button  class="btn btn-info" style="height:60px;margin:0;">Search</button>
+                    </div> -->
+                    </div>
+                </div>
+                <!-- <a (click)="frame.show()" style="cursor: pointer">Advanced Search</a> -->
+      
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)='SelectService($event.option.value)'>
+                  <mat-option *ngFor="let option of options" [value]="option.servicesBasicInfo.displayName">
+                    {{option.servicesBasicInfo.displayName}}
+                  </mat-option>
+                </mat-autocomplete>
+             
+              </form>
+                    
+                    </div>
+              <div *ngIf="ViewMap" style="position: absolute; z-index: 10;width: 10%;  left: 1%;top: 1.4%;">
+                <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+                  <mat-button-toggle value="bold" (click)="SearchCategory()">Category</mat-button-toggle>
+                  <mat-button-toggle value="italic" (click)="SearchService()">Services</mat-button-toggle>
+                  <mat-button-toggle value="italic" (click)="frame.show()">Set Location</mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+              <div style="position: absolute; z-index: 10;width: 10%;right: 10%; top: 1.4%;" class="maptoggle" *ngIf="showTableToggle">
+                <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+                  <mat-button-toggle value="bold" (click)="showMap()">Map View</mat-button-toggle>
+                  <mat-button-toggle value="italic" (click)="showTable()">Table View</mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+              <div>
+        <div id="map" [style.display]="ViewMap ? 'block' : 'none'"></div>
+      </div>
+      
+      
+        <div class="container-fluid" *ngIf="!ViewMap" >
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="card card-plain">
+                      <div class="card-header card-header-info row">
+                          <div class="col">
+                                <h4 class="card-title  mt-0">Lawyers</h4>
+                                <p class="card-category"> Here is a list of Lawyers</p>
+                              </div>
+                      </div>
+                      <div class="card-body">
+                          <div class="table-responsive">
+                              <table class="table table-hover">
+                                  <thead class="">
+                                      <th>
+                                          Name
+                                       </th>
+                                       <th>
+                                          Court Name
+                                       </th>
+                                      <th>
+                                        Address
+                                      </th>
+                                      <th>
+                                         Ratings
+                                      </th>
+                                      <th>
+                                          Action
+                                      </th>
+                                  </thead>
+                                  <tbody>
+                                      <tr *ngFor = "let item of tableData">
+                                          <td>
+                                              {{item.lawyerName}}
+                                          </td>
+                                          <td>
+                                              {{item.courtName}}
+                                          </td>
+                                          <td>
+                                              {{item.address}}
+                                          </td>
+                                          <td>
+                                              {{item.ratings}}
+                                          </td>
+                                          <td  >
+                                      <button class="btn btn-info" (click)="myFunction(item.userId)" >Connect</button>                       
+                                          </td>
+                                          </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      </mat-sidenav-content> 
+     </mat-sidenav-container>
+
+<!-- <ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label for="dateOfBirth">Date of birth</label>
+        <div class="input-group">
+          <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #dp="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+  </div>
+</ng-template> -->
+
+<div mdbModal #frame="mdbModal" class="modal fade top" id="frameModalTop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-notify modal-warning" role="document">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header text-center">
+        <h4 class="modal-title white-text w-100 font-weight-bold py-2">Search Your Location</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="frame.hide()" #closeBtn>
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <!-- <div class="md-form row modal-form">
+         
+          <label  class="col col-lg-2 col-md-2">Type your address</label>
+          <input (keyup)="searchAdd($event)" type="text" id="form3" class="form-control col col-lg-8 col-md-8" [(ngModel)]="addSearchTerm">
+        </div>
+        <ul *ngFor="let a of addresses">
+          <li>{{a}}</li>
+        </ul>
+        <div class="modal-footer justify-content-center">        
+          <button type="button" mdbBtn color="info" outline="true" class="waves-effect justify-content-center" mdbWavesEffect (click)="modalSearch()">Send
+          <i class="fa fa-paper-plane-o ml-1"></i>
+        </button>
+      </div> -->
+
+      <div class="form-group">
+          <input #addresstext placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [formControl]="searchControl">
+        </div>
+        <!-- <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+          <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+        </agm-map> -->
+      </div>
+
+      <!--Footer-->
+      <!-- <div class="modal-footer justify-content-center">
+        
+      </div> -->
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+</div>

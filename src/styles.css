@@ -1,0 +1,12 @@
+/* You can add global styles to this file, and also import other style files */
+.btn-info{
+    background-color: blue ;
+}
+i:hover{
+    cursor: pointer;
+}
+
+.ngx-pagination{
+position: relative;
+left: 75%;
+}

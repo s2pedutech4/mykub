@@ -1,0 +1,292 @@
+
+<div class="limiter">
+    <div class="container-login100" style="background-image: url('/assets/img/bg-01.jpg');">
+        <div class="wrap-login100">
+                    <mat-tab-group>
+                            <mat-tab label="User"> 
+                                    <form  class="login100-form1 validate-form1" [formGroup]="UserRegisterForm" (ngSubmit)="onUserSubmit()">
+                                            <span class="login100-form-logo">
+                                                <i class="zmdi zmdi-landscape"></i>
+                                            </span>
+                            
+                                            <span class="login100-form-title p-b-34 p-t-27">
+                                                REGISTER
+                                            </span>
+                                            <div style="margin-bottom: 13px;">
+                                            <div class="form-group" data-validate = "Enter username">
+                                                <input class="input100 form-control form-control-no-border" type="text"  placeholder="First Name" formControlName="firstName"  [ngClass]="{ 'is-invalid': usersubmitted && f1.firstName.errors }">
+                                                <span class="focus-input100" data-placeholder="&#xf207;"></span>
+                                                
+                                            </div>
+                                            <mat-error style="font-size: 13px" *ngIf="UserRegisterForm.controls.firstName.invalid && UserRegisterForm.controls.firstName.touched" >
+                                                First Name is required
+                                            </mat-error>
+                                        </div>
+                                        <div style="margin-bottom: 13px;">
+
+                                            <div class="form-group" data-validate="Enter password">
+                                                <input class="input100 form-control" type="text" placeholder="Last Name" formControlName="lastName"  [ngClass]="{ 'is-invalid': usersubmitted && f1.lastName.errors }">
+                                                <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                                            </div>
+                                            <mat-error style="font-size: 13px" *ngIf="UserRegisterForm.controls.lastName.invalid && UserRegisterForm.controls.lastName.touched" >
+                                                Last Name is required
+                                            </mat-error>
+                                        </div>
+                                            <div style="margin-bottom: 13px">
+                                            <div class="form-group" data-validate="Enter email">
+                                                <input class="input100 form-control" type="text" placeholder="Email" formControlName="emailId"  [ngClass]="{ 'is-invalid': usersubmitted && f1.emailId.errors }" email>
+                                                <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                                                </div>
+                                            <mat-error style="font-size: 13px" *ngIf="UserRegisterForm.controls.emailId.invalid && UserRegisterForm.controls.emailId.touched" >
+                                                
+                                                <span *ngIf="UserRegisterForm.controls.emailId.hasError('required')">Email is required</span>
+                                                <span  *ngIf="UserRegisterForm.controls.emailId.hasError('pattern')">Enter a valid Email</span>
+                                            </mat-error>
+                                        </div>
+                                        <div style="margin-bottom: 13px">
+                                            <div class="form-group" data-validate="Enter mobile">
+                                                <input class="input100 form-control" type="text" placeholder="Mobile" formControlName="mobileNum"  [ngClass]="{ 'is-invalid': usersubmitted && f1.mobileNum.errors }">
+                                                <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                                                </div>
+                                            <mat-error style="font-size: 13px" *ngIf="UserRegisterForm.controls.mobileNum.invalid && UserRegisterForm.controls.mobileNum.touched" >
+                                                <span *ngIf="UserRegisterForm.controls.mobileNum.hasError('required')">Mobile Number is required</span>
+                                                <span  *ngIf="UserRegisterForm.controls.mobileNum.hasError('pattern')">Enter a valid Mobile Number</span>                                            </mat-error>
+                                        </div>
+                                        <div style="margin-bottom: 13px">
+                                            <div class="form-group" data-validate="Enter password">
+                                                    <input class="input100 form-control" type="text" placeholder="User Name" formControlName="username"  [ngClass]="{ 'is-invalid': usersubmitted && f1.username.errors }">
+                                                    <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                                                </div>
+                                                <mat-error style="font-size: 13px" *ngIf="UserRegisterForm.controls.username.invalid && UserRegisterForm.controls.username.touched" >
+                                                    User Name is required
+                                                </mat-error>
+                                            </div>
+                                            <div style="margin-bottom: 13px">
+                                                <div class="form-group" data-validate="Enter password">
+                                                        <input class="input100 form-control" type="password" placeholder="Password" formControlName="password"  [ngClass]="{ 'is-invalid': usersubmitted && f1.password.errors }">
+                                                        <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                                                    </div>
+                                                    <mat-error style="font-size: 13px" *ngIf="UserRegisterForm.controls.password.invalid && UserRegisterForm.controls.password.touched" >
+                                                        <span *ngIf="UserRegisterForm.controls.password.hasError('required')">Password is required</span>
+                                                        <span  *ngIf="UserRegisterForm.controls.password.hasError('minlength')">Enter a 6 digit password</span>
+                                                    </mat-error>
+                                                </div>
+                            
+                                            <div class="container-login100-form-btn form-group">
+                                                <button class="login100-form-btn" [disabled]="!UserRegisterForm.valid" type="submit" >
+                                                    Sign Up
+                                                </button>
+                                                <button  class="btn cancel" (click)="Cancel()">Cancel</button>
+
+                                            </div>
+                                            <div class="text-center p-t-90 row">
+                                            
+                                                <a class="txt1 col"  (click)="GotoLogin()">
+                                                    Already Sign Up ? Log In
+                                                </a>    
+                                            </div>
+                                        </form> 
+
+                            </mat-tab>
+                            <mat-tab label="Lawyer"> 
+
+                                    <form  class="login100-form validate-form" [formGroup]="LawyerRegisterForm" (ngSubmit)="onLawyerSubmit()">
+                                            <span class="login100-form-logo">
+                                                <i class="zmdi zmdi-landscape"></i>
+                                            </span>
+                            
+                                            <span class="login100-form-title p-b-34 p-t-27">
+                                                REGISTER
+                                            </span>
+                                            <div style="margin-bottom: 13px">
+                                            <div class="form-group" data-validate = "Enter username">
+                                                <input class="input100 form-control" type="text"  placeholder="First Name" formControlName="firstName"  [ngClass]="{ 'is-invalid': lawyersubmitted && f2.firstName.errors }">
+                                                <span class="focus-input100" data-placeholder="&#xf207;"></span>
+                            
+                                            </div>
+                                            <mat-error style="font-size: 13px" *ngIf="LawyerRegisterForm.controls.firstName.invalid && LawyerRegisterForm.controls.firstName.touched" >
+                                                First Name is required
+                                            </mat-error>
+                                        </div>
+                                           
+                                        <div style="margin-bottom: 13px">
+                                            <div class="form-group" data-validate="Enter password">
+                                                <input class="input100 form-control" type="text" placeholder="Last Name" formControlName="lastName"  [ngClass]="{ 'is-invalid': lawyersubmitted && f2.lastName.errors }">
+                                                <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                                            </div>
+                                            <mat-error style="font-size: 13px" *ngIf="LawyerRegisterForm.controls.lastName.invalid && LawyerRegisterForm.controls.lastName.touched" >
+                                                Last Name is required
+                                            </mat-error>
+                                        </div>
+                                        <div style="margin-bottom: 13px">
+                                            <div class="form-group" data-validate="Enter email">
+                                                <input class="input100 form-control" type="text" placeholder="Email" formControlName="emailId"  [ngClass]="{ 'is-invalid': lawyersubmitted && f2.emailId.errors }">
+                                                <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                                            </div>
+                                            <mat-error style="font-size: 13px" *ngIf="LawyerRegisterForm.controls.emailId.invalid && LawyerRegisterForm.controls.emailId.touched" >
+                                                <span *ngIf="LawyerRegisterForm.controls.emailId.hasError('required')">Email is required</span>
+                                                <span  *ngIf="LawyerRegisterForm.controls.emailId.hasError('pattern')">Enter a valid Email</span>                                            </mat-error>
+                                        </div>
+                                        <div style="margin-bottom: 13px">
+                                            <div class="form-group" data-validate="Enter mobile">
+                                                <input class="input100 form-control" type="text" placeholder="Mobile" formControlName="mobileNum"  [ngClass]="{ 'is-invalid': lawyersubmitted && f2.mobileNum.errors }">
+                                                <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                                            </div>
+                                            <mat-error style="font-size: 13px" *ngIf="LawyerRegisterForm.controls.mobileNum.invalid && LawyerRegisterForm.controls.mobileNum.touched" >
+                                                <span *ngIf="LawyerRegisterForm.controls.mobileNum.hasError('required')">Mobile Number is required</span>
+                                                <span  *ngIf="LawyerRegisterForm.controls.mobileNum.hasError('pattern')">Enter a valid Mobile Number</span>                                             </mat-error>
+                                        </div>
+                                            
+                                            
+                                        <div style="margin-bottom: 13px">
+                                            <div class="form-group" data-validate="Enter password">
+                                                    <input class="input100 form-control" type="text" placeholder="User Name" formControlName="username"  [ngClass]="{ 'is-invalid': lawyersubmitted && f2.username.errors }">
+                                                    <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                                                </div>
+                                                <mat-error style="font-size: 13px" *ngIf="LawyerRegisterForm.controls.username.invalid && LawyerRegisterForm.controls.username.touched" >
+                                                    User Name is required
+                                                </mat-error>
+                                            </div>
+                                            <div style="margin-bottom: 13px">
+                                                <div class="form-group" data-validate="Enter password">
+                                                        <input class="input100 form-control" type="password" placeholder="Password" formControlName="password"  [ngClass]="{ 'is-invalid': lawyersubmitted && f2.password.errors }">
+                                                        <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                                                    </div>
+                                                    <mat-error style="font-size: 13px" *ngIf="LawyerRegisterForm.controls.password.invalid && LawyerRegisterForm.controls.password.touched" >
+                                                        <span *ngIf="LawyerRegisterForm.controls.password.hasError('required')">Password is required</span>
+                                                        <span  *ngIf="LawyerRegisterForm.controls.password.hasError('minlength')">Enter a 6 digit password</span>     </mat-error>
+                                                </div>
+                                        
+                                            <!-- <div class="contact100-form-checkbox">
+                                                <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+                                                <label class="label-checkbox100" for="ckb1">
+                                                    Remember me
+                                                </label>
+                                            </div> -->
+                            
+                                            <div class="container-login100-form-btn form-group">
+                                                <button class="login100-form-btn" [disabled]="!LawyerRegisterForm.valid" type="submit">
+                                                    Sign Up
+                                                </button>
+                                                <button  class="btn cancel" (click)="Cancel()">Cancel</button>
+                                            </div>
+                                            <div class="text-center p-t-90 row">
+                                            
+                                                <a class="txt1 col"  (click)="GotoLogin()">
+                                                    Already Sign Up ? Log In
+                                                </a>    
+                                            </div>
+                                            <!-- <div class="text-center p-t-90 row">
+                                                <a class="txt1 col" href="#">
+                                                    Forgot Password?
+                                                </a>
+                                                <a class="txt1 col" href="#" (click)="GotoLogin()">
+                                                    New User? Sign Up
+                                                </a>    
+                                            </div> -->
+                                        </form> 
+                            </mat-tab>
+                            <mat-tab label="LawFirm"> 
+                                    <form  class="login100-form validate-form" [formGroup]="LawFirmRegisterForm" (ngSubmit)="onLawfirmSubmit()">
+                                            <span class="login100-form-logo">
+                                                <i class="zmdi zmdi-landscape"></i>
+                                            </span>
+                            
+                                            <span class="login100-form-title p-b-34 p-t-27">
+                                                REGISTER
+                                            </span>
+                                            <div style="margin-bottom: 13px">
+                                            <div class="form-group" data-validate = "Enter username">
+                                                <input class="input100 form-control" type="text"  placeholder="First Name" formControlName="firstName"  [ngClass]="{ 'is-invalid': lawfirmsubmitted && f3.firstName.errors }">
+                                                <span class="focus-input100" data-placeholder="&#xf207;"></span>
+                                            </div>
+                                            <mat-error style="font-size: 13px" *ngIf="LawFirmRegisterForm.controls.firstName.invalid && LawFirmRegisterForm.controls.firstName.touched" >
+                                                First Name is required
+                                            </mat-error>
+                                        </div>
+                                           
+                                        <div style="margin-bottom: 13px">
+                                            <div class="form-group" data-validate="Enter password">
+                                                <input class="input100 form-control" type="text" placeholder="Last Name" formControlName="lastName"  [ngClass]="{ 'is-invalid': lawfirmsubmitted && f3.lastName.errors }">
+                                                <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                                            </div>
+                                            <mat-error style="font-size: 13px" *ngIf="LawFirmRegisterForm.controls.lastName.invalid && LawFirmRegisterForm.controls.lastName.touched" >
+                                                Last Name is required
+                                            </mat-error>
+                                        </div>
+                                        <div style="margin-bottom: 13px">
+                                            <div class="form-group" data-validate="Enter email">
+                                                <input class="input100 form-control" type="text" placeholder="Email" formControlName="emailId"  [ngClass]="{ 'is-invalid': lawfirmsubmitted && f3.emailId.errors }">
+                                                <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                                            </div>
+                                            <mat-error style="font-size: 13px" *ngIf="LawFirmRegisterForm.controls.emailId.invalid && LawFirmRegisterForm.controls.emailId.touched" >
+                                                <span *ngIf="LawFirmRegisterForm.controls.emailId.hasError('required')">Email is required</span>
+                                                <span  *ngIf="LawFirmRegisterForm.controls.emailId.hasError('pattern')">Enter a valid Email</span>                                             </mat-error>
+                                        </div>
+
+                                        <div style="margin-bottom: 13px">
+                                            <div class="form-group" data-validate="Enter mobile">
+                                                <input class="input100 form-control" type="text" placeholder="Mobile" formControlName="mobileNum"  [ngClass]="{ 'is-invalid': lawfirmsubmitted && f3.mobileNum.errors }">
+                                                <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                                            </div>
+                                            <mat-error style="font-size: 13px" *ngIf="LawFirmRegisterForm.controls.mobileNum.invalid && LawFirmRegisterForm.controls.mobileNum.touched" >
+                                                <span *ngIf="LawFirmRegisterForm.controls.mobileNum.hasError('required')">Mobile Number is required</span>
+                                                <span  *ngIf="LawFirmRegisterForm.controls.mobileNum.hasError('pattern')">Enter a valid Mobile Number</span>                                               </mat-error>
+                                        </div>
+
+                                        <div style="margin-bottom: 13px">
+                                            <div class="form-group" data-validate="Enter password">
+                                                    <input class="input100 form-control" type="text" placeholder="User Name" formControlName="username"  [ngClass]="{ 'is-invalid': lawfirmsubmitted && f3.username.errors }">
+                                                    <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                                                </div>
+                                                <mat-error style="font-size: 13px" *ngIf="LawFirmRegisterForm.controls.username.invalid && LawFirmRegisterForm.controls.username.touched" >
+                                                    User Name is required
+                                                    <span
+                                                    *ngIf="LawFirmRegisterForm.controls.mobileNum.hasError('pattern')">Enter a valid Mobile Number</span>
+                                                    
+                                                </mat-error>
+                                            </div>
+                                            <div style="margin-bottom: 13px">
+                                                <div class="form-group" data-validate="Enter password">
+                                                        <input class="input100 form-control" type="password" placeholder="Password" formControlName="password"  [ngClass]="{ 'is-invalid': lawfirmsubmitted && f3.password.errors }">
+                                                        <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                                                    </div>
+                                                    <mat-error style="font-size: 13px" *ngIf="LawFirmRegisterForm.controls.password.invalid && LawFirmRegisterForm.controls.password.touched" >
+                                                        <span *ngIf="LawFirmRegisterForm.controls.password.hasError('required')">Password is required</span>
+                                                        <span  *ngIf="LawFirmRegisterForm.controls.password.hasError('minlength')">Enter a 6 digit password</span>
+                                                    </mat-error>
+                                                </div>
+                                        
+                                            <!-- <div class="contact100-form-checkbox">
+                                                <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+                                                <label class="label-checkbox100" for="ckb1">
+                                                    Remember me
+                                                </label>
+                                            </div> -->
+                            
+                                            <div class="container-login100-form-btn form-group">
+                                                <button class="login100-form-btn"  [disabled]="!LawFirmRegisterForm.valid" type="submit" >
+                                                    Sign Up
+                                                </button>
+                                                <button  class="btn cancel" (click)="Cancel()">Cancel</button>
+                                            </div>
+                            
+                                            <div class="text-center p-t-90 row">
+                                            
+                                                <a class="txt1 col"  (click)="GotoLogin()">
+                                                    Already Sign Up ? Log In
+                                                </a>    
+                                            </div>
+                                        </form>     
+                            </mat-tab>
+                          </mat-tab-group>
+           
+
+           
+        </div>
+    </div>
+</div>
+<ng4-loading-spinner> </ng4-loading-spinner>
+
+
+<!-- </div> -->

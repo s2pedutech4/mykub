@@ -1,0 +1,93 @@
+<div class="main-content">
+  <div class="container-fluid">
+      <div class="row" *ngIf="showTable">
+          <div class="col-md-12">
+              <div class="card card-plain">
+                  <div class="card-header card-header-info row">
+                      <div class="col">
+                            <h4 class="card-title  mt-0">Connections</h4>
+                            <p class="card-category"> List of lawyers you have connected.</p>
+                          </div>
+                          <div class="col">
+                                <h2 style="float:right;font-size: 24px;" (click)="goToFilter()"><i class="fa fa-filter"></i></h2>
+                              </div> 
+                  </div>
+                  
+                  <div class="card-body">
+                      <div class="table-responsive">
+                          <table class="table table-hover">
+                              <thead class="">
+                                  <th>
+                                      Lawyer
+                                  </th>
+                                  <th>
+                                      Service
+                                  </th>
+                                  <th>
+                                      Date
+                                  </th>
+                                  <th>
+                                      Details
+                                  </th>
+
+                              </thead>
+                              <tbody>
+                                  <tr *ngFor = "let item of connectionsfilter  | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+                                      <td>
+                                        {{item.firstName + " " + item.lastName}}
+                                      </td>
+                                      <td>
+                                          {{item.name}}
+                                      </td>
+                                      <td>
+                                          {{item.transactionDate}}
+                                      </td>
+                                      <td>
+                                            <i class="fa fa-user-circle-o" style="color:#13B9CE;" aria-hidden="true" (click)="GoToLawyerDetails(item)"></i>
+                                      </td>
+                                      </tr>
+                              </tbody>
+                              <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="row" *ngIf="!showTable">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-info">
+                    <h4 class="card-title">Filter</h4>
+                    <!-- <p class="card-category">Complete your profile</p> -->
+                </div>
+                <div class="card-body">
+                   
+                    <form [formGroup]="filterForm" (ngSubmit)="filter()" #formone="ngForm">
+                        <ng-template matStepLabel>Basic Info</ng-template>
+                        <mat-form-field>
+                            <mat-select placeholder="Providers" formControlName="service" multiple >
+                              <mat-option *ngFor="let item of connections" [value]="item.details.serviceId">{{item.name}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>        
+                        <div class = "form group">
+                        <button class ="btn btn-info">Save</button>
+                        <button class ="btn" (click)="Cancel()">Cancel</button>
+
+                            
+                        </div>
+                        
+                    </form>
+                
+                </div>
+            </div>
+        
+           
+        </div>
+       
+    </div>
+  </div>
+</div>
+<ng4-loading-spinner> </ng4-loading-spinner>

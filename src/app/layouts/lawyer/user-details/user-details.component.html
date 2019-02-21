@@ -1,0 +1,153 @@
+<div class="main-content">
+  <div class="container-fluid">
+      <div class="row">
+          
+          <div class="col-md-12">
+              <div class="card card-profile">
+                  <div class="card-avatar">
+                      <a href="#pablo">
+                          <img class="img" src="./assets/img/faces/marc.jpg" />
+                      </a>
+                  </div>
+                  <div class="card-body">
+                      <!-- <h6 class="card-category text-gray">CEO / Co-Founder</h6> -->
+                      <h4 class="card-title">{{UserDetils.firstName }}  {{ UserDetils.lastName}}</h4>
+                     
+                      <div class="card-description">
+                        <div class="row">
+                           <div class="col col-lg-4 col-md-4">
+                             <div style="text-align:start;margin-bottom: 15px;">
+                                <i class="	fa fa-envelope-o" aria-hidden="true"></i>                               <b class=""> Email : </b>
+                                <span class="">{{UserDetils.emailId}}</span>
+                          </div>
+                           </div>
+                           <div class="col col-lg-4 col-md-4">
+                          <div style="text-align:start">
+                            <i class="fa fa-mobile" aria-hidden="true"></i>
+                            <b class="">   Mobile : </b>
+                            <span class="">{{UserDetils.mobileNum}}</span>
+                          </div>
+                          </div>
+                          <div class="col col-lg-4 col-md-4">
+                            <div style="text-align:start;margin-bottom: 15px;">
+                               <i class="fa fa-balance-scale" aria-hidden="true"></i>                               <b class=""> Service : </b>
+                               <span class="">{{UserDetils.serviceName}}</span>
+                         </div>
+                          </div>
+                        </div>
+                        <hr>
+                      <button class="btn btn-info btn-round" (click)="GoToChat()">Chat Now</button><hr>
+
+                      <div class="row" *ngIf="IsInputDocuments && IsInputDocNull">
+                          <div class="col col-md-12">
+                             
+                            <div class="card card-plain">
+                                <div class="card-header card-header-info row">
+                                    <div class="col" >
+                                          <h4 class="card-title  mt-0" style="float:left">User Documents</h4>
+                                          <!-- <p class="card-category" style="float:left"> Here is a subtitle for this table</p> -->
+                                        </div>
+                                        <!-- <div class="col">
+                                          <h2 style="float:right" (click)="OpenDoc()">+</h2>
+                                        </div>  -->
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead class="">
+                                                <th style="text-align:left">
+                                                    Document Name
+                                                </th>
+                                                <!-- <th>
+                                                        
+                                                    </th>
+                                                    <th></th> -->
+                                                    <th>
+                                                            Download
+                                                    </th>
+                                                
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item of UserDetils.inputDocuments">
+                                                    <td style="text-align:left">
+                                                        {{item}}
+                                                    </td>
+                                                    <td>
+                                                        <i class="fa fa-download" aria-hidden="true" (click)="DownloadDoc(item)"></i>
+                                                      </td> 
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                       </div>
+                       </div>
+
+                       <div class="row" *ngIf="IsOutputDocuments && IsOutputDocNull">
+                        <div class="col col-md-12">
+                           
+                          <div class="card card-plain">
+                              <div class="card-header card-header-info row">
+                                  <div class="col" >
+                                        <h4 class="card-title  mt-0" style="float:left">Uploaded Documents</h4>
+                                        <!-- <p class="card-category" style="float:left"> Here is a subtitle for this table</p> -->
+                                      </div>
+                                      <!-- <div class="col">
+                                        <h2 style="float:right" (click)="OpenDoc()">+</h2>
+                                      </div>  -->
+                              </div>
+                              <div class="card-body">
+                                  <div class="table-responsive">
+                                      <table class="table table-hover">
+                                          <thead class="">
+                                              <th style="text-align:left">
+                                                  Document Name
+                                              </th>
+                                          </thead>
+                                          <tbody>
+                                              <tr *ngFor="let item of UserDetils.outputDocuments">
+                                                  <td style="text-align:left">
+                                                      {{item}}
+                                                  </td> 
+                                                    <!-- <td>
+                                                      <i class="fa fa-trash" aria-hidden="true" (click)="DeleteDoc(item)"></i>
+                                                    </td> -->
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                  </div>
+                              </div>
+                          </div>
+                     </div>
+                     </div>
+                       <div *ngIf="showProgress">
+                       <p>File is {{progressbar}} % uploaded</p>
+                       <mat-progress-bar mode="determinate" value={{progressbar}} max="100" style="height:20px;width:30%;position: relative;left:35%;"></mat-progress-bar>
+                       </div>
+                       <button *ngIf="UploadDoc && IsOutputDocuments" class="btn btn-info btn-round" (click)="OpenDoc()">Add Document</button>
+
+                       <div class="row" *ngIf="!UploadDoc">
+                            <hr>
+                        <div class="col col-md-12">
+                           
+                              <div >
+                                    <input #fileInput type="file" class="col col-md-6">                 
+                                    <div>
+                                        <button class="btn btn-info btn-round" (click)="AddDoc()">Add</button> 
+                                        <button class="btn btn-info btn-round" (click)="Cancel()">Cancel</button> 
+                                    </div>
+                                    
+                              </div>
+                     </div>
+                     </div>     
+                  </div>
+              </div>
+          <!-- </div> -->
+      <!-- </div> -->
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  <ng4-loading-spinner> </ng4-loading-spinner>

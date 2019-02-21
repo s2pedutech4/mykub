@@ -1,0 +1,145 @@
+<div class="main-content">
+  <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+<mat-horizontal-stepper [linear]="isLinear" #stepper="matHorizontalStepper">
+  <mat-step [stepControl]="basicForm">
+    <form [formGroup]="basicForm" (ngSubmit)="addKuberService()" #formone="ngForm">
+      <ng-template matStepLabel>Basic Info</ng-template>
+      <mat-form-field>
+        <input matInput  (keyup)="checkServices()" placeholder="Name" formControlName="name" required>
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="basicForm.controls.name.invalid && basicForm.controls.name.touched" >
+        <span *ngIf="basicForm.controls.name.hasError('required')">Service Name is required
+        </span>
+       </mat-error>
+       <mat-error style="font-size: 13px" *ngIf="sNameExists">
+        Service Name is already present. Please select a unique name.
+    </mat-error>
+      <mat-form-field>
+        <input matInput  (keyup)="checkServices()" placeholder="Display Name" formControlName="displayName" required>
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="basicForm.controls.displayName.invalid && basicForm.controls.displayName.touched" >
+        <span *ngIf="basicForm.controls.displayName.hasError('required')">Service Name is required
+        </span>
+       </mat-error>
+       <mat-error *ngIf="dNameExists" style="font-size: 13px">
+        Service Display Name is already present. Please select a unique name.
+      </mat-error>
+       <mat-form-field>
+        <mat-select placeholder="Service Type" [formControlName]="'serviceTypeId'"  >
+          <mat-option *ngFor="let item of serviceTypes" [value]="item.id">{{item.type}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="basicForm.controls.serviceTypeId.invalid && basicForm.controls.serviceTypeId.touched" >
+        Service Type is required
+    </mat-error>
+    <label class="container">Online 
+      <input type="checkbox" formControlName="online">
+      <!-- <span class="checkmark"></span> -->
+    </label>
+    <label class="container">Document input
+      <input type="checkbox" formControlName="documentInput">
+      <!-- <span class="checkmark"></span> -->
+    </label>
+    <label class="container">Document output
+      <input type="checkbox" formControlName="documentOutput">
+      <!-- <span class="checkmark"></span> -->
+    </label>
+    <div class="row">
+    <mat-form-field class="col col-md-6">
+           
+      <input type="date" matInput placeholder="Active From" formControlName="activeFrom">
+                </mat-form-field>
+                <mat-error style="font-size: 13px" *ngIf="basicForm.controls.activeFrom.invalid && basicForm.controls.activeFrom.touched" >
+                  Active From Date is required
+              </mat-error>
+                  <mat-form-field class="col col-md-6">
+      <input type="date" matInput placeholder="Active To" formControlName="activeTo">
+      </mat-form-field>
+    <mat-error style="font-size: 13px" *ngIf="basicForm.controls.activeTo.invalid && basicForm.controls.activeTo.touched" >
+      Active To Date is required
+  </mat-error>  
+  </div>
+      <mat-form-field>
+      <mat-select placeholder="Admin" [formControlName]="'userId'"  >
+          <mat-option *ngFor="let item of admins" [value]="item.id">{{item.username}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="basicForm.controls.userId.invalid && basicForm.controls.userId.touched" >
+        Admin is required
+    </mat-error>  
+      <div>
+        <button  [disabled]="!basicForm.valid || sNameExists || dNameExists" class="btn btn-info" type="submit" mat-button matStepperNext>Save</button>
+        <!-- <button type="submit" mat-button>submit</button> -->
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="documentForm" *ngIf="showOtherSteppers">
+    <form [formGroup]="documentForm" (ngSubmit)="addDocument()" #formtwo="ngForm">
+      <ng-template matStepLabel>Description</ng-template>
+      <mat-form-field>
+          <mat-select placeholder="Documents" formControlName="documents" multiple >
+            <mat-option *ngFor="let item of documentlist" [value]="item.id">{{item.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-error style="font-size: 13px" *ngIf="documentForm.controls.documents.invalid && documentForm.controls.documents.touched" >
+          Documents is required
+      </mat-error> 
+      <div>
+        <button  class="btn btn-info" type="submit" mat-button matStepperNext>Save</button>
+        <!-- <button type="submit" mat-button>submit</button> -->
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step [stepControl]="paymentForm"  *ngIf="showOtherSteppers">
+    <form [formGroup]="paymentForm" (ngSubmit)="addPaymentInfo()" #formfour="ngForm">
+        <ng-template matStepLabel>Payment Info</ng-template>
+      
+        <mat-form-field>
+          <input matInput placeholder="Fees" formControlName="fees" required>
+        </mat-form-field>
+        <mat-error style="font-size: 13px" *ngIf="paymentForm.controls.fees.invalid && paymentForm.controls.fees.touched" >
+          Fees is required
+      </mat-error> 
+        <mat-form-field>
+            <mat-select placeholder="Accounts" formControlName="accountId"  >
+              <mat-option *ngFor="let item of accounts" [value]="item.id">{{item.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-error style="font-size: 13px" *ngIf="paymentForm.controls.accountId.invalid && paymentForm.controls.accountId.touched" >
+            Accounts is required
+        </mat-error> 
+      <div>
+        <button class="btn btn-info" type="submit" mat-button matStepperNext>Save</button>
+        <!-- <button type="submit" mat-button>submit</button> -->
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="providerForm"  *ngIf="showOtherSteppers">
+    <form [formGroup]="providerForm" (ngSubmit)="addProviders()" #formthree="ngForm">
+      <ng-template matStepLabel>Provider Mapping</ng-template>
+      <mat-form-field>
+        <mat-select placeholder="Providers" formControlName="providers" multiple >
+          <mat-option *ngFor="let item of providerlist" [value]="item.id">{{item.username}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-error style="font-size: 13px" *ngIf="providerForm.controls.providers.invalid && providerForm.controls.providers.touched" >
+        Providers is required
+    </mat-error>
+      <div>
+        <!-- <button type="button" mat-button matStepperPrevious>Back</button> -->
+         <button class="btn btn-info" btn-info type="submit" mat-button matStepperNext>Submit</button>
+      </div>
+    </form>
+  </mat-step>
+</mat-horizontal-stepper>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Copyright 2018 Google Inc. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license -->

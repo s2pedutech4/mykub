@@ -1,0 +1,355 @@
+<div class="main-content">
+  <div class="container-fluid">
+      <div class="row">
+          
+          <div class="col-md-12">
+              <div class="card card-profile">
+                  <div class="card-avatar">
+                      <a>
+                          <!-- <img class="img" src="./assets/img/faces/marc.jpg" /> -->
+                          <img class="img"  [src]="myimage | safe: 'url'">
+                      </a>
+                  </div>
+                  <div class="card-body">
+                      <!-- <h6 class="card-category text-gray">CEO / Co-Founder</h6> -->
+                      <h4 class="card-title">{{LawyerDetils.firstName }}  {{ LawyerDetils.lastName}}</h4>
+                     
+                      <div class="card-description">
+                        <div class="row">
+                           <div class="col col-lg-3 col-md-3">
+                             <div style="text-align:start;margin-bottom: 15px;">
+                                <i class="	fa fa-envelope-o" aria-hidden="true"></i>                               <b class=""> Email : </b>
+                                <span class="">{{LawyerDetils.emailId}}</span>
+                                
+                          </div>
+                          <div style="text-align:start">
+                            <i class="fa fa-mobile" aria-hidden="true"></i>
+                            <b class="">   Mobile : </b>
+                            <span class="">{{LawyerDetils.mobileNum}}</span>
+                          </div>
+                          </div>
+                          <div class="col col-lg-3 col-md-3">
+                              <div style="text-align:start;margin-bottom: 15px;">
+                                  <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                  <b class="">   Adress : </b>
+                              <span class="">{{LawyerDetils.address}}, {{LawyerDetils.zipcode}}</span>
+                              </div>
+                              <div style="text-align:start">
+                               <i class="fa fa-star" aria-hidden="true"></i>
+                               <b class=""> Ratings : </b>
+                           <span class="">{{LawyerDetils.ratings | number: '1.2-2'}}</span>
+                            </div>
+                            </div>
+                            <div class="col col-lg-3 col-md-3">
+                                <div style="text-align:start;margin-bottom: 15px;">
+                                    <i class="fa fa-check-square" aria-hidden="true"></i>         
+                                    <b class=""> Win Ratio : </b>
+                                    <span class="">{{LawyerDetils.winRatio | number: '2.2-2'}}</span>
+                                </div>
+                                <div style="text-align:start;margin-bottom: 15px;">
+                                    <i class="fa fa-balance-scale" aria-hidden="true"></i>        
+                                    <b class="">Service : </b>
+                                    <span class="">{{LawyerDetils.serviceName}}</span>
+                                </div>
+                            </div>
+                            <div class="col col-lg-3 col-md-3">
+                                    <div style="text-align:start;margin-bottom: 15px;">
+                                            <i class="fa fa-balance-scale" aria-hidden="true"></i>       
+                                            <b class=""> Bar Council No : </b>
+                                        <span class="">{{LawyerDetils.barcouncil}}</span>
+                                    </div>
+                                    <div style="text-align:start;margin-bottom: 15px;">
+                                        <i class="fa fa-balance-scale" aria-hidden="true"></i>        
+                                        <b class=""> Bar Registration No : </b>
+                                        <span class="">{{LawyerDetils.reg}}</span>
+                                    </div>
+                                </div>
+                        </div>
+                        <hr>
+                      <button class="btn btn-info btn-round" (click)="GoToChat()">Chat Now</button><hr>
+                      <div class="card card-plain"  *ngIf="showExpDatailsTable">
+                        <div class="card-header card-header-info row">
+                            <div class="col">
+                                  <h4 class="card-title  mt-0">Experience Details Table</h4>
+                                </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="">
+                                        <th>
+                                          Court
+                                        </th>
+                                        <th>
+                                          Year
+                                        </th>
+                                        <th>
+                                          Judgement
+                                        </th>
+                                        <th>
+                                          Case Description
+                                        </th>
+                                        <!-- <th>
+                                          Bar Council
+                                        </th>
+                                        <th>
+                                          Bar Registration No.
+                                        </th> -->
+                                        <!-- <th>
+                                          COP Number
+                                        </th> -->
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor = "let item of experianceDetails  | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+                                          <td>
+                                            {{item.courtName}}
+                                        </td>
+                                            <td>
+                                                {{item.year}}
+                                            </td>
+                                            <td>
+                                              {{item.judgement}}
+                                          </td>
+                                          <td>
+                                            {{item.detailedDescription}}
+                                        </td>
+                                        <!-- <td>
+                                          {{item.barCouncil}}
+                                      </td>
+                                      <td>
+                                        {{item.barRegistrationNo}}
+                                    </td> -->
+                                            </tr>
+                                            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                      <div class="row" *ngIf="IsOutputDocuments && IsOutputDocNull">
+                          <div class="col col-md-12">
+                             
+                            <div class="card card-plain">
+                                <div class="card-header card-header-info row">
+                                    <div class="col" >
+                                          <h4 class="card-title  mt-0" style="float:left">Lawyer Documents</h4>
+                                          <!-- <p class="card-category" style="float:left"> Here is a subtitle for this table</p> -->
+                                        </div>
+                                        <!-- <div class="col">
+                                          <h2 style="float:right" (click)="OpenDoc()">+</h2>
+                                        </div>  -->
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead class="">
+                                                <th style="text-align:left">
+                                                    Document Name
+                                                </th>
+                                                <!-- <th>
+                                                        
+                                                    </th>
+                                                    <th></th> -->
+                                                    <th>
+                                                            Download
+                                                    </th>
+                                                
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item of LawyerDetils.outputDocuments">
+                                                    <td style="text-align:left">
+                                                        {{item}}
+                                                    </td>
+                                                    <td>
+                                                        <i class="fa fa-download" aria-hidden="true" (click)="DownloadDoc(item)"></i>
+                                                      </td> 
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                       </div>
+                       </div>
+
+                       <div class="row" *ngIf="IsInputDocuments && IsInputDocNull">
+                        <div class="col col-md-12">
+                           
+                          <div class="card card-plain">
+                              <div class="card-header card-header-info row">
+                                  <div class="col" >
+                                        <h4 class="card-title  mt-0" style="float:left">Uploaded Documents</h4>
+                                        <!-- <p class="card-category" style="float:left"> Here is a subtitle for this table</p> -->
+                                      </div>
+                                      <!-- <div class="col">
+                                        <h2 style="float:right" (click)="OpenDoc()">+</h2>
+                                      </div>  -->
+                              </div>
+                              <div class="card-body">
+                                  <div class="table-responsive">
+                                      <table class="table table-hover">
+                                          <thead class="">
+                                              <th style="text-align:left">
+                                                  Document Name
+                                              </th>
+                                             
+                                              
+                                          </thead>
+                                          <tbody>
+                                              <tr *ngFor="let item of LawyerDetils.inputDocuments">
+                                                  <td style="text-align:left">
+                                                      {{item}}
+                                                  </td>
+                                                  <!-- <td>
+                                                      <i class="fa fa-download" aria-hidden="true" (click)="DownloadDoc(item)"></i>
+                                                    </td> -->
+                                                    <!-- <td></td>
+                                                    <td></td> -->
+                                                    <!-- <td>
+                                                      <i class="fa fa-trash" aria-hidden="true" (click)="DeleteDoc(item)"></i>
+                                                    </td> -->
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                  </div>
+                              </div>
+                              
+                          </div>
+                     </div>
+                     </div>
+                       <div *ngIf="showProgress">
+                       <p>File is {{progressbar}} % uploaded</p>
+                       <mat-progress-bar mode="determinate" value={{progressbar}} max="100" style="height:20px;width:30%;position: relative;left:35%;"></mat-progress-bar>
+                       </div>
+                       <button *ngIf="!UploadDoc && IsInputDocuments" class="btn btn-info btn-round" (click)="OpenDoc()">Add Document</button>
+
+                       <div class="row" *ngIf="UploadDoc">
+                            <hr>
+                        <div class="col col-md-12">
+                           
+                              <div >
+                                    <input #fileInput type="file" class="col col-md-6">                 
+                                    <div>
+                                        <button class="btn btn-info btn-round" (click)="AddDoc()">Add</button> 
+                                        <button class="btn btn-info btn-round" (click)="Cancel()">Cancel</button> 
+                                    </div>
+                                    
+                              </div>
+                              
+                       
+                     </div>
+                     </div>
+                     
+                      <hr>
+                      <div class="row" *ngIf="showReview">
+                            <div class="col col-md-12">
+                               
+                              <div class="card card-plain">
+                                  <div class="card-header card-header-info row">
+                                      <div class="col" >
+                                            <h4 class="card-title  mt-0" style="float:left">Add Review</h4>
+                                            <!-- <p class="card-category" style="float:left"> Here is a subtitle for this table</p> -->
+                                          </div>
+                                          <!-- <div class="col">
+                                            <h2 style="float:right" (click)="OpenDoc()">+</h2>
+                                          </div>  -->
+                                  </div>
+                                  <div class="card-body">
+                                        <form  [formGroup]="ReviewForm">
+                                                <div class="row">
+                                                    <div class="col col-md-9 col-sm-9">
+                                                        <div class="panel-footer">
+                                                            <div class="input-group" style="margin:10px;">
+                                                                <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your review here..." formControlName="description" style="height:100px;">
+                                                                
+                                                            </div>
+                                                            
+                                                        </div>
+                                                   </div>
+                                                   <!-- <div class="col col-md-4">
+                                                          <div class="panel-footer">
+                                                              <div class="input-group" style="margin:10px;">
+                                                                  <input id="btn-input" type="number" class="form-control input-sm" placeholder="Win Ratio" formControlName="winRatio">
+                                                              </div>
+                                                              
+                                                          </div>
+                                                     </div> -->
+                                                     
+                                                   <div class="col col-md-3" style="margin-top: 35px;">
+                                                      <ngb-rating [(rate)]="currentRate"></ngb-rating>
+                                                      <pre>Rating: <b>{{currentRate}}</b></pre> 
+                                                 </div>
+                                                </div>
+                                                <div class="row" style="text-align:center;">
+                                                 <div class="col ">
+                                                 <span class="input-group-btn" >
+                                                      <button class="btn btn-info btn-sm" id="btn-chat" style="height:50px; margin: 0;" (click)="SendReview()" type="submit">
+                                                          <i class="fa fa-send-o"></i>  Save</button>
+                                                  </span>
+                                              </div>
+                                                 </div>
+                                              </form>
+                                  </div>
+                              </div>
+                         </div>
+                         </div>
+                      <h3>Reviews</h3>
+                      <div  style="height: 150px; overflow-y: auto;overflow-x: hidden;">                     
+                           <div *ngFor="let r of LawyerDetils.reviews">
+                          <div class="row" >
+                              <div class="  col col-md-12" style="text-align: left;">
+                                  <span *ngFor="let rat of r.rating" style="color: gold;" >★</span>
+                                  <span>&nbsp;&nbsp;&nbsp;"{{r.review}}"</span>
+                                    <hr>
+                                </div>
+                          </div>
+                        </div>
+
+                          
+                      </div>
+                      <!-- <h2>Add Review</h2>
+                      <form style="border:darkgray 2px solid; border-radius: 5px;" [formGroup]="ReviewForm">
+                      <div class="row">
+                          <div class="col col-md-9">
+                              <div class="panel-footer">
+                                  <div class="input-group" style="margin:10px;">
+                                      <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your review here..." formControlName="description">
+                                      
+                                  </div>
+                                  
+                              </div>
+                         </div>
+                        </div>
+                        <div class="row">
+                         <div class="col col-md-4">
+                                <div class="panel-footer">
+                                    <div class="input-group" style="margin:10px;">
+                                        <input id="btn-input" type="number" class="form-control input-sm" placeholder="Win Ratio" formControlName="winRatio">
+                                    </div>
+                                    
+                                </div>
+                           </div>
+                           
+                         <div class="col col-md-4">
+                            <ngb-rating [(rate)]="currentRate"></ngb-rating>
+                            <pre>Rating: <b>{{currentRate}}</b></pre> 
+                       </div>
+                       <div class="col col-md-2">
+                       <span class="input-group-btn" >
+                            <button class="btn btn-info btn-sm" id="btn-chat" style="height:50px; margin: 0;" (click)="SendReview()">
+                                <i class="fa fa-send-o"></i>  Save</button>
+                        </span>
+                    </div>
+                       </div>
+                    </form> -->
+                  </div>
+              </div>
+          <!-- </div> -->
+      <!-- </div> -->
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  <ng4-loading-spinner> </ng4-loading-spinner>
