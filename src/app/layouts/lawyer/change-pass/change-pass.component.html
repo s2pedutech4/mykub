@@ -1,0 +1,49 @@
+<div class="main-content">
+    <div class="container-fluid">
+            <div class="row">
+                    <div class="col-md-2">
+                      <button class="btn btn-info" [routerLink]="['/lawyer-profile']">Back</button>
+                    </div>
+                    <div class="col-md-10">
+          
+                    </div>
+                </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">Change Password</h4>
+                        <!-- <p class="card-category">Complete your profile</p> -->
+                    </div>
+                    <div class="card-body">
+                       
+                        <form [formGroup]="changePassForm" (ngSubmit)="updatePaswword()" #formone="ngForm">
+                            <!-- <ng-template matStepLabel>Personal</ng-template> -->
+                            <mat-form-field>
+                              <input matInput type="password" placeholder="Enter New Password" formControlName="pass" required>
+                            </mat-form-field>
+                            <mat-error style="font-size: 13px" *ngIf="changePassForm.controls.pass.invalid && changePassForm.controls.pass.touched" >
+                                <span *ngIf="changePassForm.controls.pass.hasError('required')">Password is required</span>
+                                <span  *ngIf="changePassForm.controls.pass.hasError('minlength')">Enter a 6 digit password</span>
+                              </mat-error>
+                            <mat-form-field>
+                              <input type="password" (keyup)="checkPass()" matInput placeholder="Confirm Password" formControlName="cnfrmpass" required>
+                            </mat-form-field>
+                            <mat-error style="font-size: 13px" *ngIf="changePassForm.controls.cnfrmpass.invalid && changePassForm.controls.cnfrmpass.touched" >
+                                <span *ngIf="changePassForm.controls.cnfrmpass.hasError('required')">Password is required</span>
+                                <span  *ngIf="!cnfrmpass">Password does not match.</span>              </mat-error>
+                          <div>
+                              <button class="btn btn-info" [disabled]="!changePassForm.valid" type="submit"  >Save</button>
+                              <button  class="btn" [routerLink]="['/lawyer-profile']">Cancel</button>
+                            </div>
+                          </form>
+                    
+                    </div>
+                </div>
+            
+               
+            </div>
+           
+        </div>
+    </div>
+  </div>

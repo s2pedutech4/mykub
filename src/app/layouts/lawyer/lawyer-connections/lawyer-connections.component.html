@@ -1,5 +1,13 @@
 <div class="main-content">
   <div class="container-fluid">
+        <!-- <div class="row">
+                <div class="col-md-2">
+                  <button class="btn btn-info" (click)="goToBack()">Back</button>
+                </div>
+                <div class="col-md-10">
+      
+                </div>
+            </div> -->
       
       <div class="row" *ngIf="showTable">
             <div >
@@ -53,9 +61,12 @@
                                             <i class="fa fa-user-circle-o" style="color:#13B9CE;" aria-hidden="true" (click)="GoToUserDetails(item)"></i>
                                       </td>
                                       </tr>
-                                      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                      <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
                               </tbody>
                           </table>
+                          <div class="pagination">
+                                <pagination-controls class="col-md-12 " (pageChange)="p = $event"></pagination-controls>
+                          </div>
                       </div>
                   </div>
               </div>

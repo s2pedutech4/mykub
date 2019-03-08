@@ -7,6 +7,9 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 import { DialogOverviewExampleDialogComponent } from '../../../dialog-overview-example-dialog/dialog-overview-example-dialog.component';
+import { Location } from '@angular/common';
+import { CustomSnackbarComponent } from '../../../custom-snackbar/custom-snackbar.component';
+import {MatSnackBar} from '@angular/material';
 @Component({
   selector: 'app-lawyers-details',
   templateUrl: './lawyers-details.component.html',
@@ -23,14 +26,14 @@ showEducatinalDetails: boolean = true;
 currentPage: number = 1;
 myimage:any;
 showmyimg:boolean = false;
-  constructor(private route: ActivatedRoute,private rest: RestService,private auth: AuthService,private lawyer: LawyersService,private spinnerService: Ng4LoadingSpinnerService,public dialog: MatDialog) { }
+  constructor(private route: ActivatedRoute,private rest: RestService,private auth: AuthService,private lawyer: LawyersService,private spinnerService: Ng4LoadingSpinnerService,public dialog: MatDialog,private _location: Location,private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.spinnerService.show();
     this.route.queryParams.subscribe(params => {
           console.log(params);
          this.lawyerId = params.id;
-         if(params.status === "Pending")
+         if(params.status === "Un-Verified")
          this.showMarkVerify = true;
          else
          this.showMarkVerify = false;
@@ -49,19 +52,22 @@ showmyimg:boolean = false;
       });
       this.rest.getImageNameByUserId(this.lawyerId).subscribe(imgresp => {
         console.log(imgresp);
-        this.rest.downloadUserImage(imgresp.imagepath,this.lawyerId).subscribe(z=>{
-          let reader = new FileReader();
-        reader.addEventListener("load",()=>{
-          if(reader.result != null)
-          {
-          this.myimage = reader.result;
-          this.showmyimg = true;
-          }
-        },false);
-        let b = new Blob([z]);
-        reader.readAsDataURL(b);
-      
-        });
+        if(imgresp.hasOwnProperty('imagepath'))
+        {
+          this.rest.downloadUserImage(imgresp.imagepath,this.lawyerId).subscribe(z=>{
+            let reader = new FileReader();
+          reader.addEventListener("load",()=>{
+            if(reader.result != null)
+            {
+            this.myimage = reader.result;
+            this.showmyimg = true;
+            }
+          },false);
+          let b = new Blob([z]);
+          reader.readAsDataURL(b);
+        
+          });
+      }
       });
 
       this.lawyer.getBarDetails(this.lawyerId).subscribe(x => {
@@ -120,16 +126,61 @@ showmyimg:boolean = false;
         });
 
       this.showMarkVerify = false;
-      const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
-        width: '250px',
-        data: {title: "Success", message: "Lawyer Verified! "},
-        panelClass: 'myapp-no-padding-dialog'
+      this.snackBar.openFromComponent(CustomSnackbarComponent, {
+        duration: 3000,
+        data: 'Lawyer Verified Successfully'
+      });
+      this._location.back();
+      // const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+      //   width: '250px',
+      //   data: {title: "Success", message: "Lawyer Verified! "},
+      //   panelClass: 'myapp-no-padding-dialog'
 
-      });
+      // });
   
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed');
-      });
+      // dialogRef.afterClosed().subscribe(result => {
+      //   console.log('The dialog was closed');
+      //   this._location.back();
+
+      // });
     });
+  }
+  markUnVerified()
+  {
+    this.lawyer.unmarkVerify(this.lawyerId).subscribe(resp => {
+      console.log(resp);
+      let senderEmailId = this.LawyerDetils.emailId; 
+        let subject = "Un-Verification Successful";
+        let msg = "Alert! ";
+        msg += this.LawyerDetils.firstName + " " + this.LawyerDetils.lastName + ".";
+        msg += "Your Profile has been successfully Un-Verified.";
+        this.rest.sendEmail(senderEmailId,subject,msg).subscribe(response => {
+          console.log(response);
+        });
+
+      this.showMarkVerify = true;
+      this.snackBar.openFromComponent(CustomSnackbarComponent, {
+        duration: 3000,
+        data: 'Lawyer Un-Verified Successfully'
+      });
+      this._location.back();
+      // const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+      //   width: '250px',
+      //   data: {title: "Success", message: "Lawyer Un-Verified! "},
+      //   panelClass: 'myapp-no-padding-dialog'
+
+      // });
+  
+      // dialogRef.afterClosed().subscribe(result => {
+      //   console.log('The dialog was closed');
+      //   this._location.back();
+
+      // });
+    });
+  }
+  goToBack()
+  {
+    this._location.back();
+
   }
 }

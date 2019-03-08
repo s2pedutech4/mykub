@@ -6,6 +6,7 @@ import { map, catchError, tap } from 'rxjs/operators';
 import { BASE_URL } from './base-url';
 //import { RestService } from './rest.service';
 import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
+declare var $: any;
 
 @Injectable({
   providedIn: 'root'
@@ -74,6 +75,19 @@ export class AuthService {
       catchError(this.handleError<any>('addProduct'))
     );
   }
+  getUserByEmail(email): Observable<any>{
+    return this.http.get(BASE_URL + 'rest/user/find/email?emailId='+email,this.myOptions).pipe(
+      map(this.extractData));
+  }
+  getUserByMobile(mobileno): Observable<any>{
+    return this.http.get(BASE_URL + 'rest/user/find/mobnum?mobnum='+mobileno,this.myOptions).pipe(
+      map(this.extractData));
+  }
+  updateUserById(registerdata): Observable<any>{
+    return this.http.post<any>(BASE_URL + 'rest/user/'+ registerdata.id, JSON.stringify(registerdata), this.httpOptions).pipe(
+      catchError(this.handleError<any>('addProduct'))
+    );
+  }
   verifyUser(id)
   {
     let o : any ={};
@@ -90,6 +104,8 @@ export class AuthService {
     this.storage.remove("token");
     this.storage.remove("currentuser");
     this.storage.remove("otp");
+    // this.storage.remove("userAdd");
+
 
     // this.setAuthToken(null);
     // this.rest.setAuthToken(null);
@@ -179,5 +195,32 @@ export class AuthService {
       return of(error as T);
     };
   }
-  
+  showNotification(from, align,message){
+    const type = ['','info','success','warning','danger'];
+
+    const color = Math.floor((Math.random() * 4) + 1);
+
+    $.notify({
+        icon: "notifications",
+        message: message
+
+    },{
+        type: type[color],
+        timer: 4000,
+        placement: {
+            from: from,
+            align: align
+        },
+        template: '<div data-notify="container" class="col-xl-4 col-lg-4 col-11 col-sm-4 col-md-4 alert alert-{0} alert-with-icon" role="alert">' +
+          '<button mat-button  type="button" aria-hidden="true" class="close mat-button" data-notify="dismiss">  <i class="material-icons">close</i></button>' +
+          '<i class="material-icons" data-notify="icon">notifications</i> ' +
+          '<span data-notify="title">{1}</span> ' +
+          '<span data-notify="message">{2}</span>' +
+          '<div class="progress" data-notify="progressbar">' +
+            '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+          '</div>' +
+          '<a href="{3}" target="{4}" data-notify="url"></a>' +
+        '</div>'
+    });
+}
 }

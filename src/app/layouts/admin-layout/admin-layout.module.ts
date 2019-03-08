@@ -9,7 +9,7 @@ import { TableListComponent } from '../../table-list/table-list.component';
 import { TypographyComponent } from '../../typography/typography.component';
 import { IconsComponent } from '../../icons/icons.component';
 import { MapsComponent } from '../../maps/maps.component';
-import { NotificationsComponent } from '../../notifications/notifications.component';
+// import { NotificationsComponent } from '../../notifications/notifications.component';
 import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
 
@@ -53,6 +53,7 @@ import { LawyersDetailsComponent } from './lawyers-details/lawyers-details.compo
 import { MastersPageComponent } from './masters-page/masters-page.component';
 import { CourtComponent } from './masters/court/court.component';
 import { AdminpipePipe } from './adminpipe.pipe';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   imports: [
@@ -69,7 +70,8 @@ import { AdminpipePipe } from './adminpipe.pipe';
     MatTooltipModule,
     MatStepperModule,
     MatCheckboxModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    MatSnackBarModule
     
   ],
   declarations: [
@@ -79,7 +81,7 @@ import { AdminpipePipe } from './adminpipe.pipe';
     TypographyComponent,
     IconsComponent,
     // MapsComponent,
-    NotificationsComponent,
+    // NotificationsComponent,
     UpgradeComponent,
     AdminDashboardComponent,
     AdminServicesComponent,
@@ -108,6 +110,7 @@ import { AdminpipePipe } from './adminpipe.pipe';
     MastersPageComponent,
     CourtComponent,
     AdminpipePipe,
+    // NotificationsComponent
   ],
   exports: [
     AddAdminComponent

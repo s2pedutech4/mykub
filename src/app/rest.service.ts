@@ -48,7 +48,11 @@ httpOptions = {
     //   this.myOptions = this.auth.getMyoptions();
     // }
    }
-
+   getAll(): Observable<any> {
+    this.myOptions = this.auth.getMyoptions();
+    return this.http.get(BASE_URL + 'rest/user/getAll',this.myOptions).pipe(
+      map(this.extractData));
+  }
   getAllServices(): Observable<any> {
     this.myOptions = this.auth.getMyoptions();
     return this.http.get(BASE_URL + 'rest/kuber_services/details',this.myOptions).pipe(

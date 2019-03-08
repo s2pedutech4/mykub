@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 declare var $: any;
 @Component({
   selector: 'app-notifications',
@@ -6,16 +6,17 @@ declare var $: any;
   styleUrls: ['./notifications.component.css']
 })
 export class NotificationsComponent implements OnInit {
+  @Output()emitPass: EventEmitter<any> = new EventEmitter<any>();
 
   constructor() { }
-  showNotification(from, align){
+  showNotification(from, align,message){
       const type = ['','info','success','warning','danger'];
 
       const color = Math.floor((Math.random() * 4) + 1);
 
       $.notify({
           icon: "notifications",
-          message: "Welcome to <b>Material Dashboard</b> - a beautiful freebie for every web developer."
+          message: message
 
       },{
           type: type[color],
@@ -37,6 +38,7 @@ export class NotificationsComponent implements OnInit {
       });
   }
   ngOnInit() {
+    this.showNotification('bottom','left','message');
   }
 
 }

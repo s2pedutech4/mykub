@@ -31,7 +31,20 @@ LawFirmRegisterForm: FormGroup;
   lawfirmform = false;
   lawfirmsubmitted = false;
   lawyersubmitted = false;
+  allData: any = [];
+  useremailExists: boolean = false;
+  usermobileExists: boolean = false;
+  userNameExists: boolean = false;
+  lawyeremailExists: boolean = false;
+  lawyermobileExists: boolean = false;
+  lawyerNameExists: boolean = false;
+  firmemailExists: boolean = false;
+  firmmobileExists: boolean = false;
+  firmNameExists: boolean = false;
   transactionDetails:any = {};
+  cnfrmUserPassword: string = '';
+  cnfrmLawyerPassword: string = '';
+  cnfrmFirmPassword: string = '';
    endpoint = 'http://52f32a78.ngrok.io/kuber/rest/user/register';
  httpOptions = {
   headers: new HttpHeaders({
@@ -42,6 +55,10 @@ providerId: any;
 serviceId: any;
  obj: any = {};
 myparams: any = {};
+errorcnfrmuserpass: boolean = false;
+errorcnfrmlwyerpass: boolean = false;
+errorcnfrmfirmpass: boolean = false;
+
   constructor(private spinnerService: Ng4LoadingSpinnerService, @Inject(LOCAL_STORAGE) private storage: WebStorageService, private route: ActivatedRoute,private formBuilder: FormBuilder,private router: Router,private http: HttpClient,private auth: AuthService, private rest:RestService) {
 
       //   this.route.queryParams.subscribe(params => {
@@ -55,7 +72,7 @@ myparams: any = {};
        }
 
   ngOnInit() {
-
+    this.spinnerService.hide();
     this.route.queryParams.subscribe(params => {
       console.log(params);
       this.myparams = params;
@@ -92,6 +109,10 @@ myparams: any = {};
       password: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
       role : ['ROLE_FIRM']
     });
+    this.rest.getAll().subscribe(resp =>{
+      console.log(resp);
+      this.allData = resp;
+    });
   }
 
   // convenience getter for easy access to form fields
@@ -105,10 +126,52 @@ myparams: any = {};
 
      
 //   }
+checkUserPass()
+{
+  let a = this.UserRegisterForm.controls.password.value;
+  let b = this.cnfrmUserPassword;
+  console.log(this.cnfrmUserPassword);
+  if(a === b)
+  {
+    this.errorcnfrmuserpass = false;
+  }
+  else{
+    this.errorcnfrmuserpass = true;
+  }
+
+}
+checkLawyerPass()
+{
+  let a = this.LawyerRegisterForm.controls.password.value;
+  let b = this.cnfrmLawyerPassword;
+  // console.log(this.cnfrmUserPassword);
+  if(a === b)
+  {
+    this.errorcnfrmlwyerpass = false;
+  }
+  else{
+    this.errorcnfrmlwyerpass = true;
+  }
+
+}
+checkFirmPass()
+{
+  let a = this.LawFirmRegisterForm.controls.password.value;
+  let b = this.cnfrmFirmPassword;
+  // console.log(this.cnfrmUserPassword);
+  if(a === b)
+  {
+    this.errorcnfrmfirmpass = false;
+  }
+  else{
+    this.errorcnfrmfirmpass = true;
+  }
+
+}
 onUserSubmit() {
 
     this.spinnerService.show();
-
+// console.log(this.UserRegisterForm.value);
     this.usersubmitted = true;
 
     var otp = "123456";
@@ -232,6 +295,116 @@ onLawfirmSubmit(){
     this.router.navigateByUrl('/start');
 
 
+  }
+  checkUserEmail()
+  {
+    let bname = this.UserRegisterForm.controls.emailId.value;
+    let b = this.allData.find(x => {
+        if(x.emailId === bname)
+          return x;
+    });
+    if(b != null)
+      this.useremailExists = true;
+    else
+      this.useremailExists = false;
+  }
+  checkUserMobile()
+  {
+    let bname = this.UserRegisterForm.controls.mobileNum.value;
+    let b = this.allData.find(x => {
+        if(x.mobileNum === bname)
+          return x;
+    });
+    if(b != null)
+      this.usermobileExists = true;
+    else
+      this.usermobileExists = false;
+  }
+  checkUserName()
+  {
+    let bname = this.UserRegisterForm.controls.username.value;
+    let b = this.allData.find(x => {
+        if(x.username === bname)
+          return x;
+    });
+    if(b != null)
+      this.userNameExists = true;
+    else
+      this.userNameExists = false;
+  }
+
+  checkLawyerEmail()
+  {
+    let bname = this.LawyerRegisterForm.controls.emailId.value;
+    let b = this.allData.find(x => {
+        if(x.emailId === bname)
+          return x;
+    });
+    if(b != null)
+      this.lawyeremailExists = true;
+    else
+      this.lawyeremailExists = false;
+  }
+  checkLawyerMobile()
+  {
+    let bname = this.LawyerRegisterForm.controls.mobileNum.value;
+    let b = this.allData.find(x => {
+        if(x.mobileNum === bname)
+          return x;
+    });
+    if(b != null)
+      this.lawyermobileExists = true;
+    else
+      this.lawyermobileExists = false;
+  }
+  checkLawyerName()
+  {
+    let bname = this.LawyerRegisterForm.controls.username.value;
+    let b = this.allData.find(x => {
+        if(x.username === bname)
+          return x;
+    });
+    if(b != null)
+      this.lawyerNameExists = true;
+    else
+      this.lawyerNameExists = false;
+  }
+
+  checkFirmEmail()
+  {
+    let bname = this.LawFirmRegisterForm.controls.emailId.value;
+    let b = this.allData.find(x => {
+        if(x.emailId === bname)
+          return x;
+    });
+    if(b != null)
+      this.firmemailExists = true;
+    else
+      this.firmemailExists = false;
+  }
+  checkFirmMobile()
+  {
+    let bname = this.LawFirmRegisterForm.controls.mobileNum.value;
+    let b = this.allData.find(x => {
+        if(x.mobileNum === bname)
+          return x;
+    });
+    if(b != null)
+      this.firmmobileExists = true;
+    else
+      this.firmmobileExists = false;
+  }
+  checkFirmName()
+  {
+    let bname = this.LawFirmRegisterForm.controls.username.value;
+    let b = this.allData.find(x => {
+        if(x.username === bname)
+          return x;
+    });
+    if(b != null)
+      this.firmNameExists = true;
+    else
+      this.firmNameExists = false;
   }
 
 }

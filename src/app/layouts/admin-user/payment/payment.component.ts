@@ -39,12 +39,14 @@ fees: any;
           let senderEmailId = data.emailId; 
           let subject = "KUBER: New Connection";
           let msg = "A new connection for a service ";
-          msg += " is created with the lawyer ";
-          msg += data.firstName + " " + data.lastName;
+          msg += " is created with the user ";
+          this.rest.getUserInfo(this.transactionData.userId).subscribe(x =>{
+            console.log(x);
+          msg += x.firstName + " " + x.lastName;
           this.rest.sendEmail(senderEmailId,subject,msg).subscribe(response => {
             console.log(response);
           });
-
+        });
         });
        
         var obj: any = {};

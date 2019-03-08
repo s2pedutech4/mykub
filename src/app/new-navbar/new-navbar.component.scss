@@ -75,11 +75,16 @@ a:not([href]):not([tabindex]) {
       left: 18%;
     }
     .searchbar{
-      top: 10%;
+      top: 9%;
+      width: 100% !important;
+      left: 0 !important;
     }
     .maptoggle{
       position: absolute;
       right: 40%;
+    }
+    .distance{
+      top: 21% !important;
     }
 
   }
@@ -92,8 +97,8 @@ a:not([href]):not([tabindex]) {
   //   width: 100%;
   // }
   .container-fluid{
-    margin-top: 60px;
-    height: 690px;
+    // margin-top: 60px;
+    height: 680px;
   }
   .form-control:focus {
     color: #495057;
@@ -109,4 +114,63 @@ a:not([href]):not([tabindex]) {
 }
 ::ng-deep .pac-container {
   z-index: 100000;
+}
+// ::ng-deep .mat-tooltip {
+//     /* your own custom styles here */ 
+//     /* e.g. */
+//     color:red;
+//     font-weight: bold
+//   }
+
+// ::ng-deep .primary-tooltip {
+//     background-color: red;
+//     color: white;
+// }
+.maptoggle{
+  position: absolute; z-index: 10;width: 10%;right: 10%; top: 1.4%;
+}
+.add-show{
+  display: none;
+}
+@media screen and (max-width: 959px) {
+.maptoggle{
+  position: absolute; z-index: 10;width: 10%;
+  top: 90%; 
+  left: 1%;
+}
+/deep/ .mat-button-toggle-appearance-standard .mat-button-toggle-label-content{
+  padding: 0 3px !important;
+  line-height: 3px !important;
+}
+.add-show{
+  display: block;
+}
+.searchbar{
+  top: 9%;
+  width: 93% !important;
+  left: 7% !important;
+}
+.bottom-toggle{
+              top: 90% !important; 
+              left: 47% !important;
+}
+}
+.category-search{
+  height : 60px;
+}
+.mat-button-toggle-checked {
+  border: 1px solid #c5c0c7;
+  background-color: #e1dde5; 
+}
+.modal-bottom {
+  top: calc(100% - 230px); 
+}
+.searchbar{
+  position: absolute; z-index: 10;width: 50%;  left: 40%;
+}
+.bottom-toggle{
+  position: absolute;
+   z-index: 10;
+              top: 94%; 
+              left: 47%;
 }

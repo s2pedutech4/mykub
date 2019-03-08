@@ -38,12 +38,14 @@ import {
 } from '@agm/core';
 import { MatTabsModule } from '@angular/material';
 import { NgChatModule } from 'ng-chat';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { StartComponent } from './start/start.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { NewNavbarComponent } from './new-navbar/new-navbar.component';
+import { BottomSheetOverviewExampleSheet } from './new-navbar/new-navbar.component';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { ChatComponent } from './chat/chat.component';
 import { ChatModule } from '@progress/kendo-angular-conversational-ui';
@@ -54,6 +56,12 @@ import { LawyerComponent } from './layouts/lawyer/lawyer.component';
 import { DialogOverviewExampleDialogComponent } from './dialog-overview-example-dialog/dialog-overview-example-dialog.component';
 import { StarRatingModule } from 'angular-star-rating';
 import { OtpComponent } from './otp/otp.component';
+import { PopupComponent } from './popup/popup.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { SnackbarComponent } from './snackbar/snackbar.component';
+import { CustomSnackbarComponent } from './custom-snackbar/custom-snackbar.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
 
 @NgModule({
   imports: [
@@ -61,6 +69,7 @@ import { OtpComponent } from './otp/otp.component';
     FormsModule,
     HttpModule,
     NgbModule.forRoot(),
+    
     ModalModule.forRoot(), WavesModule, InputsModule, ButtonsModule,
     Ng4LoadingSpinnerModule.forRoot(),
     StarRatingModule.forRoot(),
@@ -70,11 +79,13 @@ import { OtpComponent } from './otp/otp.component';
     MatListModule,
     MatIconModule,
     MatButtonModule,
+    JwBootstrapSwitchNg2Module,
     MatStepperModule,
     MatFormFieldModule, MatAutocompleteModule, MatInputModule,
     FlexLayoutModule,
     NgChatModule,
     ComponentsModule,
+    MatBottomSheetModule,
     // AdminLayoutModule,
     StorageServiceModule,
     MatCardModule,
@@ -86,10 +97,11 @@ import { OtpComponent } from './otp/otp.component';
     HttpClientModule,
     MatButtonToggleModule,
     MatDialogModule,
+    MatSnackBarModule,
     AgmCoreModule.forRoot({
        apiKey: 'AIzaSyDfakKA3ZoyTGjee0GZ68rklsK0lT6ska0',
       //apiKey: 'AIzaSyC9vfNOYPOdLo1O3HpllHSwUzDlbmvD72E',
-      libraries: ['places']
+      libraries: ['places','geometry']
 
     })
   ],
@@ -106,10 +118,16 @@ import { OtpComponent } from './otp/otp.component';
     ChatComponent,
     LawyerComponent,
     DialogOverviewExampleDialogComponent,
-    OtpComponent
+    OtpComponent,
+    PopupComponent,
+    ForgotPasswordComponent,
+    NotificationsComponent,
+    SnackbarComponent,
+    CustomSnackbarComponent,
+    BottomSheetOverviewExampleSheet
   ],
-  providers: [AlertService],
-  entryComponents: [DialogOverviewExampleDialogComponent],
+  providers: [AlertService,NewNavbarComponent],
+  entryComponents: [DialogOverviewExampleDialogComponent,PopupComponent, NotificationsComponent,SnackbarComponent,CustomSnackbarComponent,BottomSheetOverviewExampleSheet],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

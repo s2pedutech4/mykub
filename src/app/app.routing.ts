@@ -13,6 +13,7 @@ import { OtpComponent } from './otp/otp.component';
 import { NewNavbarComponent } from './new-navbar/new-navbar.component';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { ChatComponent } from './chat/chat.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 
 const routes: Routes =[
@@ -29,6 +30,8 @@ const routes: Routes =[
   { path: 'otp',   component: OtpComponent },
   { path: 'profile',   component: ProfilePageComponent },
   { path: 'chat',   component: ChatComponent },
+  { path: 'forgot-password',   component: ForgotPasswordComponent },
+
 
   {
     path: '',

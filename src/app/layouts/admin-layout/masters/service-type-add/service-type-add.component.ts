@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdminMastersService } from '../../../../services/admin/admin-masters.service';
 import { ActivatedRoute,Router } from '@angular/router';
-
+import { Location } from '@angular/common';
+import { DialogOverviewExampleDialogComponent } from '../../../../dialog-overview-example-dialog/dialog-overview-example-dialog.component';
+import {MatDialog} from '@angular/material';
+import {MatSnackBar} from '@angular/material';
+import { SnackbarComponent } from '../../../../snackbar/snackbar.component';
 @Component({
   selector: 'app-service-type-add',
   templateUrl: './service-type-add.component.html',
@@ -13,7 +17,7 @@ export class ServiceTypeAddComponent implements OnInit {
   sTypeExists:boolean = false;
   servicetypes = [];
   submitted = false;
-  constructor(private formBuilder:FormBuilder,private adminmaster: AdminMastersService,private route: ActivatedRoute,private router: Router) { }
+  constructor(private formBuilder:FormBuilder,private adminmaster: AdminMastersService,private route: ActivatedRoute,private router: Router,private _location: Location,public dialog: MatDialog,private snackBar: MatSnackBar) { }
 
    ngOnInit() {
    
@@ -47,8 +51,22 @@ export class ServiceTypeAddComponent implements OnInit {
     console.log(this.service_type_Form.value)
     this.adminmaster.addService_type(this.service_type_Form.value).subscribe((z) => {
       console.log(z);
+      // const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+      //   width: '250px',
+      //   data: {title: "Success", message: "Service Type has been updated! "},
+      //   panelClass: 'myapp-no-padding-dialog'
+    
+      // });
+    
+      // dialogRef.afterClosed().subscribe(result => {
+      //   console.log('The dialog was closed');
+      //   this.router.navigate(['service-type']);
+  
+      // });
+      this.snackBar.openFromComponent(SnackbarComponent, {
+        duration: 3000,
+      });
       this.router.navigate(['service-type']);
-
     });
     
     }
@@ -59,10 +77,10 @@ export class ServiceTypeAddComponent implements OnInit {
     }
     checkSType()
     {
-      let bname = this.service_type_Form.controls.name.value;
+      let bname = this.service_type_Form.controls.type.value;
       console.log(this.servicetypes);
       let b = this.servicetypes.find(x => {
-          if(x.name === bname)
+          if(x.type === bname)
             return x;
       });
       if(b != null)
@@ -70,6 +88,10 @@ export class ServiceTypeAddComponent implements OnInit {
       else
         this.sTypeExists = false;
     }
-    
+    goToBack()
+  {
+    this._location.back();
+  
+  } 
 
 }

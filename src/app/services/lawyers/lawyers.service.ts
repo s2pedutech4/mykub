@@ -157,6 +157,11 @@ export class LawyersService {
     return this.http.get(BASE_URL + 'rest/userVerify/userId?userId='+id, this.myOptions).pipe(
       map(this.extractData));
   }
+  unmarkVerify(id): Observable<any> {
+    this.myOptions = this.auth.getMyoptions();
+    return this.http.get(BASE_URL + 'rest/userVerify/reject/userId?userId='+id, this.myOptions).pipe(
+      map(this.extractData));
+  }
     private handleError<T> (operation = 'operation', result?: T) {
       return (error: any): Observable<T> => {
     

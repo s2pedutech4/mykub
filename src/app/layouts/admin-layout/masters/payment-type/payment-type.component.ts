@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AdminMastersService } from '../../../../services/admin/admin-masters.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
-
+import { Location } from '@angular/common';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { PopupComponent } from '../../../../popup/popup.component';
 @Component({
   selector: 'app-payment-type',
   templateUrl: './payment-type.component.html',
@@ -11,7 +13,7 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 export class PaymentTypeComponent implements OnInit {
   paymenttypes = [];
   p: number = 1;
-  constructor(private spinnerService: Ng4LoadingSpinnerService,private router: Router,private adminmaster: AdminMastersService) {
+  constructor(private spinnerService: Ng4LoadingSpinnerService,private router: Router,private adminmaster: AdminMastersService,private _location: Location,private dialog: MatDialog) {
       
       
   }
@@ -25,6 +27,11 @@ export class PaymentTypeComponent implements OnInit {
   });
 }
 
+goToBack()
+{
+  this._location.back();
+
+}
   
 AddPayment_type(){
    this.router.navigate(['/payment-type-add']);
@@ -33,14 +40,31 @@ AddPayment_type(){
     this.router.navigate(['/payment-type-add'],{ queryParams: item });
    }
    delete(item){
-    this.adminmaster.deletePayment_type(item.id).subscribe((data) => {
-      console.log(data);
-      this.adminmaster.getAllPayment_types().subscribe((data) => {
-        console.log(data);
-        this.paymenttypes = data;
-    });
-  });
    
+   
+  const dialogRef = this.dialog.open(PopupComponent, {
+    width: '250px',
+    data: {title: "Delete", message: "Are you sure you want to delete payment type " + item.type + " ? "},
+    panelClass: 'myapp-no-padding-dialog'
+  
+  });
+  
+  
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed');
+    console.log(result);
+    if(result === "Delete")
+    {
+      this.adminmaster.deletePayment_type(item.id).subscribe((data) => {
+        console.log(data);
+        this.adminmaster.getAllPayment_types().subscribe((data) => {
+          console.log(data);
+          this.paymenttypes = data;
+      });
+    });
+  
+    }
+  });
    }
   
 

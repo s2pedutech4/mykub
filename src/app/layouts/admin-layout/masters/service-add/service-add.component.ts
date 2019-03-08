@@ -5,7 +5,11 @@ import { first } from 'rxjs/operators';
 import { AuthService } from '../../../../auth.service';
 import { AdminMastersService } from '../../../../services/admin/admin-masters.service';
 import { ActivatedRoute,Router } from '@angular/router';
-
+import { Location } from '@angular/common';
+import { DialogOverviewExampleDialogComponent } from '../../../../dialog-overview-example-dialog/dialog-overview-example-dialog.component';
+import {MatDialog} from '@angular/material';
+import {MatSnackBar} from '@angular/material';
+import { SnackbarComponent } from '../../../../snackbar/snackbar.component';
 @Component({
   selector: 'app-service-add',
   templateUrl: './service-add.component.html',
@@ -29,7 +33,7 @@ export class ServiceAddComponent implements OnInit {
  sNameExists:boolean = false;
  dNameExists:boolean = false;
  showOtherSteppers : boolean = false;
-  constructor(private _formBuilder: FormBuilder,private rest: RestService,private auth: AuthService,private adminmaster: AdminMastersService,private route: ActivatedRoute,private router: Router) {}
+  constructor(private _formBuilder: FormBuilder,private rest: RestService,private auth: AuthService,private adminmaster: AdminMastersService,private route: ActivatedRoute,private router: Router,private _location: Location,public dialog: MatDialog,private snackBar: MatSnackBar) {}
 
   ngOnInit() {
    
@@ -220,6 +224,20 @@ this.route.queryParams.subscribe(params => {
             let obj: any = {};
             obj.servicesBasicInfoId = data.id;
             let obj1: any = data;
+            // const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+            //   width: '250px',
+            //   data: {title: "Success", message: "Service Basic Info has been updated! "},
+            //   panelClass: 'myapp-no-padding-dialog'
+          
+            // });
+          
+            // dialogRef.afterClosed().subscribe(result => {
+            //   console.log('The dialog was closed');
+        
+            // });
+            this.snackBar.openFromComponent(SnackbarComponent, {
+              duration: 3000,
+            });
             },
             error => {
               console.log("error");
@@ -242,6 +260,19 @@ this.route.queryParams.subscribe(params => {
         data => {
             // this.alert.success('Registration successful', true);
             console.log(data);
+            // const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+            //   width: '250px',
+            //   data: {title: "Success", message: "Document has been updated! "},
+            //   panelClass: 'myapp-no-padding-dialog'
+          
+            // });
+          
+            // dialogRef.afterClosed().subscribe(result => {
+            //   console.log('The dialog was closed');        
+            // });
+            this.snackBar.openFromComponent(SnackbarComponent, {
+              duration: 3000,
+            });
             
             },
         error => {
@@ -261,7 +292,19 @@ this.route.queryParams.subscribe(params => {
     .subscribe(
         data => {
          console.log(data);
-            
+        //  const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+        //   width: '250px',
+        //   data: {title: "Success", message: "Payment Info has been updated! "},
+        //   panelClass: 'myapp-no-padding-dialog'
+      
+        // });
+      
+        // dialogRef.afterClosed().subscribe(result => {
+        //   console.log('The dialog was closed');        
+        // });
+        this.snackBar.openFromComponent(SnackbarComponent, {
+          duration: 3000,
+        });
             },
         error => {
           console.log("error");
@@ -281,8 +324,22 @@ this.route.queryParams.subscribe(params => {
         data => {
             // this.alert.success('Registration successful', true);
             console.log(data);
+            // const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+            //   width: '250px',
+            //   data: {title: "Success", message: "Providers has been updated! "},
+            //   panelClass: 'myapp-no-padding-dialog'
+          
+            // });
+          
+            // dialogRef.afterClosed().subscribe(result => {
+            //   console.log('The dialog was closed'); 
+            //   this.router.navigate(['/services']);
+       
+            // });
+            this.snackBar.openFromComponent(SnackbarComponent, {
+              duration: 3000,
+            });
             this.router.navigate(['/services']);
-
             },
         error => {
           console.log("error");
@@ -315,5 +372,11 @@ this.route.queryParams.subscribe(params => {
   else
     this.dNameExists = false;
     
+  }
+
+  goToBack()
+  {
+    this._location.back();
+  
   }
 }

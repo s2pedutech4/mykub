@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild,VERSION} from '@angular/core';
+import { Component, OnInit,ViewChild,VERSION,ElementRef} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { RestService } from '../../../rest.service';
 import { first } from 'rxjs/operators';
@@ -11,8 +11,13 @@ import { HttpClient, HttpHeaders, HttpErrorResponse, HttpRequest,HttpEventType,H
 import {SafeimgPipe} from '../safeimg.pipe'
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { Location } from '@angular/common';
+import { DialogOverviewExampleDialogComponent } from '../../../dialog-overview-example-dialog/dialog-overview-example-dialog.component';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 declare const google: any;
-
+import {MatSnackBar} from '@angular/material';
+import { SnackbarComponent } from '../../../snackbar/snackbar.component';
+import { CustomSnackbarComponent } from '../../../custom-snackbar/custom-snackbar.component';
 @Component({
   selector: 'app-lawyer-profile',
   templateUrl: './lawyer-profile.component.html',
@@ -56,10 +61,17 @@ export class LawyerProfileComponent implements OnInit {
   showmyimg:boolean = false;
     @ViewChild('stepper') stepper: MatStepper;
     @ViewChild("fileInput") fileInput;
+    @ViewChild('closeBtn') closeBtn: ElementRef;
+    @ViewChild('closeBtnEdu') closeBtnEdu: ElementRef;
+    @ViewChild('eduModalOpen') eduModalOpen: ElementRef;
+    @ViewChild('expModalOpen') expModalOpen: ElementRef;
+
+    
+
 
     myimage:any;
     newimg:any;
-  constructor(private sanitizer: DomSanitizer, private _formBuilder: FormBuilder,private rest: RestService,private auth: AuthService,private lawyer: LawyersService,private router: Router,private adminmaster: AdminMastersService) {}
+  constructor(private sanitizer: DomSanitizer, private _formBuilder: FormBuilder,private rest: RestService,private auth: AuthService,private lawyer: LawyersService,private router: Router,private adminmaster: AdminMastersService,private _location: Location,public dialog: MatDialog,private snackBar: MatSnackBar) {}
 
   change()
   {
@@ -68,9 +80,12 @@ export class LawyerProfileComponent implements OnInit {
   showProgress: boolean = false;
   progressbar:any;
   progress:any;
-  AddImage()
+  AddImage(event)
   {
-    let fi = this.fileInput.nativeElement;
+    console.log(event);
+    // let fi = this.fileInput.nativeElement;
+    let fi = event.target;
+    console.log(fi);
    if(fi.files && fi.files[0]){
     let fileToUpload:File = fi.files[0];
     this.rest.uploadLawyerImage(this.userId,fileToUpload).subscribe(event => {
@@ -94,6 +109,10 @@ export class LawyerProfileComponent implements OnInit {
           console.log(imgresp);
           this.rest.downloadUserImage(imgresp.imagepath,this.userId).subscribe(z=>{
             let reader = new FileReader();
+            this.snackBar.openFromComponent(CustomSnackbarComponent, {
+              duration: 3000,
+              data: 'Profile Image Uploaded Successfully'
+            });
           reader.addEventListener("load",()=>{
             if(reader.result != null)
             {
@@ -110,10 +129,19 @@ export class LawyerProfileComponent implements OnInit {
         });
         
       }
+    },
+    error => {
+      console.log(error);
+      this.snackBar.openFromComponent(CustomSnackbarComponent, {
+        duration: 3000,
+        data: 'Unable to Upload Image'
+      });
     });
    }
   }
   ngOnInit() {
+    // $('#expModal').modal({backdrop: 'static', keyboard: false});
+
     this.currentUser = this.auth.getCurrentUser();
 console.log(this.currentUser);
 if( this.currentUser === null || this.currentUser.role != "ROLE_LAWYER")
@@ -420,10 +448,38 @@ if( this.currentUser === null || this.currentUser.role != "ROLE_LAWYER")
         data => {
             // this.alert.success('Registration successful', true);
             console.log(data);
+            this.auth.setCurrentUser(this.personalForm.value);
+            this.snackBar.openFromComponent(SnackbarComponent, {
+              duration: 3000,
+            });
+            // const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+            //   width: '250px',
+            //   data: {title: "Success", message: "Your Personal Details has been saved! "},
+            //   panelClass: 'myapp-no-padding-dialog'
+          
+            // });
+          
+            // dialogRef.afterClosed().subscribe(result => {
+            //   console.log('The dialog was closed');
+            // });
             
             },
         error => {
           console.log("error");
+          // const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+          //   width: '250px',
+          //   data: {title: "Error", message: "Personal Details not saved! Please try again "},
+          //   panelClass: 'myapp-no-padding-dialog'
+        
+          // });
+        
+          // dialogRef.afterClosed().subscribe(result => {
+          //   console.log('The dialog was closed');
+          // });
+          this.snackBar.openFromComponent(CustomSnackbarComponent, {
+            duration: 3000,
+            data: 'Personal Details not saved! Please try again'
+          });
             // this.alert.error(error);
             // this.loading = false;
         });
@@ -440,10 +496,24 @@ if( this.currentUser === null || this.currentUser.role != "ROLE_LAWYER")
         data => {
             // this.alert.success('Registration successful', true);
             console.log(data);
+            // const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+            //   width: '250px',
+            //   data: {title: "Success", message: "Your Educational Details has been saved! "},
+            //   panelClass: 'myapp-no-padding-dialog'
+          
+            // });
+          
+            // dialogRef.afterClosed().subscribe(result => {
+            //   console.log('The dialog was closed');
+            // });
+            this.snackBar.openFromComponent(SnackbarComponent, {
+              duration: 3000,
+            });
             this.lawyer.getUserEducationalDetails(this.userId).subscribe(resp => {
               this.educationalDetails = resp;
               console.log(resp);
               this.showeduForm = false;
+              this.closeBtnEdu.nativeElement.click();
               this.educationalinfoForm.reset();
 
             });
@@ -451,6 +521,20 @@ if( this.currentUser === null || this.currentUser.role != "ROLE_LAWYER")
             },
         error => {
           console.log("error");
+          // const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+          //   width: '250px',
+          //   data: {title: "Error", message: "Educational Details not saved! Please try again "},
+          //   panelClass: 'myapp-no-padding-dialog'
+        
+          // });
+        
+          // dialogRef.afterClosed().subscribe(result => {
+          //   console.log('The dialog was closed');
+          // });
+          this.snackBar.openFromComponent(CustomSnackbarComponent, {
+            duration: 3000,
+            data: 'Educational Details not saved! Please try again'
+          });
             // this.alert.error(error);
             // this.loading = false;
         });
@@ -466,10 +550,37 @@ if( this.currentUser === null || this.currentUser.role != "ROLE_LAWYER")
         data => {
             // this.alert.success('Registration successful', true);
             console.log(data);
+            // const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+            //   width: '250px',
+            //   data: {title: "Success", message: "Your Address has been saved! "},
+            //   panelClass: 'myapp-no-padding-dialog'
+          
+            // });
+          
+            // dialogRef.afterClosed().subscribe(result => {
+            //   console.log('The dialog was closed');
+            // });
+            this.snackBar.openFromComponent(SnackbarComponent, {
+              duration: 3000,
+            });
             
             },
         error => {
           console.log("error");
+          // const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+          //   width: '250px',
+          //   data: {title: "Error", message: "Address not saved! Please try again "},
+          //   panelClass: 'myapp-no-padding-dialog'
+        
+          // });
+        
+          // dialogRef.afterClosed().subscribe(result => {
+          //   console.log('The dialog was closed');
+          // });
+          this.snackBar.openFromComponent(CustomSnackbarComponent, {
+            duration: 3000,
+            data: 'Address not saved! Please try again'
+          });
             // this.alert.error(error);
             // this.loading = false;
         });
@@ -483,7 +594,39 @@ if( this.currentUser === null || this.currentUser.role != "ROLE_LAWYER")
       console.log(barresp);
       this.lawyer.getBarDetails(this.userId).subscribe(bardata => {
         this.barData = bardata;
+        this.barDetailsForm.patchValue(this.barData);
       });
+      // const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+      //   width: '250px',
+      //   data: {title: "Success", message: "Your Bar Details has been saved! "},
+      //   panelClass: 'myapp-no-padding-dialog'
+    
+      // });
+    
+      // dialogRef.afterClosed().subscribe(result => {
+      //   console.log('The dialog was closed');
+      // });
+      this.snackBar.openFromComponent(SnackbarComponent, {
+        duration: 3000,
+      });
+      
+    },
+    error =>{
+      console.log("error");
+          // const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+          //   width: '250px',
+          //   data: {title: "Error", message: "Bar Details not saved! Please try again "},
+          //   panelClass: 'myapp-no-padding-dialog'
+        
+          // });
+        
+          // dialogRef.afterClosed().subscribe(result => {
+          //   console.log('The dialog was closed');
+          // });
+          this.snackBar.openFromComponent(CustomSnackbarComponent, {
+            duration: 3000,
+            data: 'Bar Details not saved! Please try again'
+          });
     });
   }
   updateExperience()
@@ -495,11 +638,27 @@ if( this.currentUser === null || this.currentUser.role != "ROLE_LAWYER")
     .subscribe(
         data => {
             // this.alert.success('Registration successful', true);
+            // const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+            //   width: '250px',
+            //   data: {title: "Success", message: "Your Experienced Details has been saved! "},
+            //   panelClass: 'myapp-no-padding-dialog'
+          
+            // });
+          
+            // dialogRef.afterClosed().subscribe(result => {
+            //   console.log('The dialog was closed');
+            // });
+
+            this.snackBar.openFromComponent(SnackbarComponent, {
+              duration: 3000,
+            });
             console.log(data);
             this.lawyer.getUserExpDetails(this.userId).subscribe(resp => {
               this.experianceDetails = resp;
               this.showexpForm = false;
+              this.closeBtn.nativeElement.click();
               this.experienceDetailsForm.reset();
+
               console.log(resp);
             });
             // this.router.navigate(['/user-dashboard']);
@@ -507,6 +666,20 @@ if( this.currentUser === null || this.currentUser.role != "ROLE_LAWYER")
             },
         error => {
           console.log("error");
+          // const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+          //   width: '250px',
+          //   data: {title: "Error", message: "Experienced Details not saved! Please try again "},
+          //   panelClass: 'myapp-no-padding-dialog'
+        
+          // });
+        
+          // dialogRef.afterClosed().subscribe(result => {
+          //   console.log('The dialog was closed');
+          // });
+          this.snackBar.openFromComponent(CustomSnackbarComponent, {
+            duration: 3000,
+            data: 'Experienced Details not saved! Please try again'
+          });
             // this.alert.error(error);
             // this.loading = false;
         });
@@ -633,11 +806,15 @@ if( this.currentUser === null || this.currentUser.role != "ROLE_LAWYER")
   {
     this.showeduForm = true;
     this.educationalinfoForm.patchValue(item);
+    this.eduModalOpen.nativeElement.click();
+
   }
   editexperianceDetails(item)
   {
     this.showexpForm = true;
     this.experienceDetailsForm.patchValue(item);
+    this.expModalOpen.nativeElement.click();
+
   }
   showeducationalForm()
   {
@@ -651,4 +828,28 @@ if( this.currentUser === null || this.currentUser.role != "ROLE_LAWYER")
     this.showexpForm = true;
 
   }
+   goToBack()
+  {
+    this._location.back();
+  
+  }
+  cancelEdu()
+  {
+    this.closeBtnEdu.nativeElement.click();
+    this.educationalinfoForm.reset();
+
+  }
+  cancelExp()
+  {
+    this.closeBtn.nativeElement.click();
+    this.experienceDetailsForm.reset();
+
+ 
+  }
+  goToChangePass()
+  {
+    this.router.navigate(['/lawyer-change-pass']);
+  }
+  
+
 }

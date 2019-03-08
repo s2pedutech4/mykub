@@ -5,8 +5,15 @@
 i:hover{
     cursor: pointer;
 }
-
+/* 
 .ngx-pagination{
 position: relative;
-left: 75%;
+left: 80%;
+} */
+.pagination{
+    text-align: center;
 }
+
+.cdk-global-overlay-wrapper, .cdk-overlay-container {
+    z-index: 99999 !important;
+ }

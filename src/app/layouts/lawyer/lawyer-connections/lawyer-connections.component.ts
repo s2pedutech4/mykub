@@ -5,6 +5,7 @@ import { AuthService } from '../../../auth.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { LawyersService } from '../../../services/lawyers/lawyers.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-lawyer-connections',
@@ -22,7 +23,7 @@ export class LawyerConnectionsComponent implements OnInit {
   p: number = 1;
   // @ViewChild('myModal') myModal;
 
-  constructor(private _formBuilder: FormBuilder,private spinnerService: Ng4LoadingSpinnerService,private router: Router,private rest: RestService,private auth: AuthService,private lawyer: LawyersService) { }
+  constructor(private _formBuilder: FormBuilder,private spinnerService: Ng4LoadingSpinnerService,private router: Router,private rest: RestService,private auth: AuthService,private lawyer: LawyersService,private _location: Location) { }
 
   ngOnInit() {
     this.filterForm = this._formBuilder.group({
@@ -133,6 +134,11 @@ if(typeof this.currentUser === "undefined" || this.currentUser.role != "ROLE_LAW
         return x;
     });
     console.log(this.connectionsfilter);
+  }
+  goToBack()
+  {
+    this._location.back();
+  
   }
 }
 

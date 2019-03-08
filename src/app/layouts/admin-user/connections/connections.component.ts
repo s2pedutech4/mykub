@@ -4,6 +4,7 @@ import { RestService } from '../../../rest.service';
 import { AuthService } from '../../../auth.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-connections',
@@ -19,7 +20,7 @@ export class ConnectionsComponent implements OnInit {
   showTable: boolean = true;
   p: number = 1;
 
-  constructor(private _formBuilder: FormBuilder,private spinnerService: Ng4LoadingSpinnerService,private router: Router,private rest: RestService,private auth: AuthService) { }
+  constructor(private _formBuilder: FormBuilder,private spinnerService: Ng4LoadingSpinnerService,private router: Router,private rest: RestService,private auth: AuthService,private _location: Location) { }
 
   ngOnInit() {
     this.filterForm = this._formBuilder.group({
@@ -112,5 +113,10 @@ Cancel()
 {
   this.connectionsfilter = this.connections;
     this.showTable = true;
+}
+goToBack()
+{
+  this._location.back();
+
 }
 }

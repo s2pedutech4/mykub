@@ -2,7 +2,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdminMastersService } from '../../../../services/admin/admin-masters.service';
 import { ActivatedRoute,Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-
+import { Location } from '@angular/common';
+import { DialogOverviewExampleDialogComponent } from '../../../../dialog-overview-example-dialog/dialog-overview-example-dialog.component';
+import {MatDialog} from '@angular/material';
+import {MatSnackBar} from '@angular/material';
+import { SnackbarComponent } from '../../../../snackbar/snackbar.component';
 @Component({
   selector: 'app-account-add',
   templateUrl: './account-add.component.html',
@@ -13,7 +17,7 @@ export class AccountAddComponent implements OnInit {
   accountForm: FormGroup;
   accountExists:boolean = false;
   submitted =  false;
-  constructor(private formBuilder:FormBuilder,private adminmaster: AdminMastersService,private route: ActivatedRoute,private router: Router) { }
+  constructor(private formBuilder:FormBuilder,private adminmaster: AdminMastersService,private route: ActivatedRoute,private router: Router,private _location: Location,public dialog: MatDialog,private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.accountForm = this.formBuilder.group({
@@ -44,8 +48,22 @@ export class AccountAddComponent implements OnInit {
   console.log(this.accountForm.value)
   this.adminmaster.addAccount(this.accountForm.value).subscribe((z) => {
     console.log(z);
-    this.router.navigate(['account']);
+    // const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+    //   width: '250px',
+    //   data: {title: "Success", message: "Account has been updated! "},
+    //   panelClass: 'myapp-no-padding-dialog'
+  
+    // });
+  
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log('The dialog was closed');
+    //   this.router.navigate(['account']);
 
+    // });
+    this.snackBar.openFromComponent(SnackbarComponent, {
+      duration: 3000,
+    });
+    this.router.navigate(['account']);
   });
   
   }
@@ -71,6 +89,11 @@ export class AccountAddComponent implements OnInit {
       this.accountExists = false;
   }
   
-  
+  goToBack()
+  {
+    this._location.back();
+
+  }
+
 
 }

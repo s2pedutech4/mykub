@@ -3,6 +3,7 @@ import { AuthService } from '../../../auth.service';
 import { ActivatedRoute,Router } from '@angular/router';
 import { RestService } from '../../../rest.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-chat-lawyer',
@@ -21,7 +22,7 @@ export class ChatLawyerComponent implements OnInit {
     forumId: new FormControl([]),  
     id: new FormControl([])
   });
-  constructor(private router: Router,private auth: AuthService,private route: ActivatedRoute,private rest: RestService) { }
+  constructor(private router: Router,private auth: AuthService,private route: ActivatedRoute,private rest: RestService,private _location: Location) { }
 
   ngOnInit() {
 
@@ -70,5 +71,9 @@ export class ChatLawyerComponent implements OnInit {
     });
 
   }
+  goToBack()
+{
+  this._location.back();
 
+}
 }

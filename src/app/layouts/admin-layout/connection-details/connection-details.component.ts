@@ -6,6 +6,7 @@ import { AuthService } from '../../../auth.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { HttpEventType,HttpEvent,HttpResponse } from '@angular/common/http';
 import { LawyersService } from '../../../services/lawyers/lawyers.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-connection-details',
@@ -30,7 +31,7 @@ showmyimg:boolean = false;
   
 @ViewChild("fileInput") fileInput;
 
-  constructor(private spinnerService: Ng4LoadingSpinnerService,private route: ActivatedRoute,private router: Router,private rest: RestService,private auth: AuthService,private lawyer: LawyersService) { }
+  constructor(private spinnerService: Ng4LoadingSpinnerService,private route: ActivatedRoute,private router: Router,private rest: RestService,private auth: AuthService,private lawyer: LawyersService, private _location: Location) { }
 
   ngOnInit() {
     this.spinnerService.show();
@@ -192,6 +193,10 @@ showmyimg:boolean = false;
     this.showProgress = false;
   }
 
+  goToBack()
+  {
+    this._location.back();
 
+  }
 
 }

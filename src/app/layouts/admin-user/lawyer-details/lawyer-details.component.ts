@@ -6,6 +6,7 @@ import { AuthService } from '../../../auth.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { HttpClient, HttpHeaders, HttpErrorResponse, HttpRequest,HttpEventType,HttpEvent,HttpResponse } from '@angular/common/http';
 import { LawyersService } from '../../../services/lawyers/lawyers.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-lawyer-details',
@@ -47,7 +48,7 @@ ReviewForm: FormGroup = new FormGroup({
   providerId: new FormControl([])
 
 });
-  constructor(private spinnerService: Ng4LoadingSpinnerService,private route: ActivatedRoute,private router: Router,private rest: RestService,private auth: AuthService,private lawyer: LawyersService) { }
+  constructor(private spinnerService: Ng4LoadingSpinnerService,private route: ActivatedRoute,private router: Router,private rest: RestService,private auth: AuthService,private lawyer: LawyersService,private _location: Location) { }
 
   ngOnInit() {
     this.spinnerService.show();
@@ -330,4 +331,9 @@ ReviewForm: FormGroup = new FormGroup({
     });
   }
 
+  goToBack()
+  {
+    this._location.back();
+  
+  }
 }

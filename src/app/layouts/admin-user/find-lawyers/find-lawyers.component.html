@@ -1,8 +1,22 @@
 <div class="main-content">
     <div class="container-fluid">
+        <div class="row" style="margin-bottom:25px;">
+            <div class="col-md-2">
+              <!-- <button class="btn btn-info" (click)="goToBack()">Back</button> -->
+            </div>
+            <div class="col-md-8">
+  
+            </div>
+            <div class="col-md-2">
+            <ng-template #tipContent  matTooltipClass="primary-tooltip" ><b>{{formated_address}}</b></ng-template>
+          <span [ngbTooltip]="tipContent" placement="bottom" (click)="frame.show()" style="cursor:pointer;font-size:20px;font-weight: bold" >  
+            <i class="fa fa-map-marker" aria-hidden="true" ></i>&nbsp;
+            {{locAdd}}</span>
+          </div>
+        </div>
         <div class="row">   
             <div class="col-md-12">
-              <div *ngIf="CategorySearch && ViewMap" class="searchbar" style="position: absolute; z-index: 10;width: 50%;  left: 40%;" >
+              <div *ngIf="CategorySearch && ViewMap" class="searchbar"  >
                 <!-- <div class="col col-lg-6 col-md-6 col-sm-4 col-xs-12"></div> -->
                 <form *ngIf="searchshow">
                 <div class="form-group">
@@ -29,7 +43,7 @@
             </form>
                  
                   </div>
-                  <div *ngIf="!CategorySearch && ViewMap" class="searchbar" style="position: absolute; z-index: 10;width: 50%;  left: 40%;" >
+                  <div *ngIf="!CategorySearch && ViewMap" class="searchbar"  >
                       <!-- <div class="col col-lg-6 col-md-6 col-sm-4 col-xs-12"></div> -->
                       <form *ngIf="searchshow">
                       <div class="form-group">
@@ -50,25 +64,113 @@
                   </form>
                        
                         </div>
-                  
-                        <div *ngIf="ViewMap" style="position: absolute; z-index: 10;width: 10%;  left: 2%;top: -7%;">
+                        <!-- <div *ngIf="showLocation" class="searchbar" style="position: absolute; z-index: 10;width: 50%;  left: 30%; top: 20%; color:black;font-weight: bold;" >
+                          Your Location : {{userAddress.formatted_address}}
+                        </div> -->
+                        <!-- <div *ngIf="ViewMap" style="position: absolute; z-index: 10;width: 10%;  left: 2%;">
                           <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
                             <mat-button-toggle value="bold" (click)="SearchCategory()">Category</mat-button-toggle>
                             <mat-button-toggle value="italic" (click)="SearchService()">Services</mat-button-toggle>
+                           
                           </mat-button-toggle-group>
-                        </div>
-                        <div style="position: absolute; z-index: 10;width: 10%;right: 10%; top: -7%;" class="maptoggle" *ngIf="showTableToggle">
+                        </div> -->
+                              
+              <button mat-raised-button *ngIf="ViewMap" mat-raised-button class="bottom-toggle" (click)="basicModal.show();showBottomSheet = true" ><i class="material-icons">
+expand_less
+
+</i></button>
+                        <!-- <div *ngIf="ViewMap && showTableToggle" style="position: absolute; z-index: 10;width: 10%;  left: 2%;top: 10%;" class="distance">
+                          <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+                            <mat-button-toggle value="bold" (click)="setditancekm(5.0)">5Km</mat-button-toggle>
+                            <mat-button-toggle value="bold" (click)="setditancekm(10.0)">10Km</mat-button-toggle>
+                            <mat-button-toggle value="bold" (click)="setditancekm(15.0)">15Km</mat-button-toggle>
+                            <mat-button-toggle value="bold" (click)="setditancekm(25.0)">25Km</mat-button-toggle>
+                            <mat-button-toggle value="bold" (click)="setditancekm(50.0)">50Km</mat-button-toggle>
+                          </mat-button-toggle-group>
+                        </div> -->
+                        <!-- <div style="position: absolute; z-index: 10;width: 10%;right: 15%; " class="maptoggle" *ngIf="showTableToggle" [style.top] = "ViewMap ? '0%' : '-10%'">
                           <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
                             <mat-button-toggle value="bold" (click)="showMap()">Map View</mat-button-toggle>
                             <mat-button-toggle value="italic" (click)="showTable()">Table View</mat-button-toggle>
                           </mat-button-toggle-group>
-                        </div>
+                        </div> -->
                         <div>
                   <div id="map" [style.display]="ViewMap ? 'block' : 'none'"></div>
                 </div>
+                <div mdbModal #basicModal="mdbModal" class="modal fade bottom " tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-frame modal-bottom" role="document">
+    <div class="modal-content">
+      <!-- <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel">Modal title</h4>
+      </div> -->
+      <div class="modal-body">
+          
+              <div class="row" style="text-align:center">
+                  <div class="col-md-4 "></div>
+                  <i class="material-icons col-md-4" (click)="showBottomSheet = false;basicModal.hide()" style="font-size:25px;font-weight:bold;">
+                      expand_more
+                  </i>
+                  <div class="col-md-4"></div>
+
+              </div>
+              <!-- <mat-nav-list> -->
+                <div class="row" style="text-align:center">
+                  <div class="col" (click)="basicModal.hide();showBottomSheet = false;SearchCategory()">
+                      <i class="material-icons" style="color:rgb(55, 110, 117);font-size:30px;">account_balance
+                        </i>
+                      <br>
+                      Category
+              
+                  </div>
+                  <div class="col" (click)="basicModal.hide();showBottomSheet = false;SearchService()">
+                      <i class="material-icons" style="color:rgb(55, 110, 117);font-size:30px;">school</i>
+                       <br>
+                      Service
+              
+                    </div>
+                    <div *ngIf="showTableToggle && ViewMap" class="col" (click)="basicModal.hide();showBottomSheet = false;showTable()">
+                        <i class="material-icons" style="color:rgb(55, 110, 117);font-size:30px;">chrome_reader_mode
+                          </i>
+                         <br>
+                        Table View
                 
+                      </div>
+                      <!-- <div *ngIf="showTableToggle && !ViewMap" class="col" (click)="basicModal.hide();showBottomSheet = false;showMap()">
+                          <i class="material-icons" style="color:rgb(55, 110, 117);font-size:30px;">school</i>
+                           <br>
+                          Map View
+                  
+                        </div> -->
+              
+                </div>
+                   
+                  <div class="row" style="padding: 0 10px;text-align:center" *ngIf="ViewMap && showTableToggle">
+                    <div class="col"></div>
+                          <span mat-line class="col" style="font-weight:bold;font-size: 15px;"> Distance</span>
+                          <div class="col"></div>
+                  </div>
+                  <div class="row" *ngIf="ViewMap && showTableToggle">
+                          <button class="col btn" (click)="basicModal.hide();showBottomSheet = false;setditancekm(5.0)">5Km</button>
+                          <button class="col btn" (click)="basicModal.hide();showBottomSheet = false;setditancekm(10.0)">10Km</button>
+                          <button class="col btn" (click)="basicModal.hide();showBottomSheet = false;setditancekm(15.0)">15Km</button>
+                          <button class="col btn" (click)="basicModal.hide();showBottomSheet = false;setditancekm(25.0)">25Km</button>
+                          <button class="col btn" (click)="basicModal.hide();showBottomSheet = false;setditancekm(50.0)" >50Km</button>
+                      </div>
+                <!-- </mat-nav-list> -->
+                  </div>
+      <!-- <div class="modal-footer">
+        <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="basicModal.hide()" mdbWavesEffect>Close</button>
+        <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Save!</button>
+      </div> -->
+    </div>
+  </div>
+</div> 
                 
-                  <div class="container-fluid" *ngIf="!ViewMap"  style="margin-top: 20px;">
+                  <div class="container-fluid" *ngIf="!ViewMap"  >
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card card-plain">
@@ -77,6 +179,11 @@
                                           <h4 class="card-title  mt-0">Lawyers</h4>
                                           <p class="card-category"> Here is a list of Lawyers</p>
                                         </div>
+                                         <div class="col" >
+                                  <h2 style="float:right;cursor: pointer;
+                                  " (click)="showMap()" title="Map View"><i class="material-icons">my_location</i>
+                                  </h2>
+                                </div> 
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -110,7 +217,7 @@
                                                         {{item.address}}
                                                     </td>
                                                     <td>
-                                                        {{item.ratings}}
+                                                        {{item.ratings  | number: '2.2-2'}}
                                                     </td>
                                                     <td  >
                                                       <button class="btn btn-info" (click)="myFunction(item.userId)" >Connect</button>                       
@@ -126,5 +233,122 @@
                 </div>
             </div>
         </div>
+    <div mdbModal #frame="mdbModal" class="modal fade top" id="frameModalTop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+      <!-- [ngStyle]="{'display':display}"> -->
+        <div class="modal-dialog modal-notify modal-warning" role="document">
+          <!--Content-->
+          <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header text-center">
+              <h4 class="modal-title white-text w-100 font-weight-bold py-2">Search Your Location</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="frame.hide()" #closeBtn>
+                <!-- <span aria-hidden="true" class="white-text">&times;</span> -->
+              </button>
+            </div>
+      
+            <!--Body-->
+            <div class="modal-body">
+              <!-- <div class="md-form row modal-form">
+               
+                <label  class="col col-lg-2 col-md-2">Type your address</label>
+                <input (keyup)="searchAdd($event)" type="text" id="form3" class="form-control col col-lg-8 col-md-8" [(ngModel)]="addSearchTerm">
+              </div>
+              <ul *ngFor="let a of addresses">
+                <li>{{a}}</li>
+              </ul>
+              <div class="modal-footer justify-content-center">        
+                <button type="button" mdbBtn color="info" outline="true" class="waves-effect justify-content-center" mdbWavesEffect (click)="modalSearch()">Send
+                <i class="fa fa-paper-plane-o ml-1"></i>
+              </button>
+            </div> -->
+      
+            <div class="form-group">
+                <input #addresstext placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [formControl]="searchControl">
+              </div>
+              <!-- <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+                <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+              </agm-map> -->
+            </div>
+      
+            <!--Footer-->
+            <!-- <div class="modal-footer justify-content-center">
+              
+            </div> -->
+          </div>
+          <!--/.Content-->
+        </div>
+      </div>
+</div>       
+<div mdbModal #basicModal="mdbModal" class="modal fade bottom " tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-frame modal-bottom" role="document">
+    <div class="modal-content">
+      <!-- <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel">Modal title</h4>
+      </div> -->
+      <div class="modal-body">
+          
+              <div class="row" style="text-align:center">
+                  <div class="col-md-4 "></div>
+                  <i class="material-icons col-md-4" (click)="showBottomSheet = false;basicModal.hide()" style="font-size:25px;font-weight:bold;">
+                      expand_more
+                  </i>
+                  <div class="col-md-4"></div>
+
+              </div>
+              <!-- <mat-nav-list> -->
+                <div class="row" style="text-align:center">
+                  <div class="col-md-4" (click)="basicModal.hide();showBottomSheet = false;SearchCategory()">
+                      <i class="material-icons" style="color:rgb(55, 110, 117);font-size:30px;">account_balance
+                        </i>
+                      <br>
+                      Category
+              
+                  </div>
+                  <div class="col" (click)="basicModal.hide();showBottomSheet = false;SearchService()">
+                      <i class="material-icons" style="color:rgb(55, 110, 117);font-size:30px;">school</i>
+                       <br>
+                      Service
+              
+                    </div>
+                    <div *ngIf="showTableToggle && ViewMap" class="col" (click)="basicModal.hide();showBottomSheet = false;showTable()">
+                        <i class="material-icons" style="color:rgb(55, 110, 117);font-size:30px;">chrome_reader_mode
+                          </i>
+                         <br>
+                        Table View
+                
+                      </div>
+                      <!-- <div *ngIf="showTableToggle && !ViewMap" class="col" (click)="basicModal.hide();showBottomSheet = false;showMap()">
+                          <i class="material-icons" style="color:rgb(55, 110, 117);font-size:30px;">school</i>
+                           <br>
+                          Map View
+                  
+                        </div> -->
+              
+                </div>
+                   
+                  <div class="row" style="padding: 0 10px;text-align:center" *ngIf="ViewMap && showTableToggle">
+                    <div class="col"></div>
+                          <span mat-line class="col" style="font-weight:bold;font-size: 15px;"> Distance</span>
+                          <div class="col"></div>
+                  </div>
+                  <div class="row" *ngIf="ViewMap && showTableToggle">
+                          <button class="col btn" (click)="basicModal.hide();showBottomSheet = false;setditancekm(5.0)">5Km</button>
+                          <button class="col btn" (click)="basicModal.hide();showBottomSheet = false;setditancekm(10.0)">10Km</button>
+                          <button class="col btn" (click)="basicModal.hide();showBottomSheet = false;setditancekm(15.0)">15Km</button>
+                          <button class="col btn" (click)="basicModal.hide();showBottomSheet = false;setditancekm(25.0)">25Km</button>
+                          <button class="col btn" (click)="basicModal.hide();showBottomSheet = false;setditancekm(50.0)" >50Km</button>
+                      </div>
+                <!-- </mat-nav-list> -->
+                  </div>
+      <!-- <div class="modal-footer">
+        <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="basicModal.hide()" mdbWavesEffect>Close</button>
+        <button type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect>Save!</button>
+      </div> -->
     </div>
-</div>              
+  </div>
+</div>       
+</div>

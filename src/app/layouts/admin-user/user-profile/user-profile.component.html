@@ -1,0 +1,77 @@
+<div class="main-content">
+    <div class="container-fluid">
+            <div class="row">
+                    <div class="col-md-2">
+                      <!-- <button class="btn btn-info" (click)="goToBack()">Back</button> -->
+                    </div>
+                    <div class="col-md-10">
+          
+                    </div>
+                </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">User Profile</h4>
+                        <!-- <p class="card-category">Complete your profile</p> -->
+                    </div>
+                    <div class="card-body">
+                       
+                        <form [formGroup]="personalForm" (ngSubmit)="updateUser()" #formone="ngForm">
+                            <ng-template matStepLabel>Personal</ng-template>
+                            <mat-form-field>
+                              <input matInput placeholder="Firstname" formControlName="firstName" required>
+                            </mat-form-field>
+                            <mat-error style="font-size: 13px" *ngIf="personalForm.controls.firstName.invalid && personalForm.controls.firstName.touched" >
+                              Firstname is required
+                          </mat-error>
+                            <mat-form-field>
+                              <input matInput placeholder="Lastname" formControlName="lastName" required>
+                            </mat-form-field>
+                            <mat-error style="font-size: 13px" *ngIf="personalForm.controls.lastName.invalid && personalForm.controls.lastName.touched" >
+                              Lastname is required
+                          </mat-error>
+                            <mat-form-field>
+                              <input matInput placeholder="Mobile" formControlName="mobileNum" required>
+                            </mat-form-field>
+                            <mat-error style="font-size: 13px" *ngIf="personalForm.controls.mobileNum.invalid && personalForm.controls.mobileNum.touched" >
+                              <span *ngIf="personalForm.controls.mobileNum.hasError('required')">Mobile Number is required</span>
+                              <span  *ngIf="personalForm.controls.mobileNum.hasError('pattern')">Enter a valid Mobile Number</span>                                              
+                             </mat-error>
+                            <mat-form-field>
+                              <input matInput placeholder="Email" formControlName="emailId" required>
+                            </mat-form-field>
+                            <mat-error style="font-size: 13px" *ngIf="personalForm.controls.emailId.invalid && personalForm.controls.emailId.touched" >
+                              <span *ngIf="personalForm.controls.emailId.hasError('required')">Email is required</span>
+                              <span  *ngIf="personalForm.controls.emailId.hasError('pattern')">Enter a valid Email</span>                                               
+                             </mat-error>   
+                            <mat-form-field>
+                              <input matInput placeholder="Username" formControlName="username" required>
+                            </mat-form-field>
+                            <mat-error style="font-size: 13px" *ngIf="personalForm.controls.username.invalid && personalForm.controls.username.touched" >
+                              Username is required
+                          </mat-error>
+                            <!-- <mat-form-field>
+                              <input matInput type="password" placeholder="Password" formControlName="password" required>
+                            </mat-form-field>
+                            <mat-error style="font-size: 13px" *ngIf="personalForm.controls.password.invalid && personalForm.controls.password.touched" >
+                              <span *ngIf="personalForm.controls.password.hasError('required')">Password is required</span>
+                              <span  *ngIf="personalForm.controls.password.hasError('minlength')">Enter a 6 digit password</span>   
+                             </mat-error> -->
+                           
+                            <div>
+                                <button class="btn btn-info" [routerLink]="['/user-change-pass']" >Change Password</button>
+                              <button class="btn btn-info" [disabled]="!personalForm.valid" type="submit" >Save</button>
+                              <button class="btn" [routerLink]="['/user-dashboard']">Cancel</button>
+                            </div>
+                          </form>
+                    
+                    </div>
+                </div>
+            
+               
+            </div>
+           
+        </div>
+    </div>
+  </div>

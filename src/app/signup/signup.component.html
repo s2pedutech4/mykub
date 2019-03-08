@@ -34,7 +34,7 @@
                                         </div>
                                             <div style="margin-bottom: 13px">
                                             <div class="form-group" data-validate="Enter email">
-                                                <input class="input100 form-control" type="text" placeholder="Email" formControlName="emailId"  [ngClass]="{ 'is-invalid': usersubmitted && f1.emailId.errors }" email>
+                                                <input (keyup)="checkUserEmail()" class="input100 form-control" type="text" placeholder="Email" formControlName="emailId"  [ngClass]="{ 'is-invalid': usersubmitted && f1.emailId.errors }" email>
                                                 <span class="focus-input100" data-placeholder="&#xf191;"></span>
                                                 </div>
                                             <mat-error style="font-size: 13px" *ngIf="UserRegisterForm.controls.emailId.invalid && UserRegisterForm.controls.emailId.touched" >
@@ -42,24 +42,33 @@
                                                 <span *ngIf="UserRegisterForm.controls.emailId.hasError('required')">Email is required</span>
                                                 <span  *ngIf="UserRegisterForm.controls.emailId.hasError('pattern')">Enter a valid Email</span>
                                             </mat-error>
+                                            <mat-error style="font-size: 13px" *ngIf="useremailExists">
+                                                Email is already present.Please enter another Email.
+                                              </mat-error>
                                         </div>
                                         <div style="margin-bottom: 13px">
                                             <div class="form-group" data-validate="Enter mobile">
-                                                <input class="input100 form-control" type="text" placeholder="Mobile" formControlName="mobileNum"  [ngClass]="{ 'is-invalid': usersubmitted && f1.mobileNum.errors }">
+                                                <input class="input100 form-control" type="text" placeholder="Mobile" formControlName="mobileNum"  [ngClass]="{ 'is-invalid': usersubmitted && f1.mobileNum.errors }" (keyup)="checkUserMobile()">
                                                 <span class="focus-input100" data-placeholder="&#xf191;"></span>
                                                 </div>
                                             <mat-error style="font-size: 13px" *ngIf="UserRegisterForm.controls.mobileNum.invalid && UserRegisterForm.controls.mobileNum.touched" >
                                                 <span *ngIf="UserRegisterForm.controls.mobileNum.hasError('required')">Mobile Number is required</span>
                                                 <span  *ngIf="UserRegisterForm.controls.mobileNum.hasError('pattern')">Enter a valid Mobile Number</span>                                            </mat-error>
+                                                   <mat-error style="font-size: 13px" *ngIf="usermobileExists">
+                                                    Mobile Number is already present.Please enter another mobile number.
+                                                  </mat-error>
                                         </div>
                                         <div style="margin-bottom: 13px">
                                             <div class="form-group" data-validate="Enter password">
-                                                    <input class="input100 form-control" type="text" placeholder="User Name" formControlName="username"  [ngClass]="{ 'is-invalid': usersubmitted && f1.username.errors }">
+                                                    <input class="input100 form-control" type="text" placeholder="User Name" formControlName="username"  [ngClass]="{ 'is-invalid': usersubmitted && f1.username.errors }" (keyup)="checkUserName()">
                                                     <span class="focus-input100" data-placeholder="&#xf191;"></span>
                                                 </div>
                                                 <mat-error style="font-size: 13px" *ngIf="UserRegisterForm.controls.username.invalid && UserRegisterForm.controls.username.touched" >
                                                     User Name is required
                                                 </mat-error>
+                                                <mat-error style="font-size: 13px" *ngIf="userNameExists">
+                                                    User Name is already present.Please enter another User Name.
+                                                  </mat-error>
                                             </div>
                                             <div style="margin-bottom: 13px">
                                                 <div class="form-group" data-validate="Enter password">
@@ -71,9 +80,24 @@
                                                         <span  *ngIf="UserRegisterForm.controls.password.hasError('minlength')">Enter a 6 digit password</span>
                                                     </mat-error>
                                                 </div>
+
+                                                <div style="margin-bottom: 13px">
+                                                    <div class="form-group" data-validate="Enter password">
+                                                            <input (keyup)="checkUserPass()" class="input100 form-control" [(ngModel)]="cnfrmUserPassword" [ngModelOptions]="{standalone: true}" type="password" placeholder="Confirm Password" #cnfrmUserPass="ngModel" required>
+                                                            <span class="focus-input100" data-placeholder="&#xf191;"></span>
+ 
+                                                        </div>
+                                                        <mat-error style="font-size: 13px" *ngIf="cnfrmUserPass.touched">
+                                                            <span *ngIf="cnfrmUserPass.errors?.required">Confirm Password is required</span>
+                                                           
+                                                        </mat-error>
+                                                        <mat-error style="font-size: 13px"  *ngIf="errorcnfrmuserpass">
+                                                            <span >Password Dont Match</span>
+                                                        </mat-error>
+                                                    </div>
                             
                                             <div class="container-login100-form-btn form-group">
-                                                <button class="login100-form-btn" [disabled]="!UserRegisterForm.valid" type="submit" >
+                                                <button class="login100-form-btn" [disabled]="!UserRegisterForm.valid || useremailExists || usermobileExists || userNameExists || errorcnfrmuserpass" type="submit" >
                                                     Sign Up
                                                 </button>
                                                 <button  class="btn cancel" (click)="Cancel()">Cancel</button>
@@ -120,32 +144,52 @@
                                         </div>
                                         <div style="margin-bottom: 13px">
                                             <div class="form-group" data-validate="Enter email">
-                                                <input class="input100 form-control" type="text" placeholder="Email" formControlName="emailId"  [ngClass]="{ 'is-invalid': lawyersubmitted && f2.emailId.errors }">
+                                                <input (keyup)="checkLawyerEmail()" class="input100 form-control" type="text" placeholder="Email" formControlName="emailId"  [ngClass]="{ 'is-invalid': lawyersubmitted && f2.emailId.errors }">
                                                 <span class="focus-input100" data-placeholder="&#xf191;"></span>
                                             </div>
                                             <mat-error style="font-size: 13px" *ngIf="LawyerRegisterForm.controls.emailId.invalid && LawyerRegisterForm.controls.emailId.touched" >
                                                 <span *ngIf="LawyerRegisterForm.controls.emailId.hasError('required')">Email is required</span>
-                                                <span  *ngIf="LawyerRegisterForm.controls.emailId.hasError('pattern')">Enter a valid Email</span>                                            </mat-error>
+                                                <span  *ngIf="LawyerRegisterForm.controls.emailId.hasError('pattern')">Enter a valid Email</span> 
+                                            <!-- <span *ngIf="lawyeremailExists">
+                                                Email is already present.Please enter another Email.
+                                            </span>                                           -->
+                                         </mat-error>
+                                                <mat-error style="font-size: 13px" *ngIf="lawyeremailExists">
+                                                    Email is already present.Please enter another Email.
+                                                  </mat-error>
                                         </div>
                                         <div style="margin-bottom: 13px">
                                             <div class="form-group" data-validate="Enter mobile">
-                                                <input class="input100 form-control" type="text" placeholder="Mobile" formControlName="mobileNum"  [ngClass]="{ 'is-invalid': lawyersubmitted && f2.mobileNum.errors }">
+                                                <input (keyup)="checkLawyerMobile()" class="input100 form-control" type="text" placeholder="Mobile" formControlName="mobileNum"  [ngClass]="{ 'is-invalid': lawyersubmitted && f2.mobileNum.errors }">
                                                 <span class="focus-input100" data-placeholder="&#xf191;"></span>
                                             </div>
                                             <mat-error style="font-size: 13px" *ngIf="LawyerRegisterForm.controls.mobileNum.invalid && LawyerRegisterForm.controls.mobileNum.touched" >
                                                 <span *ngIf="LawyerRegisterForm.controls.mobileNum.hasError('required')">Mobile Number is required</span>
-                                                <span  *ngIf="LawyerRegisterForm.controls.mobileNum.hasError('pattern')">Enter a valid Mobile Number</span>                                             </mat-error>
+                                                <span  *ngIf="LawyerRegisterForm.controls.mobileNum.hasError('pattern')">Enter a valid Mobile Number</span> 
+                                            <!-- <span *ngIf="lawyermobileExists">
+                                                Mobile Number is already present.Please enter another mobile number.
+                                            </span> -->
+                                            </mat-error>
+                                                <mat-error style="font-size: 13px" *ngIf="lawyermobileExists">
+                                                    Mobile Number is already present.Please enter another mobile number.
+                                                  </mat-error>
                                         </div>
                                             
                                             
                                         <div style="margin-bottom: 13px">
                                             <div class="form-group" data-validate="Enter password">
-                                                    <input class="input100 form-control" type="text" placeholder="User Name" formControlName="username"  [ngClass]="{ 'is-invalid': lawyersubmitted && f2.username.errors }">
+                                                    <input (keyup)="checkLawyerName()" class="input100 form-control" type="text" placeholder="User Name" formControlName="username"  [ngClass]="{ 'is-invalid': lawyersubmitted && f2.username.errors }">
                                                     <span class="focus-input100" data-placeholder="&#xf191;"></span>
                                                 </div>
                                                 <mat-error style="font-size: 13px" *ngIf="LawyerRegisterForm.controls.username.invalid && LawyerRegisterForm.controls.username.touched" >
                                                     User Name is required
+                                                    <!-- <span *ngIf="lawyerNameExists">
+                                                        User Name is already present.Please enter another User Name.
+                                                    </span> -->
                                                 </mat-error>
+                                                <mat-error style="font-size: 13px" *ngIf="lawyerNameExists">
+                                                    User Name is already present.Please enter another User Name.
+                                                  </mat-error>
                                             </div>
                                             <div style="margin-bottom: 13px">
                                                 <div class="form-group" data-validate="Enter password">
@@ -156,7 +200,20 @@
                                                         <span *ngIf="LawyerRegisterForm.controls.password.hasError('required')">Password is required</span>
                                                         <span  *ngIf="LawyerRegisterForm.controls.password.hasError('minlength')">Enter a 6 digit password</span>     </mat-error>
                                                 </div>
-                                        
+                                                <div style="margin-bottom: 13px">
+                                                    <div class="form-group" data-validate="Enter password">
+                                                            <input (keyup)="checkLawyerPass()" class="input100 form-control" [(ngModel)]="cnfrmLawyerPassword" [ngModelOptions]="{standalone: true}" type="password" placeholder="Confirm Password" #cnfrmLawyerPass="ngModel" required>
+                                                            <span class="focus-input100" data-placeholder="&#xf191;"></span>
+ 
+                                                        </div>
+                                                        <mat-error style="font-size: 13px" *ngIf="cnfrmLawyerPass.touched">
+                                                            <span *ngIf="cnfrmLawyerPass.errors?.required">Confirm Password is required</span>
+                                                           
+                                                        </mat-error>
+                                                        <mat-error style="font-size: 13px"  *ngIf="errorcnfrmlwyerpass">
+                                                            <span >Password Don't Match</span>
+                                                        </mat-error>
+                                                    </div>
                                             <!-- <div class="contact100-form-checkbox">
                                                 <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
                                                 <label class="label-checkbox100" for="ckb1">
@@ -165,7 +222,7 @@
                                             </div> -->
                             
                                             <div class="container-login100-form-btn form-group">
-                                                <button class="login100-form-btn" [disabled]="!LawyerRegisterForm.valid" type="submit">
+                                                <button class="login100-form-btn" [disabled]="!LawyerRegisterForm.valid || lawyeremailExists || lawyermobileExists || lawyerNameExists || errorcnfrmlwyerpass" type="submit">
                                                     Sign Up
                                                 </button>
                                                 <button  class="btn cancel" (click)="Cancel()">Cancel</button>
@@ -216,35 +273,44 @@
                                         </div>
                                         <div style="margin-bottom: 13px">
                                             <div class="form-group" data-validate="Enter email">
-                                                <input class="input100 form-control" type="text" placeholder="Email" formControlName="emailId"  [ngClass]="{ 'is-invalid': lawfirmsubmitted && f3.emailId.errors }">
+                                                <input (keyup)="checkFirmEmail()" class="input100 form-control" type="text" placeholder="Email" formControlName="emailId"  [ngClass]="{ 'is-invalid': lawfirmsubmitted && f3.emailId.errors }">
                                                 <span class="focus-input100" data-placeholder="&#xf191;"></span>
                                             </div>
                                             <mat-error style="font-size: 13px" *ngIf="LawFirmRegisterForm.controls.emailId.invalid && LawFirmRegisterForm.controls.emailId.touched" >
                                                 <span *ngIf="LawFirmRegisterForm.controls.emailId.hasError('required')">Email is required</span>
                                                 <span  *ngIf="LawFirmRegisterForm.controls.emailId.hasError('pattern')">Enter a valid Email</span>                                             </mat-error>
+                                                <mat-error style="font-size: 13px" *ngIf="firmemailExists">
+                                                    Email is already present.Please enter another Email.
+                                                  </mat-error>
                                         </div>
 
                                         <div style="margin-bottom: 13px">
                                             <div class="form-group" data-validate="Enter mobile">
-                                                <input class="input100 form-control" type="text" placeholder="Mobile" formControlName="mobileNum"  [ngClass]="{ 'is-invalid': lawfirmsubmitted && f3.mobileNum.errors }">
+                                                <input (keyup)="checkFirmMobile()" class="input100 form-control" type="text" placeholder="Mobile" formControlName="mobileNum"  [ngClass]="{ 'is-invalid': lawfirmsubmitted && f3.mobileNum.errors }">
                                                 <span class="focus-input100" data-placeholder="&#xf191;"></span>
                                             </div>
                                             <mat-error style="font-size: 13px" *ngIf="LawFirmRegisterForm.controls.mobileNum.invalid && LawFirmRegisterForm.controls.mobileNum.touched" >
                                                 <span *ngIf="LawFirmRegisterForm.controls.mobileNum.hasError('required')">Mobile Number is required</span>
                                                 <span  *ngIf="LawFirmRegisterForm.controls.mobileNum.hasError('pattern')">Enter a valid Mobile Number</span>                                               </mat-error>
+                                                <mat-error style="font-size: 13px" *ngIf="firmmobileExists">
+                                                    Mobile Number is already present.Please enter another mobile number.
+                                                  </mat-error>
                                         </div>
 
                                         <div style="margin-bottom: 13px">
                                             <div class="form-group" data-validate="Enter password">
-                                                    <input class="input100 form-control" type="text" placeholder="User Name" formControlName="username"  [ngClass]="{ 'is-invalid': lawfirmsubmitted && f3.username.errors }">
+                                                    <input (keyup)="checkFirmName()" class="input100 form-control" type="text" placeholder="User Name" formControlName="username"  [ngClass]="{ 'is-invalid': lawfirmsubmitted && f3.username.errors }">
                                                     <span class="focus-input100" data-placeholder="&#xf191;"></span>
                                                 </div>
                                                 <mat-error style="font-size: 13px" *ngIf="LawFirmRegisterForm.controls.username.invalid && LawFirmRegisterForm.controls.username.touched" >
                                                     User Name is required
-                                                    <span
-                                                    *ngIf="LawFirmRegisterForm.controls.mobileNum.hasError('pattern')">Enter a valid Mobile Number</span>
+                                                    <!-- <span
+                                                    *ngIf="LawFirmRegisterForm.controls.mobileNum.hasError('pattern')">Enter a valid Mobile Number</span> -->
                                                     
                                                 </mat-error>
+                                                <mat-error style="font-size: 13px" *ngIf="firmNameExists">
+                                                    User Name is already present.Please enter another User Name.
+                                                  </mat-error>
                                             </div>
                                             <div style="margin-bottom: 13px">
                                                 <div class="form-group" data-validate="Enter password">
@@ -256,7 +322,20 @@
                                                         <span  *ngIf="LawFirmRegisterForm.controls.password.hasError('minlength')">Enter a 6 digit password</span>
                                                     </mat-error>
                                                 </div>
-                                        
+                                                <div style="margin-bottom: 13px">
+                                                    <div class="form-group" data-validate="Enter password">
+                                                            <input (keyup)="checkFirmPass()" class="input100 form-control" [(ngModel)]="cnfrmFirmPassword" [ngModelOptions]="{standalone: true}" type="password" placeholder="Confirm Password" #cnfrmFirmPass="ngModel" required>
+                                                            <span class="focus-input100" data-placeholder="&#xf191;"></span>
+ 
+                                                        </div>
+                                                        <mat-error style="font-size: 13px" *ngIf="cnfrmFirmPass.touched">
+                                                            <span *ngIf="cnfrmFirmPass.errors?.required">Confirm Password is required</span>
+                                                           
+                                                        </mat-error>
+                                                        <mat-error style="font-size: 13px"  *ngIf="errorcnfrmfirmpass">
+                                                            <span >Password Don't Match</span>
+                                                        </mat-error>
+                                                    </div>
                                             <!-- <div class="contact100-form-checkbox">
                                                 <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
                                                 <label class="label-checkbox100" for="ckb1">
@@ -265,7 +344,7 @@
                                             </div> -->
                             
                                             <div class="container-login100-form-btn form-group">
-                                                <button class="login100-form-btn"  [disabled]="!LawFirmRegisterForm.valid" type="submit" >
+                                                <button class="login100-form-btn"  [disabled]="true" type="submit" >
                                                     Sign Up
                                                 </button>
                                                 <button  class="btn cancel" (click)="Cancel()">Cancel</button>

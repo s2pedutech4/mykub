@@ -1,5 +1,13 @@
 <div class="main-content">
   <div class="container-fluid">
+        <div class="row">
+                <div class="col-md-2">
+                  <button class="btn btn-info" [routerLink]="['/masters-page']">Back</button>
+                </div>
+                <div class="col-md-10">
+      
+                </div>
+            </div>
       <div class="row">
           
           <div class="col-md-12">
@@ -53,8 +61,11 @@
                                        </td> -->
                                       </tr>
                               </tbody>
-                              <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                              <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
                           </table>
+                          <div class="pagination">
+                                <pagination-controls class="col-md-12 " (pageChange)="p = $event"></pagination-controls>
+                          </div>
                       </div>
                   </div>
               </div>

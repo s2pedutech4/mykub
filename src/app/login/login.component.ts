@@ -9,6 +9,8 @@ import { HttpClient, HttpHeaders, HttpErrorResponse,HttpParams, HttpResponse } f
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 import { DialogOverviewExampleDialogComponent } from '../dialog-overview-example-dialog/dialog-overview-example-dialog.component';
+import { CustomSnackbarComponent } from '../custom-snackbar/custom-snackbar.component';
+import {MatSnackBar} from '@angular/material';
 
 
 @Component({
@@ -31,9 +33,10 @@ export class LoginComponent implements OnInit {
       private route: ActivatedRoute,
       private router: Router,
       private auth: AuthService,
-      private rest: RestService,public dialog: MatDialog) {}
+      private rest: RestService,public dialog: MatDialog,private snackBar: MatSnackBar) {}
 
   ngOnInit() {
+    this.spinnerService.hide();
     this.route.queryParams.subscribe(params => {
      console.log(params);
      if(params.hasOwnProperty('providerSelected'))
@@ -70,7 +73,6 @@ export class LoginComponent implements OnInit {
   // }
   onSubmit() {
     this.submitted = true;
-    this.spinnerService.show();
 
     // stop here if form is invalid
     if (this.loginForm.invalid) {
@@ -88,6 +90,7 @@ export class LoginComponent implements OnInit {
 }
 Login()
 {
+  this.spinnerService.show();
 
 console.log(this.loginForm.value);
 console.log("Login called");
@@ -103,15 +106,19 @@ console.log("Login called");
             this.loginForm.reset();
             this.spinnerService.hide();
 
-            const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
-              width: '250px',
-              data: {title: "Error", message: "Login Unsuccessful! "},
-              panelClass: 'myapp-no-padding-dialog'
+            // const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+            //   width: '250px',
+            //   data: {title: "Error", message: "Login Unsuccessful! "},
+            //   panelClass: 'myapp-no-padding-dialog'
 
-            });
+            // });
         
-            dialogRef.afterClosed().subscribe(result => {
-              console.log('The dialog was closed');
+            // dialogRef.afterClosed().subscribe(result => {
+            //   console.log('The dialog was closed');
+            // });
+            this.snackBar.openFromComponent(CustomSnackbarComponent, {
+              duration: 3000,
+              data: 'Login Unsuccessful!!'
             });
           
           }
@@ -156,6 +163,7 @@ console.log("Login called");
 
 LoginOnConnect()
 {
+  this.spinnerService.show();
   console.log(this.loginForm.value);
   console.log("LoginOnConnect called");
   this.auth.Login(this.loginForm.value)
@@ -168,15 +176,19 @@ LoginOnConnect()
               {
                 this.spinnerService.hide();
     
-                const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
-                  width: '250px',
-                  data: {title: "Error", message: "Login Unsuccessful! "},
-                  panelClass: 'myapp-no-padding-dialog'
+                // const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+                //   width: '250px',
+                //   data: {title: "Error", message: "Login Unsuccessful! "},
+                //   panelClass: 'myapp-no-padding-dialog'
 
-                });
+                // });
             
-                dialogRef.afterClosed().subscribe(result => {
-                  console.log('The dialog was closed');
+                // dialogRef.afterClosed().subscribe(result => {
+                //   console.log('The dialog was closed');
+                // });
+                this.snackBar.openFromComponent(CustomSnackbarComponent, {
+                  duration: 3000,
+                  data: 'Login Unsuccessful!!'
                 });
               
               }

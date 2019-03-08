@@ -1,13 +1,20 @@
 <div class="main-content">
     <div class="container-fluid">
+            <div class="row">
+                    <div class="col-md-2">
+                      <button class="btn btn-info" [routerLink]="['/lawyers']">Back</button>
+                    </div>
+                    <div class="col-md-10">
+          
+                    </div>
+                </div>
         <div class="row">
-            
             <div class="col-md-12">
                 <div class="card card-profile">
-                    <div class="card-avatar">
+                    <div *ngIf="showmyimg" class="card-avatar">
                         <a>
                             <!-- <img class="img" src="./assets/img/faces/marc.jpg" /> -->
-                            <img [src]="myimage | safe: 'url'">
+                            <img  [src]="myimage | safe: 'url'">
                         </a>
                     </div>
                     <div class="card-body">
@@ -16,7 +23,7 @@
                        
                         <div class="card-description">
                           <div class="row">
-                             <div class="col col-lg-3 col-md-3">
+                             <div class="col col-lg-3 col-md-3 col-sm-6">
                                <div style="text-align:start;margin-bottom: 15px;">
                                   <i class="	fa fa-envelope-o" aria-hidden="true"></i>                               <b class=""> Email : </b>
                                   <span class="">{{LawyerDetils.emailId}}</span>
@@ -27,31 +34,28 @@
                               <span class="">{{LawyerDetils.mobileNum}}</span>
                             </div>
                             </div>
-                            <div class="col col-lg-3 col-md-3">
-                                <div style="text-align:start;margin-bottom: 15px;">
-                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                    <b class="">   Adress : </b>
-                                <span class="">{{LawyerDetils.address}}, {{LawyerDetils.zipcode}}</span>
-                                </div>
+                            <div class="col col-lg-3 col-md-3 col-sm-6">
+                              <div style="text-align:start;margin-bottom: 15px;">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                <b class="">   Address : </b>
+                            <span class="">{{LawyerDetils.address}}, {{LawyerDetils.zipcode}}</span>
+                            </div>
+                               
+                            </div>
+                            <div class="col col-lg-3 col-md-3 col-sm-6">
+                              <div style="text-align:start;margin-bottom: 15px;">
+                                <i class="fa fa-balance-scale" aria-hidden="true"></i>        
+                                <b class="">Service : </b>
+                                <span class="">{{LawyerDetils.serviceName}}</span>
+                            </div>
                                 <div style="text-align:start">
                                  <i class="fa fa-star" aria-hidden="true"></i>
                                  <b class=""> Ratings : </b>
                              <span class="">{{LawyerDetils.ratings | number: '1.2-2'}}</span>
                               </div>
                               </div>
-                              <div class="col col-lg-3 col-md-3">
-                                  <div style="text-align:start;margin-bottom: 15px;">
-                                      <i class="fa fa-check-square" aria-hidden="true"></i>         
-                                      <b class=""> Win Ratio : </b>
-                                      <span class="">{{LawyerDetils.winRatio | number: '2.2-2'}}</span>
-                                  </div>
-                                  <div style="text-align:start;margin-bottom: 15px;">
-                                      <i class="fa fa-balance-scale" aria-hidden="true"></i>        
-                                      <b class="">Service : </b>
-                                      <span class="">{{LawyerDetils.serviceName}}</span>
-                                  </div>
-                              </div>
-                              <div class="col col-lg-3 col-md-3">
+                           
+                              <div class="col col-lg-3 col-md-3 col-sm-6">
                                     <div style="text-align:start;margin-bottom: 15px;">
                                             <i class="fa fa-balance-scale" aria-hidden="true"></i>       
                                             <b class=""> Bar Council No : </b>
@@ -125,9 +129,12 @@
                                             {{item.qualificationStatus}}
                                         </td>
                                                 </tr>
-                                                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                                <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
                                         </tbody>
                                     </table>
+                                    <div class="pagination">
+                                        <pagination-controls class="col-md-12 " (pageChange)="p = $event"></pagination-controls>
+                                  </div>
                                 </div>
                             </div>
                         </div>
@@ -184,13 +191,17 @@
                                           {{item.barRegistrationNo}}
                                       </td> -->
                                               </tr>
-                                              <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                              <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
                                       </tbody>
                                   </table>
+                                  <div class="pagination">
+                                    <pagination-controls class="col-md-12 " (pageChange)="p = $event"></pagination-controls>
+                              </div>
                               </div>
                           </div>
                       </div> 
-                      <button *ngIf="showMarkVerify" class="btn btn-info btn-round" (click)="markVerified()">Mark Verified</button><hr>        
+                      <button *ngIf="showMarkVerify" class="btn btn-info btn-round" (click)="markVerified()">Verify</button>
+                      <button *ngIf="!showMarkVerify" class="btn btn-info btn-round" (click)="markUnVerified()">Un-Verify</button><hr>        
                             
   
                             

@@ -1,14 +1,19 @@
-import {Component, ElementRef, OnInit, VERSION, ViewChild,NgZone,TemplateRef} from '@angular/core';
+import {Component, ElementRef, OnInit, VERSION, ViewChild,NgZone,TemplateRef,Inject,EventEmitter} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RestService } from '../../../rest.service';
-import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
+import { LocationStrategy, PathLocationStrategy} from '@angular/common';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { AuthService } from '../../../auth.service';
+import { Location } from '@angular/common';
+import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
+import {MatBottomSheet, MatBottomSheetRef} from '@angular/material';
 
-
+import { MapsAPILoader } from '@agm/core';
+import { Input,Output } from '@angular/core';
 declare const google: any;
+declare var $: any;
 
 interface Marker {
 lat: number;
@@ -24,13 +29,14 @@ draggable?: boolean;
 })
 export class FindLawyersComponent implements OnInit {
 
-  @ViewChild('navbarToggler') navbarToggler: ElementRef;
+  @ViewChild('closeBtn') closeBtn: ElementRef;
 
   angularVersion: string;
   ViewMap : boolean = true;
 collapsed = true;
   title = 'app';
   serviceId: any;
+  showBottomSheet= false;
 
   allservices : Array<any> = [];
   SelectedCategory: any;
@@ -38,7 +44,12 @@ collapsed = true;
   CategorySearchData: Array<any> = [];
   tableData: any = [];
   showTableToggle: boolean = false;
-   
+  setDistance: any = 5.0;
+  serviceData: any;
+  categoryData: any;
+  isCategory: boolean = true;
+  locAdd: any = "";
+
     myFunction(id)
     {
          console.log(id);
@@ -48,6 +59,7 @@ collapsed = true;
          //obj.serviceId = this.SelectedCategory[0].id;
          //hard coding to 1
          obj.serviceId = this.serviceId;
+         obj.userId = this.auth.getCurrentUser().id;
          this.rest.getAllServices().subscribe((z) => {
             console.log(z);
             let service: any = {};
@@ -101,13 +113,16 @@ searchService : string;
 searchCity : string;
 loginFormModalEmail = new FormControl('', Validators.email);
 loginFormModalPassword = new FormControl('', Validators.required);
-
+formated_address: any = "";
 myControl = new FormControl();
 options: string[] = [];
 data : any;
+showLocation: boolean = false;
 
 searchshow : boolean = true;
 mapOptions : {};
+searchControl = new FormControl();
+
 search(): void {
   let term = this.searchTerm;
   // this.items = this.itemsCopy.filter(elem => elem.name.toLowerCase().indexOf(term) > -1);
@@ -120,10 +135,29 @@ toggleSearch(){
      this.collapsed = !this.collapsed;
    }
 
-constructor(private auth: AuthService,private router : Router,public _ngZone: NgZone,private modalService: NgbModal,private rest: RestService) {
+constructor(private auth: AuthService,private router : Router,public _ngZone: NgZone,private modalService: NgbModal,private rest: RestService,private _location: Location,@Inject(LOCAL_STORAGE) private storage: WebStorageService,private mapsAPILoader: MapsAPILoader,private bottomSheet: MatBottomSheet) {
 }
 
 ngOnInit() {
+    let add:any = this.storage.get("userAdd");
+    console.log(add);
+    if(add === null){
+        this.userAddress = add;
+        this.formated_address = this.userAddress.formatted_address;
+        this.locAdd = this.userAddress.address_components[0].short_name;
+        this.showLocation = true;
+        $('#frameModalTop').modal({backdrop: 'static', keyboard: false});
+        $('#frameModalTop').modal('show');
+    }
+    else{
+        this.userAddress = add;
+        this.formated_address = this.userAddress.formatted_address;
+        this.locAdd = this.userAddress.address_components[0].short_name;
+        this.showLocation = true;
+    }
+//     var modal = document.getElementById('frameModalTop');
+// modal.backdrop = "static";
+// modal.keyboard = false;
 
     this.userdata = this.auth.getCurrentUser();
     console.log(this.userdata);
@@ -132,6 +166,7 @@ ngOnInit() {
         this.router.navigate(['/login']);
 
     }
+    
       this.rest.getAllServices().subscribe((data) => {
           console.log(data);
           // this.allservices = [];
@@ -319,7 +354,7 @@ addMarker(user){
                 showRating = 0;
             }else
            showRating = ratings/data.length;
-            let infoContent: string = '<div><ul style="font-weight:bold;font-size:20px"> <li>Name : ' +  lawyerName +'</li><li>Court Name : ' + courtName + '</li><li>Ratings : ' +  showRating + '</li></ul><button class="btn btn-info " style="background-color: #13B9CE" onclick="window.angularComponentRef.zone.run(() => {window.angularComponentRef.component.myFunction(\'' + user.userId + '\');})">Connect to Lawyer</button></div>';
+            let infoContent: string = '<div><ul style="font-weight:bold;font-size:20px"> <li>Name : ' +  lawyerName +'</li><li>Court Name : ' + courtName + '</li><li>Ratings : ' +  showRating + '</li></ul><button class="btn btn-info " style="background-color: #13B9CE" onclick="window.angularComponentRef.zone.run(() => {window.angularComponentRef.component.myFunction(\'' + user.userId + '\');})">Connect</button></div>';
             
             infoWindow.setContent(infoContent);
             // console.log("i="+i);
@@ -332,15 +367,15 @@ addMarker(user){
     
     }
 collapseNav() {
-  if (this.navBarTogglerIsVisible()) {
-    console.log('collapseNav in NavigationComponent clicking navbarToggler')
-    this.navbarToggler.nativeElement.click();
-  }
+//   if (this.navBarTogglerIsVisible()) {
+//     console.log('collapseNav in NavigationComponent clicking navbarToggler')
+//     this.navbarToggler.nativeElement.click();
+//   }
 }
 
 private navBarTogglerIsVisible() {
-  const isVisible: boolean = (this.navbarToggler.nativeElement.offsetParent !== null);
-  return isVisible;
+//   const isVisible: boolean = (this.navbarToggler.nativeElement.offsetParent !== null);
+//   return isVisible;
 }
 
 GoToLogin(){
@@ -360,14 +395,27 @@ GoToSignUp(){
   SearchCategory()
   {
       this.CategorySearch = true;
+      this.map = new google.maps.Map(document.getElementById("map"), this.mapOptions);  
+                this.myControl.setValue(""); 
+                    this.tableData = [];
+
   }
   SearchService()
   {
       this.CategorySearch = false;
+      this.map = new google.maps.Map(document.getElementById("map"), this.mapOptions);  
+                this.myControl.setValue(""); 
+                this.tableData = [];
+
   }
   SelectCategory(item)
   {
+    this.categoryData = item;
+    this.isCategory = true;
+
     this.showTableToggle = true;
+    this.categoryData = item;
+
     this.tableData = [];
       this.map = new google.maps.Map(document.getElementById("map"), this.mapOptions);    
 
@@ -426,8 +474,19 @@ GoToSignUp(){
                                   });
                               });
                   });
-              this.addMarker(x);
-              this.tableData.push(o);
+            //   this.addMarker(x);
+            //   this.tableData.push(o);
+             let markerLoc = new google.maps.LatLng(x.lat, x.lon);
+             let add:any = this.storage.get("userAdd");
+                const center = new google.maps.LatLng(add.lat, add.lng);
+                const  distanceInKm = google.maps.geometry.spherical.computeDistanceBetween(markerLoc, center) / 1000;
+                console.log(distanceInKm);
+                if(distanceInKm <  this.setDistance)
+                {
+                        this.addMarker(x);
+                        this.tableData.push(o);
+                }
+                
               }
               });
               // this.addMarker(user);
@@ -436,6 +495,9 @@ GoToSignUp(){
       
  }
  SelectService(item){
+    this.isCategory = false;
+    this.serviceData = item;
+
   this.showTableToggle = true;
   this.tableData = [];
     this.map = new google.maps.Map(document.getElementById("map"), this.mapOptions);    
@@ -495,9 +557,20 @@ GoToSignUp(){
                              o.lawyerName = lawyerName;
                          });
                      });
-         this.addMarker(x);
-         this.tableData.push(o);
-            }
+        //  this.addMarker(x);
+        //  this.tableData.push(o);
+        //     }
+        let markerLoc = new google.maps.LatLng(x.lat, x.lon);
+        let add:any = this.storage.get("userAdd");
+        const center = new google.maps.LatLng(add.lat, add.lng);
+        const  distanceInKm = google.maps.geometry.spherical.computeDistanceBetween(markerLoc, center) / 1000;
+        console.log(distanceInKm);
+        if(distanceInKm <  this.setDistance)
+        {
+                this.addMarker(x);
+                this.tableData.push(o);
+        }
+        }
          });
         
          // this.addMarker(user);
@@ -558,4 +631,107 @@ GoToSignUp(){
   {
       this.ViewMap = false;
   }
+  goToBack()
+{
+  this._location.back();
+
 }
+openBottomSheet(): void {
+    // this.bottomSheet.open(BottomSheet);
+    this.showBottomSheet = true;
+
+  }
+addresses:any = [];
+addSearchTerm:string = "";
+@ViewChild("search")
+public searchElementRef: ElementRef;
+ngAfterViewInit() {
+this.searchAdd();
+}
+userAddress:any = {};
+searchAdd()
+{
+  this.mapsAPILoader.load().then(() => {
+      
+      let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
+        types: ["address"]
+      });
+     
+      autocomplete.addListener("place_changed", () => {
+          //this.invokeEvent(autocomplete.getPlace());
+          console.log(autocomplete.getPlace());
+          this.userAddress = autocomplete.getPlace();
+          var lat = this.userAddress.geometry.location.lat();
+          // get lng
+          var lng = this.userAddress.geometry.location.lng();
+          // console.log(lat+"-"+lng);
+          this.userAddress.lat = lat;
+          this.userAddress.lng = lng;
+          // console.log(this.userAddress);
+          this.storage.set("userAdd",this.userAddress);
+          this.formated_address = this.userAddress.formatted_address;
+          this.locAdd = this.userAddress.address_components[0].short_name;
+          this.showLocation = true;
+          this.map = new google.maps.Map(document.getElementById("map"), this.mapOptions);    
+          this.setDistance = 5.0;
+          this.myControl.setValue("");  
+          this.tableData = [];
+
+        //   if(this.isCategory)
+        //   {
+        //       this.SelectCategory(this.categoryData);
+        //   }
+        //   else{
+        //       this.SelectService(this.serviceData);
+        //   }
+          // $("#frameModalTop").modal("hide"); 
+          // jQuery("#frameModalTop").modal("hide");
+          this.closeBtn.nativeElement.click();
+                  this.searchControl.setValue("");
+
+     
+      });
+    });
+
+}
+@Input() adressType: string;
+@ViewChild('addresstext') addresstext: any;
+@Output() setAddress: EventEmitter<any> = new EventEmitter();
+invokeEvent(place: Object) {
+  this.setAddress.emit(place);
+}
+setditancekm(data)
+{
+  this.setDistance = data;
+  console.log(this.setDistance);
+  if(this.isCategory)
+  {
+      this.SelectCategory(this.categoryData);
+  }
+  else{
+      this.SelectService(this.serviceData);
+  }
+}
+
+
+}
+
+
+@Component({
+    selector: 'bottom-sheet',
+    templateUrl: 'bottom-sheet.html',
+  })
+  export class BottomSheet {
+      show: false;
+    constructor(private bottomSheetRef: MatBottomSheetRef<BottomSheet>) {}
+  
+    openLink(event: MouseEvent): void {
+      this.bottomSheetRef.dismiss();
+      event.preventDefault();
+    }
+    closeBottomSheet()
+    {
+        this.bottomSheetRef.dismiss();
+
+    }
+  }

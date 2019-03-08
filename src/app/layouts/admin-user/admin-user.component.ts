@@ -15,9 +15,9 @@ declare interface RouteInfo {
 }
 export const ROUTES: RouteInfo[] = [
     { path: '/user-dashboard', title: 'Dashboard',  icon: 'dashboard', class: '' },
-
+    { path: '/user-profile', title: 'User Profile',  icon: 'person', class: '' },
     { path: '/find-lawyers', title: 'Find Lawyers',  icon: 'search', class: '' },
-    { path: '/connections-lawyers', title: 'Connections',  icon: 'person', class: '' },
+    { path: '/connections-lawyers', title: 'Connections',  icon: 'people', class: '' },
 
 
     // { path: '/maps', title: 'Maps',  icon:'location_on', class: '' },
@@ -112,5 +112,8 @@ export class AdminUserComponent implements OnInit {
       }
       return bool;
   }
-
+  passBall()
+  {
+      
+  }
 }

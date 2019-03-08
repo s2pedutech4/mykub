@@ -4,6 +4,7 @@ import { RestService } from '../../../rest.service';
 import { AuthService } from '../../../auth.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { AdminMastersService } from '../../../services/admin/admin-masters.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-connections',
@@ -15,7 +16,7 @@ export class ConnectionsComponent implements OnInit {
   connections = [];
   currentUser: any;
   p: number = 1;
-  constructor(private spinnerService: Ng4LoadingSpinnerService,private router: Router,private rest: RestService,private auth: AuthService,private adminmaster: AdminMastersService) { }
+  constructor(private spinnerService: Ng4LoadingSpinnerService,private router: Router,private rest: RestService,private auth: AuthService,private adminmaster: AdminMastersService,private _location: Location) { }
 
   ngOnInit() {
     this.spinnerService.show();
@@ -88,6 +89,11 @@ if(typeof this.currentUser === "undefined" || this.currentUser.role != "ROLE_ADM
     obj.userId = item.details.userId;
     obj.transactionId = item.details.id;
     this.router.navigate(['/connections-details'],{ queryParams: obj });
+
+  }
+  goToBack()
+  {
+    this._location.back();
 
   }
 }

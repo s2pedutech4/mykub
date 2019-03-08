@@ -64,10 +64,11 @@
                     <button [disabled]="!otpForm.valid" type="submit" class="login100-form-btn" style="margin-right:5px;">
                         Submit
                     </button>
-                    <button class="login100-form-btn" (click)="resendOtp()">
+                    <!-- <button class="login100-form-btn" (click)="resendOtp()">
                         Resend OTP
-                    </button>
+                    </button> -->
                 </div>
+               
                 
 <!-- 
                 <div class="text-center p-t-90 row">
@@ -79,6 +80,12 @@
                     </a>    
                 </div> -->
             </form>
+            <div class="container-login100-form-btn form-group" style="margin-top:10px;">
+                   
+                <button class="login100-form-btn" (click)="resendOtp()">
+                    Resend OTP
+                </button>
+            </div>
         </div>
     </div>
 </div>

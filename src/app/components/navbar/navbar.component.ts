@@ -4,6 +4,9 @@ import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common'
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { AuthService } from '../../auth.service';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+
+import { PopupComponent } from '../../popup/popup.component';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -17,7 +20,7 @@ export class NavbarComponent implements OnInit {
     private sidebarVisible: boolean;
     @Input() title;
 
-    constructor(location: Location,  private element: ElementRef, private router: Router,private auth: AuthService) {
+    constructor(location: Location,  private element: ElementRef, private router: Router,private auth: AuthService,public dialog: MatDialog) {
       this.location = location;
           this.sidebarVisible = false;
     }
@@ -129,15 +132,32 @@ export class NavbarComponent implements OnInit {
         
     }
     logout(){
-        this.auth.LogOut()
-        .pipe(first())
-        .subscribe(
-          data => {
-                // this.alert.success('Registration successful', true);
-                console.log(data);
-                this.router.navigate(['/login']);
+
+        const dialogRef = this.dialog.open(PopupComponent, {
+            width: '250px',
+            data: {title: "Logout", message: "Are you sure you want to logout? "},
+            panelClass: 'myapp-no-padding-dialog'
 
           });
+      
+          
+          dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed');
+            console.log(result);
+            if(result === "Logout")
+            {
+                this.auth.LogOut()
+            .pipe(first())
+            .subscribe(
+              data => {
+                    // this.alert.success('Registration successful', true);
+                    console.log(data);
+                    this.router.navigate(['']);
+    
+              });
+            }
+          });
+       
 
     }
 

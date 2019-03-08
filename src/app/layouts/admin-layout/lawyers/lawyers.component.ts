@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AdminMastersService } from '../../../services/admin/admin-masters.service';
 import { Router } from '@angular/router';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-lawyers',
@@ -11,7 +12,7 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 export class LawyersComponent implements OnInit {
   p: number = 1;
   lawyers: any = [];
-  constructor(private adminmaster: AdminMastersService,private router: Router,private spinnerService: Ng4LoadingSpinnerService) { }
+  constructor(private adminmaster: AdminMastersService,private router: Router,private spinnerService: Ng4LoadingSpinnerService,private _location: Location) { }
 
   ngOnInit() {
     this.spinnerService.show();
@@ -27,7 +28,7 @@ export class LawyersComponent implements OnInit {
             if(lawyerresp.admin_verified)
               obj.status = "Verified";
             else
-              obj.status = "Pending";
+              obj.status = "Un-Verified";
             this.lawyers.push(obj);
           }
         });
@@ -39,7 +40,15 @@ export class LawyersComponent implements OnInit {
   }
   GoToLawyerDetails(item)
   {
-    this.router.navigate(['/lawyers-details'],{ queryParams: item });
+    let obj: any = {};
+    obj.id = item.id;
+    obj.status = item.status;
+    this.router.navigate(['/lawyers-details'],{ queryParams: obj });
+
+  }
+   goToBack()
+  {
+    this._location.back();
 
   }
 

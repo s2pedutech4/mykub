@@ -1,0 +1,59 @@
+.modal-content{
+    width: 150% !important;
+    display: inline-block;
+    position: absolute;
+    left: -25%;
+  }
+    .modal-header{
+      background-color: #13B9CE;
+    }
+    .modal-body{
+      background-color: #F4F4F4;
+  
+    }
+    label{
+      font-size: 15px;
+      font-weight: bold;
+    }
+    .modal-form{
+      margin-bottom: 10px;
+    }
+    ::ng-deep .pac-container {
+        z-index: 100000;
+      }
+
+      // .top-table
+      // {
+      //   top: -10%;
+      // }
+      .modal-bottom {
+        top: calc(100% - 230px); 
+      }
+    
+              .bottom-toggle{
+                position: absolute;
+                 z-index: 10;
+                            top: 94%; 
+                            left: 47%;
+              }
+              .searchbar{
+                position: absolute; z-index: 10;width: 50%;  left: 40%;
+              }
+              @media screen and (max-width: 959px) {
+              .bottom-toggle{
+                
+                top: 85% !important; 
+                left: 47% !important;
+  }
+  .searchbar{
+    top: 5%;
+    width: 80% !important;
+    left: 13% !important;
+  }
+  .modal-dialog
+  {
+    width:70% !important;
+    left:10% !important;
+  }
+ 
+}

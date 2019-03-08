@@ -11,6 +11,7 @@ import { AddLawyerComponent } from './add-lawyer/add-lawyer.component';
 import {MatStepperModule} from '@angular/material/stepper';
 // import { LawyerComponent } from './lawyer.component';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import {
   MatButtonModule,
@@ -29,7 +30,8 @@ import { ModalModule, WavesModule, InputsModule, ButtonsModule } from 'angular-b
 import { LawyerFiltersComponent } from './lawyer-filters/lawyer-filters.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {NgxPaginationModule} from 'ngx-pagination';
-import { SafeimgPipe } from './safeimg.pipe'; // <-- import the module
+import { SafeimgPipe } from './safeimg.pipe';
+import { ChangePassComponent } from './change-pass/change-pass.component'; // <-- import the module
 
 @NgModule({
   imports: [
@@ -47,8 +49,9 @@ import { SafeimgPipe } from './safeimg.pipe'; // <-- import the module
     Ng4LoadingSpinnerModule,
     MatProgressBarModule,
     NgxPaginationModule,
-    ModalModule, WavesModule, InputsModule, ButtonsModule,MatButtonToggleModule
+    ModalModule, WavesModule, InputsModule, ButtonsModule,MatButtonToggleModule,MatSnackBarModule
+    
   ],
-  declarations: [LawyerDashboardComponent, LawyerSerivesComponent, AddLawyerComponent, LawyerProfileComponent, LawyerConnectionsComponent, UserDetailsComponent, ChatUserComponent, LawyerFiltersComponent, SafeimgPipe]
+  declarations: [LawyerDashboardComponent, LawyerSerivesComponent, AddLawyerComponent, LawyerProfileComponent, LawyerConnectionsComponent, UserDetailsComponent, ChatUserComponent, LawyerFiltersComponent, SafeimgPipe, ChangePassComponent]
 })
 export class LawyerModule { }

@@ -6,6 +6,8 @@ import { first } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DialogOverviewExampleDialogComponent } from '../dialog-overview-example-dialog/dialog-overview-example-dialog.component';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { CustomSnackbarComponent } from '../custom-snackbar/custom-snackbar.component';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-otp',
@@ -19,7 +21,7 @@ export class OtpComponent implements OnInit {
   obj: any = {};
   timeLeft: number = 60;
   interval;
-  constructor(private route: ActivatedRoute, private router: Router, @Inject(LOCAL_STORAGE) private storage: WebStorageService,private auth: AuthService,public dialog: MatDialog ) { }
+  constructor(private route: ActivatedRoute, private router: Router, @Inject(LOCAL_STORAGE) private storage: WebStorageService,private auth: AuthService,public dialog: MatDialog,private snackBar: MatSnackBar ) { }
 
   ngOnInit() {
     this.interval = setInterval(() => {
@@ -76,20 +78,33 @@ export class OtpComponent implements OnInit {
     }
     else
 {
-  const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
-    width: '250px',
-    data: {title: "Error", message: "Incorrect OTP! "},
-    panelClass: 'myapp-no-padding-dialog'
+  // const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+  //   width: '250px',
+  //   data: {title: "Error", message: "Incorrect OTP! "},
+  //   panelClass: 'myapp-no-padding-dialog'
 
-  });
+  // });
 
-  dialogRef.afterClosed().subscribe(result => {
-    console.log('The dialog was closed');
+  // dialogRef.afterClosed().subscribe(result => {
+  //   console.log('The dialog was closed');
+  // });
+  this.snackBar.openFromComponent(CustomSnackbarComponent, {
+    duration: 3000,
+    data: 'Incorrect OTP'
   });
 } 
  }
  resendOtp()
  {
+  // const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+  //   width: '250px',
+  //   data: {title: "Error", message: "Incorrect OTP! "},
+  //   panelClass: 'myapp-no-padding-dialog'
+
+  // });
+  // dialogRef.afterClosed().subscribe(result => {
+  //   console.log('The dialog was closed');
+  // });
   this.otpForm.reset();
   clearInterval(this.interval);
   let obj = this.storage.get("userdata");
